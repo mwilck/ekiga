@@ -42,12 +42,13 @@
 #include <opal/pres_ent.h>
 #include <sip/sippdu.h>
 
+#include "account.h"
 #include "notification-core.h"
 #include "presence-core.h"
 #include "personal-details.h"
 #include "audiooutput-core.h"
 
-#include "bank-impl.h"
+#include "heap-impl.h"
 
 #include "opal-presentity.h"
 
@@ -68,10 +69,10 @@ namespace Opal
    */
   class Account:
     public Ekiga::Account,
-    public Ekiga::Heap,
-    protected Ekiga::RefLister<Presentity>,
     public Ekiga::PresencePublisher,
-    public Ekiga::PresenceFetcher
+    public Ekiga::PresenceFetcher,
+    public Ekiga::HeapImpl<Presentity>,
+    public Ekiga::DynamicObject<Account>
   {
     friend class Presentity;
 public:
@@ -105,18 +106,18 @@ public:
      * that Opal is taking care of deleting them. They are not deleted when
      * the last object having a reference to them is deleted.
      */
-    Account (Bank & bank,
-	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
-	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
-	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
-             EndPoint& _endpoint,
+    static boost::shared_ptr<Account> create (Bank & bank,
+                                              boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                                              boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+                                              boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+                                              boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+                                              EndPoint& _endpoint,
 #ifdef HAVE_H323
-             H323::EndPoint* _h323_endpoint,
+                                              H323::EndPoint* _h323_endpoint,
 #endif
-             Sip::EndPoint* _sip_endpoint,
-	     boost::function0<std::list<std::string> > _existing_groups,
-	     xmlNodePtr node_);
+                                              Sip::EndPoint* _sip_endpoint,
+                                              boost::function0<std::list<std::string> > _existing_groups,
+                                              xmlNodePtr node_);
 
     ~Account ();
 
@@ -207,15 +208,28 @@ public:
      */
     void handle_message_waiting_information (const std::string info);
 
-    /* This part of the api is the implementation of Ekiga::Heap */
-    void visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const;
-
     const PString get_full_uri (const PString & uri) const;
 
 protected:
     void on_rename_group (Opal::PresentityPtr pres);
 
 private:
+    Account (Bank & bank,
+	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+             EndPoint& _endpoint,
+#ifdef HAVE_H323
+             H323::EndPoint* _h323_endpoint,
+#endif
+             Sip::EndPoint* _sip_endpoint,
+	     boost::function0<std::list<std::string> > _existing_groups,
+	     xmlNodePtr node_);
+    boost::shared_ptr<Presentity> load_presentity (boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                                                   boost::function0<std::list<std::string> > _existing_groups,
+                                                   xmlNodePtr _node);
+
     void fetch (const std::string uri);
     void unfetch (const std::string uri);
     bool is_supported_uri (const std::string & uri);
@@ -261,8 +275,6 @@ private:
     void presence_status_in_main (std::string uri,
 				  std::string presence,
 				  std::string status) const;
-    void when_presentity_removed (boost::shared_ptr<Presentity> pres);
-    void when_presentity_updated (boost::shared_ptr<Presentity> pres);
 
     Bank & bank;
 

@@ -147,6 +147,38 @@ Opal::Account::build_node(Opal::Account::Type typus,
 }
 
 
+boost::shared_ptr<Opal::Account>
+Opal::Account::create (Bank & bank,
+                       boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                       boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+                       boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+                       boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+                       EndPoint& _endpoint,
+#ifdef HAVE_H323
+                       H323::EndPoint* _h323_endpoint,
+#endif
+                       Sip::EndPoint* _sip_endpoint,
+                       boost::function0<std::list<std::string> > _existing_groups,
+                       xmlNodePtr _node)
+{
+  boost::shared_ptr<Opal::Account> account =
+    boost::shared_ptr<Opal::Account> (new Opal::Account (bank,
+                                                         _presence_core,
+                                                         _notification_core,
+                                                         _personal_details,
+                                                         _audiooutput_core,
+                                                         _endpoint,
+#ifdef HAVE_H323
+                                                         _h323_endpoint,
+#endif
+                                                         _sip_endpoint,
+                                                         _existing_groups,
+                                                         _node));
+
+  return account;
+}
+
+
 Opal::Account::Account (Opal::Bank & _bank,
                         boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
                         boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
@@ -185,20 +217,8 @@ Opal::Account::Account (Opal::Bank & _bank,
     if (child->type == XML_ELEMENT_NODE && child->name != NULL && xmlStrEqual (BAD_CAST "roster", child->name)) {
 
       roster_node = child;
-      for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next) {
-
-        Opal::PresentityPtr pres(new Presentity (*this,
-                                                 presence_core,
-                                                 existing_groups,
-                                                 presnode));
-
-        pres->trigger_saving.connect (boost::ref (trigger_saving));
-        pres->removed.connect (boost::bind (&Opal::Account::when_presentity_removed, this, pres));
-        pres->updated.connect (boost::bind (&Opal::Account::when_presentity_updated, this, pres));
-        pres->questions.connect (boost::ref (Ekiga::Heap::questions));
-        add_object (pres);
-        presentity_added (pres);
-      }
+      for (xmlNodePtr presnode = roster_node->children; presnode != NULL; presnode = presnode->next)
+        load_presentity (presence_core, existing_groups, presnode);
     }
   }
 
@@ -262,7 +282,9 @@ Opal::Account::get_groups () const
 {
   std::list<std::string> result;
 
-  for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin (); iter != Ekiga::RefLister< Presentity >::end (); ++iter) {
+  for (Ekiga::HeapImpl<Opal::Presentity>::const_iterator iter = Ekiga::HeapImpl<Opal::Presentity>::begin ();
+       iter != Ekiga::HeapImpl<Opal::Presentity>::end ();
+       ++iter) {
 
     std::list<std::string> groups = (*iter)->get_groups ();
     result.merge (groups);
@@ -544,7 +566,7 @@ Opal::Account::enable ()
       sip_endpoint->EnableAccount (*this);
     break;
   }
-  updated ();
+  updated (this->shared_from_this ());
 
   disable_action ("enable-account");
   enable_action ("disable-account");
@@ -571,10 +593,9 @@ Opal::Account::disable ()
   default:
     if (opal_presentity) {
 
-      for (Ekiga::RefLister< Presentity >::iterator iter = Ekiga::RefLister< Presentity >::begin ();
-           iter != Ekiga::RefLister< Presentity >::end ();
+      for (Ekiga::HeapImpl<Opal::Presentity>::iterator iter = Ekiga::HeapImpl<Opal::Presentity>::begin ();
+           iter != Ekiga::HeapImpl<Opal::Presentity>::end ();
            ++iter) {
-
         (*iter)->set_presence ("unknown");
         (*iter)->set_status ("");
       }
@@ -597,7 +618,7 @@ Opal::Account::disable ()
   status = _("Unregistered");
   state = Unregistered;
 
-  updated ();
+  updated (this->shared_from_this ());
 
   enable_action ("enable-account");
   disable_action ("disable-account");
@@ -660,8 +681,7 @@ Opal::Account::remove ()
   xmlFreeNode (node);
 
   trigger_saving ();
-  Ekiga::Heap::removed ();
-  Ekiga::Account::removed ();
+  removed (this->shared_from_this ());
 }
 
 
@@ -854,7 +874,7 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     else if (should_disable)
       disable ();
 
-    updated ();
+    updated (this->shared_from_this ());
     trigger_saving ();
   }
 
@@ -902,20 +922,24 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
     return false;
   }
 
-  xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
-  xmlAddChild (roster_node, presnode);
-  trigger_saving ();
+  if (is_supported_uri (uri)) {
+    xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
+    xmlAddChild (roster_node, presnode);
+    trigger_saving ();
 
-  Opal::PresentityPtr pres(new Presentity (*this, presence_core, existing_groups, presnode));
-  pres->trigger_saving.connect (boost::ref (trigger_saving));
-  pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
-  pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
-  pres->questions.connect (boost::ref (Ekiga::Heap::questions));
-  add_object (pres);
-  presentity_added (pres);
-  fetch (pres->get_uri ());
+    boost::shared_ptr<Opal::Presentity> pres = load_presentity (presence_core, existing_groups, presnode);
+    fetch (pres->get_uri ());
 
-  return true;
+    return true;
+  }
+  else {
+    if (is_supported_uri (uri))
+      error = _("You supplied an unsupported address");
+    else
+      error = _("You already have a contact with this address!");
+  }
+
+  return false;
 }
 
 void
@@ -939,6 +963,25 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     opal_presentity->SetLocalPresence (opi);
     PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
   }
+}
+
+
+boost::shared_ptr<Opal::Presentity>
+Opal::Account::load_presentity (boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+                                boost::function0<std::list<std::string> > _existing_groups,
+                                xmlNodePtr _node)
+{
+  Opal::PresentityPtr pres = Opal::Presentity::create (*this, _presence_core, _existing_groups, _node);
+
+  // When the presentity emits trigger_saving, we relay it "upstream" so that the
+  // Bank can save everything.
+  std::cout << "FIXME: Use add_connection here" << std::endl;
+  pres->trigger_saving.connect (boost::ref (trigger_saving));
+  pres->removed.connect (boost::bind (&Opal::Account::unfetch, this, pres->get_uri ()));
+  pres->updated.connect (boost::bind (&Opal::Account::fetch, this, pres->get_uri ()));
+  add_presentity (pres);
+
+  return pres;
 }
 
 
@@ -1020,8 +1063,8 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
 
         opal_presentity->Open ();
 
-        for (Ekiga::RefLister<Presentity>::iterator iter = Ekiga::RefLister<Presentity>::begin ();
-             iter != Ekiga::RefLister<Presentity>::end ();
+        for (Ekiga::HeapImpl<Opal::Presentity>::iterator iter = Ekiga::HeapImpl<Opal::Presentity>::begin ();
+             iter != Ekiga::HeapImpl<Opal::Presentity>::end ();
              ++iter)
           fetch ((*iter)->get_uri());
 
@@ -1047,7 +1090,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     /* delay destruction of this account until the
        unsubscriber thread has called back */
     if (dead)
-      removed ();
+      removed (this->shared_from_this ());
     break;
 
   case UnregistrationFailed:
@@ -1087,7 +1130,7 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
     break;
   }
 
-  updated ();
+  updated (this->shared_from_this ());
 }
 
 
@@ -1106,7 +1149,7 @@ Opal::Account::handle_message_waiting_information (const std::string info)
       if (audiooutput)
         audiooutput->play_event ("new-voicemail-sound");
     }
-    updated ();
+    updated (this->shared_from_this ());
   }
 }
 
@@ -1288,8 +1331,8 @@ Opal::Account::presence_status_in_main (std::string uri,
                                         std::string uri_presence,
                                         std::string uri_status) const
 {
-  for (Ekiga::RefLister< Presentity >::const_iterator iter = Ekiga::RefLister< Presentity >::begin ();
-       iter != Ekiga::RefLister< Presentity >::end ();
+  for (Ekiga::HeapImpl<Opal::Presentity>::const_iterator iter = Ekiga::HeapImpl<Opal::Presentity>::begin ();
+       iter != Ekiga::HeapImpl<Opal::Presentity>::end ();
        ++iter) {
 
     if ((*iter)->has_uri (uri)) {
@@ -1300,28 +1343,6 @@ Opal::Account::presence_status_in_main (std::string uri,
   }
   presence_received (uri, uri_presence);
   status_received (uri, uri_status);
-}
-
-void
-Opal::Account::when_presentity_removed (Opal::PresentityPtr pres)
-{
-  unfetch (pres->get_uri ());
-  presentity_removed (pres);
-}
-
-void
-Opal::Account::when_presentity_updated (Opal::PresentityPtr pres)
-{
-  // we don't unfetch the previous uri here...
-  fetch (pres->get_uri ());
-  presentity_updated (pres);
-}
-
-
-void
-Opal::Account::visit_presentities (boost::function1<bool, Ekiga::PresentityPtr > visitor) const
-{
-  visit_objects (visitor);
 }
 
 
