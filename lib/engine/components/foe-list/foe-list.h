@@ -37,6 +37,7 @@
 
 #include "contact-core.h"
 #include "friend-or-foe.h"
+#include "menu-builder.h"
 
 namespace Ekiga
 {
