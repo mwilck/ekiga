@@ -48,6 +48,28 @@
 #include "opal-presentity.h"
 
 
+boost::shared_ptr<Opal::Bank>
+Opal::Bank::create (Ekiga::ServiceCore& core,
+                    Opal::EndPoint& _endpoint,
+#ifdef HAVE_H323
+                    Opal::H323::EndPoint* _h323_endpoint,
+#endif
+                    Opal::Sip::EndPoint* _sip_endpoint)
+{
+  boost::shared_ptr<Opal::Bank> bank =
+    boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
+                                                   _endpoint,
+#ifdef HAVE_H323
+                                                   _h323_endpoint,
+#endif
+                                                   _sip_endpoint));
+
+  bank->load ();
+
+  return bank;
+}
+
+
 Opal::Bank::Bank (Ekiga::ServiceCore& core,
                   Opal::EndPoint& _endpoint,
 #ifdef HAVE_H323
@@ -64,7 +86,49 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 #endif
   sip_endpoint(_sip_endpoint)
 {
-  std::list<std::string> accounts;
+  // FIXME
+  sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
+}
+
+
+Opal::Bank::~Bank ()
+{
+  delete protocols_settings;
+}
+
+
+boost::shared_ptr<Opal::Account>
+Opal::Bank::load_account (boost::function0<std::list<std::string> > _existing_groups,
+                          xmlNodePtr _node)
+{
+  boost::shared_ptr<Opal::Account> account = Opal::Account::create (*this,
+                                                                    presence_core,
+                                                                    notification_core,
+                                                                    personal_details,
+                                                                    audiooutput_core,
+                                                                    endpoint,
+#ifdef HAVE_H323
+                                                                    h323_endpoint,
+#endif
+                                                                    sip_endpoint,
+                                                                    _existing_groups,
+                                                                    _node);
+
+  std::cout << "FIXME: Use add_connection here" << std::endl;
+  account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this));
+  account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1));
+  add_account (account);
+  add_heap (account);
+
+  activate (account);
+
+  return account;
+}
+
+
+void
+Opal::Bank::load ()
+{
   protocols_settings = new Ekiga::Settings (PROTOCOLS_SCHEMA);
 
   const std::string raw = protocols_settings->get_string ("accounts");
@@ -88,47 +152,9 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 
     if (child->type == XML_ELEMENT_NODE
         && child->name != NULL
-        && xmlStrEqual(BAD_CAST "account", child->name)) {
-
-      boost::shared_ptr<Account> account(new Account (*this,
-                                                      presence_core,
-                                                      notification_core,
-                                                      personal_details,
-                                                      audiooutput_core,
-                                                      endpoint,
-#ifdef HAVE_H323
-                                                      _h323_endpoint,
-#endif
-                                                      _sip_endpoint,
-                                                      boost::bind(&Opal::Bank::existing_groups, this),
-                                                      child));
-
-      Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
-      Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
-      Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
-
-      // We have several questions to relay following we are a Cluster or a Bank.
-      // Clusters will relay questions from Heaps. Banks will relay questions from Accounts.
-      Ekiga::BankImpl<Account>::add_connection (account, account->Heap::questions.connect (boost::ref(Ekiga::Cluster::questions)));
-      Ekiga::BankImpl<Account>::add_connection (account, account->Account::questions.connect (boost::ref(Ekiga::Bank::questions)));
-
-      Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-      Ekiga::BankImpl<Account>::add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, account)));
-      add_account (account);
-      heap_added (account);
-
-      activate (account);
-    }
+        && xmlStrEqual(BAD_CAST "account", child->name))
+      boost::shared_ptr<Opal::Account> account = load_account (boost::bind(&Opal::Bank::existing_groups, this), child);
   }
-
-  // FIXME
-  sip_endpoint->mwi_event.connect (boost::bind(&Opal::Bank::on_mwi_event, this, _1, _2));
-}
-
-
-Opal::Bank::~Bank ()
-{
-  delete protocols_settings;
 }
 
 
@@ -281,33 +307,7 @@ Opal::Bank::add (Account::Type acc_type,
   save ();
 
 
-  AccountPtr account
-    = AccountPtr(new Opal::Account (*this,
-				    presence_core,
-				    notification_core,
-				    personal_details,
-				    audiooutput_core,
-                                    endpoint,
-#ifdef HAVE_H323
-                                    h323_endpoint,
-#endif
-                                    sip_endpoint,
-				    boost::bind(&Opal::Bank::existing_groups, this),
-				    child));
-  Ekiga::BankImpl<Account>::add_connection (account, account->presentity_added.connect (boost::bind (boost::ref(presentity_added), account, _1)));
-  Ekiga::BankImpl<Account>::add_connection (account, account->presentity_updated.connect (boost::bind (boost::ref(presentity_updated), account, _1)));
-  Ekiga::BankImpl<Account>::add_connection (account, account->presentity_removed.connect (boost::bind (boost::ref(presentity_removed), account, _1)));
-  Ekiga::BankImpl<Account>::add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-  Ekiga::BankImpl<Account>::add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, account)));
-  add_account (account);
-  heap_added (account);
-
-  boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
-  if (pcore)
-    pcore->add_presence_fetcher (account);
-
-  if (enabled)
-    account->enable ();
+  AccountPtr account = load_account (boost::bind(&Opal::Bank::existing_groups, this), child);
 }
 
 
@@ -321,8 +321,8 @@ Opal::Bank::find_account (const std::string& _aor)
   if (t != std::string::npos)
     aor = aor.substr (0, t);
 
-  for (iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::BankImpl<Opal::Account>::iterator iter = Ekiga::BankImpl<Opal::Account>::begin ();
+       iter != Ekiga::BankImpl<Opal::Account>::end ();
        ++iter) {
     if (aor.find ("@") != std::string::npos && (*iter)->get_aor () == aor)  // find by account name+host (aor)
         return *iter;
@@ -330,13 +330,6 @@ Opal::Bank::find_account (const std::string& _aor)
       return *iter;
   }
   return result;
-}
-
-
-void
-Opal::Bank::clear ()
-{
-  Ekiga::RefLister<Opal::Account>::remove_all_objects ();
 }
 
 
@@ -359,17 +352,14 @@ Opal::Bank::on_account_removed (boost::shared_ptr<Account> account)
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   if (pcore)
     pcore->remove_presence_fetcher (account);
-
-  heap_removed (account);
-  remove_account (account);
 }
 
 
 void
 Opal::Bank::publish (const Ekiga::PersonalDetails& details)
 {
-  for (iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::BankImpl<Opal::Account>::iterator iter = Ekiga::BankImpl<Opal::Account>::begin ();
+       iter != Ekiga::BankImpl<Opal::Account>::end ();
        iter++)
     (*iter)->publish (details);
 }
@@ -386,20 +376,13 @@ Opal::Bank::on_mwi_event (std::string aor,
 }
 
 
-void
-Opal::Bank::visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const
-{
-  visit_objects (visitor);
-}
-
-
 const std::list<std::string>
 Opal::Bank::existing_groups () const
 {
   std::list<std::string> result;
 
-  for (const_iterator iter = begin ();
-       iter != end ();
+  for (Ekiga::BankImpl<Opal::Account>::const_iterator iter = Ekiga::BankImpl<Opal::Account>::begin ();
+       iter != Ekiga::BankImpl<Opal::Account>::end ();
        ++iter) {
 
     std::list<std::string> groups = (*iter)->get_groups ();
@@ -458,12 +441,10 @@ Opal::Bank::find_presentity_for_uri (const std::string uri) const
 {
   find_presentity_helper helper(uri);
 
-  for (const_iterator iter = begin ();
-       iter != end () && !helper.result;
-       ++iter) {
-
+  for (Ekiga::ClusterImpl<Opal::Account>::const_iterator iter = Ekiga::ClusterImpl<Opal::Account>::begin ();
+       iter != Ekiga::ClusterImpl<Opal::Account>::end () && !helper.result;
+       ++iter)
     (*iter)->visit_presentities(boost::ref(helper));
-  }
 
   return helper.result;
 }

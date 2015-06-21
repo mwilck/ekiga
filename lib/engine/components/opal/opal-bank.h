@@ -49,6 +49,9 @@
 #include "sip-endpoint.h"
 #include "h323-endpoint.h"
 
+#include "cluster-impl.h"
+#include "bank-impl.h"
+
 namespace Opal
 {
   /**
@@ -58,8 +61,9 @@ namespace Opal
    */
   class Bank:
       public Ekiga::BankImpl<Account>,
-      public Ekiga::Cluster,
+      public Ekiga::ClusterImpl<Account>,
       public Ekiga::PresencePublisher,
+      public Ekiga::DynamicObject<Bank>,
       public Ekiga::Service
   {
     friend class Account;
@@ -82,12 +86,12 @@ public:
      * that Opal is taking care of deleting them. They are not deleted when
      * the last object having a reference to them is deleted.
      */
-    Bank (Ekiga::ServiceCore& _core,
-          Opal::EndPoint& _endpoint,
+    static boost::shared_ptr<Bank> create (Ekiga::ServiceCore& _core,
+                                           Opal::EndPoint& _endpoint,
 #ifdef HAVE_H323
-          Opal::H323::EndPoint* _h323_endpoint,
+                                           Opal::H323::EndPoint* _h323_endpoint,
 #endif
-          Opal::Sip::EndPoint* _sip_endpoint);
+                                           Opal::Sip::EndPoint* _sip_endpoint);
 
     ~Bank ();
 
@@ -115,13 +119,6 @@ public:
      */
     AccountPtr find_account (const std::string& aor);
 
-    /** Clear all Accounts
-     */
-    void clear ();
-
-    /* this object is an Ekiga::Cluster */
-    void visit_heaps (boost::function1<bool, Ekiga::HeapPtr> visitor) const;
-
     const std::list<std::string> existing_groups () const;
 
     /* this is useful when we want to do something with some uri and
@@ -132,6 +129,17 @@ public:
     static void migrate_from_gconf (const std::list<std::string> old);
 
 private:
+    Bank (Ekiga::ServiceCore& _core,
+          Opal::EndPoint& _endpoint,
+#ifdef HAVE_H323
+          Opal::H323::EndPoint* _h323_endpoint,
+#endif
+          Opal::Sip::EndPoint* _sip_endpoint);
+
+    boost::shared_ptr<Account> load_account (boost::function0<std::list<std::string> > _existing_groups,
+                                             xmlNodePtr _node);
+
+    void load ();
     void set_ready ();
     bool is_ready;
 
