@@ -125,26 +125,6 @@ Opal::Sip::EndPoint::~EndPoint ()
 
 
 bool
-Opal::Sip::EndPoint::send_message (const std::string & _uri,
-				   const Ekiga::Message::payload_type payload)
-{
-  // FIXME: here we should check which kind of payload we have
-  Ekiga::Message::payload_type::const_iterator iter = payload.find("text/plain");
-  if (!_uri.empty () && (_uri.find ("sip:") == 0 || _uri.find (':') == string::npos) && iter != payload.end ()) {
-
-    OpalIM im;
-    im.m_to = PURL (_uri);
-    im.m_bodies.SetAt (PMIMEInfo::TextPlain(), iter->second);
-    Message (im);
-
-    return true;
-  }
-
-  return false;
-}
-
-
-bool
 Opal::Sip::EndPoint::SetUpCall (const std::string & uri)
 {
   PString token;

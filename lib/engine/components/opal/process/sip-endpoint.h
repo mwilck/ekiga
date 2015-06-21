@@ -46,7 +46,6 @@
 #include "presence-core.h"
 #include "call-manager.h"
 #include "opal-bank.h"
-#include "sip-dialect.h"
 #include "call-core.h"
 #include "services.h"
 
@@ -70,10 +69,6 @@ namespace Opal {
 
       bool SetUpCall (const std::string & uri);
 
-
-      /* Chat subsystem */
-      bool send_message (const std::string & uri,
-                         const Ekiga::Message::payload_type payload);
 
       bool StartListener (unsigned port);
 
