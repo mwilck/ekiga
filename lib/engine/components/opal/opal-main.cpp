@@ -39,7 +39,6 @@
 #include "opal-main.h"
 
 #include "account-core.h"
-#include "chat-core.h"
 #include "presence-core.h"
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
@@ -73,7 +72,6 @@ public:
     boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
     boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
     boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-    boost::shared_ptr<Ekiga::ChatCore> chat_core = core.get<Ekiga::ChatCore> ("chat-core");
     boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
     boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
     boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core = core.get<Ekiga::VideoInputCore> ("videoinput-core");
@@ -82,7 +80,7 @@ public:
     boost::shared_ptr<Ekiga::PersonalDetails> personal_details = core.get<Ekiga::PersonalDetails> ("personal-details");
     boost::shared_ptr<Bank> account_store = core.get<Bank> ("opal-account-store");
 
-    if (contact_core && presence_core && call_core && chat_core
+    if (contact_core && presence_core && call_core
 	&& account_core && audioinput_core && videoinput_core
 	&& audiooutput_core && videooutput_core && personal_details
 	&& !account_store) {
@@ -110,18 +108,16 @@ public:
       // It must be created last. That way, it will handle the Opal::EndPoint
       // "ready" signal after the SIP and H.323 EndPoints. Otherwise, accounts
       // registration could not work when STUN is used.
-      boost::shared_ptr<Opal::Bank> bank = boost::shared_ptr<Opal::Bank> (new Opal::Bank (core,
-                                                                                          endpoint,
+      boost::shared_ptr<Bank> bank = Opal::Bank::create (core,
+                                                         endpoint,
 #ifdef HAVE_H323
-                                                                                          &h323_endpoint,
+                                                         &h323_endpoint,
 #endif
-                                                                                          &sip_endpoint));
-
+                                                         &sip_endpoint);
       account_core->add_bank (bank);
       presence_core->add_cluster (bank);
       core.add (bank);
       presence_core->add_presence_publisher (bank);
-
 
       result = true;
     }
@@ -216,7 +212,6 @@ opal_close (Ekiga::ServiceCore& core)
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
   boost::shared_ptr<Ekiga::AccountCore> account_core = core.get<Ekiga::AccountCore> ("account-core");
 
-  bank->clear ();
   account_core->remove_bank (bank);
   presence_core->remove_presence_publisher (bank);
   presence_core->remove_cluster (bank);
