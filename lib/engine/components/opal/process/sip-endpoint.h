@@ -110,11 +110,6 @@ namespace Opal {
 
       void OnDialogInfoReceived (const SIPDialogNotification & info);
 
-      bool OnReceivedMESSAGE (SIP_PDU & pdu);
-
-      void OnMESSAGECompleted (const SIPMessage::Params & params,
-                               SIP_PDU::StatusCodes reason);
-
       const Ekiga::ServiceCore & core;
 
       PString noAnswerForwardParty;

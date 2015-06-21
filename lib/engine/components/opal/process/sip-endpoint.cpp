@@ -38,7 +38,6 @@
 #include <glib/gi18n.h>
 #include "config.h"
 #include "sip-endpoint.h"
-#include "chat-core.h"
 
 namespace Opal {
 
@@ -590,69 +589,6 @@ Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
     call->set_forward_target (noAnswerForwardParty);
 
   return true;
-}
-
-
-bool
-Opal::Sip::EndPoint::OnReceivedMESSAGE (SIP_PDU & pdu)
-{
-  if (pdu.GetMIME().GetContentType(false) != "text/plain")
-    return false; // Ignore what we do not handle.
-
-  PString from = pdu.GetMIME().GetFrom();
-  PINDEX j = from.Find (';');
-  if (j != P_MAX_INDEX)
-    from = from.Left(j); // Remove all parameters
-  j = from.Find ('<');
-  if (j != P_MAX_INDEX && from.Find ('>') == P_MAX_INDEX)
-    from += '>';
-
-  SIPURL uri = from;
-  uri.Sanitise (SIPURL::RequestURI);
-  std::string display_name = (const char *) uri.GetDisplayName ();
-  std::string message_uri = (const char *) uri.AsString ();
-  std::string _message = (const char *) pdu.GetEntityBody ();
-  Ekiga::Message::payload_type payload;
-  // FIXME: we push as 'text/plain' without really knowing
-  payload.insert (std::make_pair ("text/plain", _message));
-  GTimeVal current;
-  g_get_current_time (&current);
-  gchar* time = g_time_val_to_iso8601 (&current);
-  Ekiga::Message msg = {time, display_name, payload };
-  g_free (time);
-
-  return SIPEndPoint::OnReceivedMESSAGE (pdu);
-}
-
-
-void
-Opal::Sip::EndPoint::OnMESSAGECompleted (const SIPMessage::Params & params,
-                                         SIP_PDU::StatusCodes reason)
-{
-  PTRACE (4, "IM sending completed, reason: " << reason);
-
-  // after TemporarilyUnavailable, RequestTimeout appears too, hence do not process it too
-  if (reason == SIP_PDU::Successful_OK || reason == SIP_PDU::Failure_RequestTimeout)
-    return;
-
-  SIPURL to = params.m_remoteAddress;
-  to.Sanitise (SIPURL::ToURI);
-  std::string uri = (const char*) to.AsString ();
-  std::string display_name = (const char*) to.GetDisplayName ();
-
-  std::string reason_shown = _("Could not send message: ");
-  if (reason == SIP_PDU::Failure_TemporarilyUnavailable)
-    reason_shown += _("user offline");
-  else
-    reason_shown += SIP_PDU::GetStatusCodeDescription (reason).operator std::string ();  // too many to translate them with _()...
-  Ekiga::Message::payload_type payload;
-  // FIXME: we push as 'text/plain' without really knowing...
-  payload.insert (std::make_pair ("text/plain", reason_shown));
-  GTimeVal current;
-  g_get_current_time (&current);
-  gchar* time = g_time_val_to_iso8601 (&current);
-  Ekiga::Message msg = {time, "" /* it's a notice */, payload };
-  g_free (time);
 }
 
 
