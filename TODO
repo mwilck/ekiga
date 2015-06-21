@@ -2,7 +2,7 @@ See our wiki: http://wiki.ekiga.org/index.php/ToDo
 - clean up signal relay. No need to have a class method for each signal "relay".
 - Update DOC with 5.0 screenshots
 - Make sure refresh also works as expected.
-- Turn LiveObject into an Actor ?
+- Turn LiveObject into an Actor or drop it?
 - add_heap does not seem to be used anymore
 - GSettings migration ? To check.
 - Roster migration : to implement + implement adding Echo test and such to the roster when it is not empty.
@@ -28,7 +28,9 @@ See our wiki: http://wiki.ekiga.org/index.php/ToDo
 - Check video-bitrate vs video-tx-bitrate usage.
 - warn if required codecs are not present.
 - Use STL/RefLister instead of inheriting from them.
+- Add support for click-to-dial when there are several numbers to dial
 - OPAL should retry SUBSCRIBE on Not retrying SUBSCRIBE due to error response 481 Call Leg/Transaction Does Not Exist
 - OPAL should do automatic reREGISTER and presence reSUBSCRIBE/PUBLISH still works when a registrar is down then comes online.
 - Probably it would be wise to use inheritance for Accounts
 - Check whether we make Pulse or ALSA as audio device by default
+- The ServiceCore should be part of a high-level class of the engine (Service ?)
