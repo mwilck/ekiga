@@ -75,7 +75,7 @@ void Opal::H323::CallManager::pull_actions (Ekiga::Actor & actor,
                                             const std::string & uri)
 {
   if (is_supported_uri (uri)) {
-    add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&Opal::H323::CallManager::dial, this, uri))));
+    Ekiga::URIActionProvider::add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("call", _("Call"), boost::bind (&Opal::H323::CallManager::dial, this, uri))));
   }
 }
 

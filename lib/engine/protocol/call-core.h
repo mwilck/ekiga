@@ -39,7 +39,6 @@
 #include "form-request.h"
 #include "chain-of-responsibility.h"
 #include "services.h"
-#include "reflister.h"
 #include "dynamic-object-store.h"
 #include "friend-or-foe/friend-or-foe.h"
 #include "call.h"
@@ -119,8 +118,8 @@ namespace Ekiga
        */
       void remove_manager (boost::shared_ptr<CallManager> manager);
 
-      typedef typename RefLister<CallManager>::const_iterator const_iterator;
-      typedef typename RefLister<CallManager>::iterator iterator;
+      typedef typename DynamicObjectStore<CallManager>::const_iterator const_iterator;
+      typedef typename DynamicObjectStore<CallManager>::iterator iterator;
 
       /** Returns an iterator to the first Book of the collection
        */
@@ -204,7 +203,7 @@ namespace Ekiga
       boost::weak_ptr<Ekiga::NotificationCore> notification_core;
 
       DynamicObjectStore<Ekiga::Call> calls;
-      RefLister<Ekiga::CallManager> managers;
+      DynamicObjectStore<Ekiga::CallManager> managers;
     };
 
 /**

@@ -44,8 +44,9 @@
 
 #include <boost/smart_ptr.hpp>
 
-#include "live-object.h"
 #include "codec-description.h"
+#include "dynamic-object.h"
+#include "actor.h"
 
 namespace Ekiga
 {
@@ -55,7 +56,9 @@ namespace Ekiga
  * @{
  */
 
-  class CallManager : public Ekiga::LiveObject
+  class CallManager
+    : public Actor,
+      public DynamicObject<CallManager>
   {
     public:
     class Interface

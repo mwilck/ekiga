@@ -42,7 +42,6 @@
 
 #include <boost/smart_ptr.hpp>
 
-#include "live-object.h"
 #include "map-key-iterator.h"
 #include "map-key-const-iterator.h"
 #include "scoped-connections.h"
