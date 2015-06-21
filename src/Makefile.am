@@ -25,8 +25,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/gui/gtk-core		\
 	-I$(top_srcdir)/lib/engine/components/opal	\
 	-I$(top_srcdir)/src				\
-	-I$(top_srcdir)/src/dbus-helper/		\
-	-I$(top_builddir)/src/dbus-helper/
+	-I$(top_srcdir)/src/dbus-helper
 
 bin_PROGRAMS = ekiga
 
