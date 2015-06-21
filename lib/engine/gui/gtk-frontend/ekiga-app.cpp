@@ -51,7 +51,6 @@
 #include "assistant-window.h"
 #include "preferences-window.h"
 #include "call-window.h"
-#include "chat-window.h"
 #include "ekiga-window.h"
 #include "statusicon.h"
 #include "roster-view-gtk.h"

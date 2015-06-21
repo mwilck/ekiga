@@ -47,7 +47,6 @@
 #include "account-core.h"
 #include "contact-core.h"
 #include "call-core.h"
-#include "chat-core.h"
 #include "friend-or-foe.h"
 #include "foe-list.h"
 #include "videooutput-core.h"
@@ -105,7 +104,6 @@ engine_init (Ekiga::ServiceCore& core,
   boost::shared_ptr<Ekiga::AccountCore> account_core (new Ekiga::AccountCore);
   boost::shared_ptr<Ekiga::ContactCore> contact_core (new Ekiga::ContactCore);
   boost::shared_ptr<Ekiga::CallCore> call_core (new Ekiga::CallCore (friend_or_foe, notification_core));
-  boost::shared_ptr<Ekiga::ChatCore> chat_core (new Ekiga::ChatCore);
   boost::shared_ptr<Ekiga::VideoOutputCore> videooutput_core (new Ekiga::VideoOutputCore);
   boost::shared_ptr<Ekiga::VideoInputCore> videoinput_core (new Ekiga::VideoInputCore (core, videooutput_core));
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core (new Ekiga::AudioOutputCore (core));
@@ -115,7 +113,6 @@ engine_init (Ekiga::ServiceCore& core,
   boost::shared_ptr<Ekiga::PresenceCore> presence_core(new Ekiga::PresenceCore (details));
 
   core.add (contact_core);
-  core.add (chat_core);
   core.add (friend_or_foe);
   core.add (foe_list);
   core.add (videoinput_core);
