@@ -140,7 +140,7 @@ else
 fi
 PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
 
-PKG_CHECK_MODULES([GTK_NO_SIDEBAR], [gtk+-3.0 <  3.16.0], [found_sidebar="no"])
+PKG_CHECK_MODULES([GTK_NO_SIDEBAR], [gtk+-3.0 <  3.16.0], [found_sidebar="no"], [found_sidebar="yes"])
 if test "x${found_sidebar}" != "xno" ; then
      AC_DEFINE(HAVE_SIDEBAR,1,[GtkSideBar support])
 fi
