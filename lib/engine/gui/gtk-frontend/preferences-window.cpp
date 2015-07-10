@@ -1817,11 +1817,19 @@ preferences_window_new (GmApplication *app)
   box = gtk_box_new (GTK_ORIENTATION_HORIZONTAL, 0);
   gtk_container_add (GTK_CONTAINER (self), box);
 
+#ifdef HAVE_SIDEBAR
   sidebar = gtk_stack_sidebar_new ();
+#else
+  sidebar = gtk_sidebar_new ();
+#endif
   gtk_box_pack_start (GTK_BOX (box), sidebar, TRUE, TRUE, 0);
 
   self->priv->stack = gtk_stack_new ();
+#ifdef HAVE_SIDEBAR
   gtk_stack_sidebar_set_stack (GTK_STACK_SIDEBAR (sidebar), GTK_STACK (self->priv->stack));
+#else
+  gtk_sidebar_set_stack (GTK_SIDEBAR (sidebar), GTK_STACK (self->priv->stack));
+#endif
   gtk_box_pack_start (GTK_BOX (box), self->priv->stack, TRUE, TRUE, 0);
 
   gtk_widget_show_all (GTK_WIDGET (box));
