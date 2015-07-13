@@ -237,7 +237,7 @@ void AudioEventScheduler::load_wav(const std::string & event_name, bool is_file_
   }
   
   if (wav->IsValid ()) {
-    len = wav->GetDataLength();
+    len = wav->GetLength();
     channels = wav->GetChannels ();
     sample_rate = wav->GetSampleRate ();
     bps = wav->GetSampleSize ();

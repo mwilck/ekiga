@@ -222,6 +222,7 @@ void Opal::EndPoint::SetMaximumJitter (unsigned max_val)
 
   SetAudioJitterDelay (20, val);
 
+  /*
   // Adjust setting for all sessions of all connections of all calls
   for (PSafePtr<OpalCall> call = activeCalls;
        call != NULL;
@@ -251,6 +252,7 @@ void Opal::EndPoint::SetMaximumJitter (unsigned max_val)
       }
     }
   }
+  */
 
   PTRACE (4, "Opal::EndPoint\tSet Maximum Jitter to " << val);
 }

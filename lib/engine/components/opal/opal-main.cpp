@@ -145,6 +145,10 @@ opal_init_pprocess (int argc,
                     char *argv [])
 {
   /* Ekiga PTLIB Process initialisation */
+
+  // SetDirectories must appear before GnomeMeeting (PProcess) object creation, otherwise it searches for plugins in /usr/bin too, which increases ekiga startup time by several seconds
+  PPluginManager::GetPluginManager().SetDirectories (PString (P_DEFAULT_PLUGIN_DIR));
+
   static GnomeMeeting instance;
   instance.GetArguments ().SetArgs (argc, argv);
   PArgList & args = instance.GetArguments ();

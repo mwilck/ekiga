@@ -473,7 +473,6 @@ Opal::Call::GetConnection ()
 PBoolean
 Opal::Call::OnEstablished (OpalConnection & connection)
 {
-  OpalRTPSession *session = NULL;
   OpalMediaStreamPtr stream;
 
   noAnswerTimer.Stop (false);
@@ -489,27 +488,6 @@ Opal::Call::OnEstablished (OpalConnection & connection)
 
     parse_info (connection);
     Ekiga::Runtime::run_in_main (boost::bind (boost::ref (established), this->shared_from_this ()));
-  }
-
-  if (PIsDescendant(&connection, OpalRTPConnection)) {
-
-    stream = connection.GetMediaStream (OpalMediaType::Audio (), false);
-    if (stream != NULL) {
-
-      session = (OpalRTPSession*)PDownCast (OpalRTPConnection, &connection)->GetMediaSession (stream->GetSessionID ());
-      if (session) {
-        session->SetIgnorePayloadTypeChanges (TRUE);
-      }
-    }
-
-    stream = connection.GetMediaStream (OpalMediaType::Video (), false);
-    if (stream != NULL) {
-
-      session = (OpalRTPSession*)PDownCast (OpalRTPConnection, &connection)->GetMediaSession (stream->GetSessionID ());
-      if (session) {
-        session->SetIgnorePayloadTypeChanges (TRUE);
-      }
-    }
   }
 
   return OpalCall::OnEstablished (connection);
