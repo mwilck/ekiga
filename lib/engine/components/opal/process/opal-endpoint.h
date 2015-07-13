@@ -90,9 +90,6 @@ public:
     void SetEchoCancellation (bool enabled);
     bool GetEchoCancellation () const;
 
-    void SetMaximumJitter (unsigned max_val);
-    unsigned GetMaximumJitter () const;
-
     void SetSilenceDetection (bool enabled);
     bool GetSilenceDetection () const;
 

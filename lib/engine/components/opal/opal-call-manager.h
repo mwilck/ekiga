@@ -117,10 +117,6 @@ public:
 
     bool get_silence_detection () const;
 
-    void set_maximum_jitter (unsigned max_val);
-
-    unsigned get_maximum_jitter () const;
-
 
 protected:
 

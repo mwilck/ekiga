@@ -208,16 +208,6 @@ namespace Ekiga
      * @return true if silence detection is enabled.
      */
     virtual bool get_silence_detection () const = 0;
-
-    /** Set maximum jitter
-     * @param max_val is the maximum jitter for calls in seconds.
-     */
-    virtual void set_maximum_jitter (unsigned max_val) = 0;
-
-    /** Get maximum jitter
-     * @return the maximum jitter for calls in seconds.
-     */
-    virtual unsigned get_maximum_jitter () const = 0;
   };
 
   /**

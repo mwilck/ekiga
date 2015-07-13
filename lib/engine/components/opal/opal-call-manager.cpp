@@ -43,7 +43,6 @@
 
 #include "call-core.h"
 
-
 /* The engine class */
 Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
                                 Opal::EndPoint& _endpoint) : core(_core), endpoint(_endpoint)
@@ -168,24 +167,9 @@ bool Opal::CallManager::get_silence_detection () const
 }
 
 
-void Opal::CallManager::set_maximum_jitter (unsigned max_val)
-{
-  endpoint.SetMaximumJitter (max_val);
-}
-
-
-unsigned Opal::CallManager::get_maximum_jitter () const
-{
-  return endpoint.GetMaximumJitter ();
-}
-
-
 void Opal::CallManager::setup (const std::string & setting)
 {
   std::cout << "IN Opal::CallManager::setup" << std::endl;
-
-  if (setting.empty () || setting == "maximum-jitter-buffer")
-    set_maximum_jitter (audio_codecs_settings->get_int ("maximum-jitter-buffer"));
 
   if (setting.empty () || setting == "enable-silence-detection")
     set_silence_detection (audio_codecs_settings->get_bool ("enable-silence-detection"));

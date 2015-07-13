@@ -882,8 +882,6 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   /* Here we add the audio codecs options */
   gm_pw_subsection_new (container, _("Settings"));
 
-  /* Translators: the full sentence is Automatically adjust jitter buffer
-     between X and Y ms */
   gm_pw_toggle_new (container, _("Enable silence _detection"),
                     self->priv->audio_codecs_settings, "enable-silence-detection",
                     _("If enabled, use silence detection with the codecs supporting it"));
@@ -891,12 +889,6 @@ gm_pw_init_audio_page (PreferencesWindow *self,
   gm_pw_toggle_new (container, _("Enable echo can_celation"),
                     self->priv->audio_codecs_settings, "enable-echo-cancellation",
                     _("If enabled, use echo cancellation"));
-
-  /* Translators: the full sentence is Maximum jitter buffer of x ms. */
-  gm_pw_spin_new (container, _("Use a maximum _jitter buffer of"), _("ms"),
-                  self->priv->audio_codecs_settings, "maximum-jitter-buffer",
-                  _("The maximum jitter buffer size for audio reception (in ms)"),
-                  20.0, 2000.0, 50.0);
 
   /* Audio Devices */
   gm_pw_subsection_new (container, _("Devices"));

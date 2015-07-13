@@ -127,6 +127,7 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
   SetTCPPorts (30000, 30100);
   SetRtpIpPorts (5000, 5100);
   SetSignalingTimeout (1500);  // Useless to wait 10 seconds for a connection
+  SetAudioJitterDelay (20, 500);
 
   stun_enabled = false;
   isReady = false;
@@ -213,54 +214,6 @@ bool Opal::EndPoint::GetEchoCancellation () const
   OpalEchoCanceler::Params ec = GetEchoCancelParams ();
 
   return ec.m_enabled;
-}
-
-
-void Opal::EndPoint::SetMaximumJitter (unsigned max_val)
-{
-  unsigned val = std::min (std::max (max_val, (unsigned) 20), (unsigned) 1000);
-
-  SetAudioJitterDelay (20, val);
-
-  /*
-  // Adjust setting for all sessions of all connections of all calls
-  for (PSafePtr<OpalCall> call = activeCalls;
-       call != NULL;
-       ++call) {
-
-    for (int i = 0;
-         i < 2;
-         i++) {
-
-      PSafePtr<OpalRTPConnection> connection = PSafePtrCast<OpalConnection, OpalRTPConnection> (call->GetConnection (i));
-      if (connection) {
-
-        OpalMediaStreamPtr stream = connection->GetMediaStream (OpalMediaType::Audio (), false);
-        if (stream != NULL) {
-
-          OpalRTPSession *session = (OpalRTPSession*)connection->GetMediaSession (stream->GetSessionID ());
-          if (session != NULL) {
-
-            unsigned units = session->GetJitterTimeUnits ();
-            OpalJitterBuffer::Init init;
-            init.m_minJitterDelay = 20 * units;
-            init.m_maxJitterDelay = val * units;
-            init.m_timeUnits = units;
-            session->SetJitterBufferSize (init);
-          }
-        }
-      }
-    }
-  }
-  */
-
-  PTRACE (4, "Opal::EndPoint\tSet Maximum Jitter to " << val);
-}
-
-
-unsigned Opal::EndPoint::GetMaximumJitter () const
-{
-  return GetMaxAudioJitterDelay ();
 }
 
 

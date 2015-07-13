@@ -360,12 +360,6 @@
       <_summary>Enable echo cancellation</_summary>
       <_description>If enabled, use echo cancellation</_description>
     </key>
-    <key name="maximum-jitter-buffer" type="i">
-      <range min="20" max="1000"/>
-      <default>500</default>
-      <_summary>Maximum jitter buffer</_summary>
-      <_description>The maximum jitter buffer size for audio reception (in ms)</_description>
-    </key>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.codecs.video" path="/org/gnome/@PACKAGE_NAME@/codecs/video/">
     <key name="media-list" type="as">
