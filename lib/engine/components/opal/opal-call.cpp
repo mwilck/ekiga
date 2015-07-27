@@ -318,23 +318,36 @@ Opal::Call::get_statistics ()
   if (connection == NULL)
     return statistics;
 
-  OpalMediaStatistics re_a_statistics;
-  OpalMediaStatistics tr_a_statistics;
-  OpalMediaStatistics re_v_statistics;
-  OpalMediaStatistics tr_v_statistics;
+  OpalMediaStreamPtr stream;
+  stream = connection->GetMediaStream (OpalMediaType::Audio (), false);  // transmission
+  if (stream) {
+    tr_a_statistics.Update (*stream);
+    // GetBitRate is the average bit rate on the last second
+    statistics.transmitted_audio_bandwidth  = tr_a_statistics.GetBitRate () / 1024;
+    statistics.jitter = tr_a_statistics.m_averageJitter;
+  }
 
-  OpalMediaStreamPtr stream = connection->GetMediaStream (OpalMediaType::Audio (), false); // Transmission
-  if (stream)
-    stream->GetStatistics (tr_a_statistics);
-  stream = connection->GetMediaStream (OpalMediaType::Audio (), true); // Reception
-  if (stream)
-    stream->GetStatistics (re_a_statistics);
-  stream = connection->GetMediaStream (OpalMediaType::Video (), false); // Transmission
-  if (stream)
-    stream->GetStatistics (tr_v_statistics);
-  stream = connection->GetMediaStream (OpalMediaType::Video (), true); // Reception
-  if (stream)
-    stream->GetStatistics (re_v_statistics);
+  stream = connection->GetMediaStream (OpalMediaType::Audio (), true);  // reception
+  if (stream) {
+    re_a_statistics.Update (*stream);
+    statistics.received_audio_bandwidth  = re_a_statistics.GetBitRate () / 1024;
+    statistics.remote_jitter = re_a_statistics.m_averageJitter;
+  }
+
+  stream = connection->GetMediaStream (OpalMediaType::Video (), false);  // transmission
+  if (stream) {
+    tr_v_statistics.Update (*stream);
+    statistics.transmitted_video_bandwidth  = tr_v_statistics.GetBitRate () / 1024;
+    // GetFrameRate is the average frame rate on the last second
+    statistics.transmitted_fps = tr_v_statistics.GetFrameRate ();
+  }
+
+  stream = connection->GetMediaStream (OpalMediaType::Video (), true);  // reception
+  if (stream) {
+    re_v_statistics.Update (*stream);
+    statistics.received_video_bandwidth  = re_v_statistics.GetBitRate () / 1024;
+    statistics.received_fps = re_v_statistics.GetFrameRate ();
+  }
 
   for (PINDEX i = 0 ; KnownCodecs[i][0] ; i++) {
     if (tr_a_statistics.m_mediaFormat == KnownCodecs[i][0])
@@ -347,45 +360,12 @@ Opal::Call::get_statistics ()
       statistics.received_video_codec = gettext (KnownCodecs[i][1]);
   }
 
-  if (tr_a_statistics.m_startTime.IsValid ()) {
-    PTimeInterval t = (PTime () - tr_a_statistics.m_startTime);
-    if (t.GetSeconds () > 0)
-      statistics.transmitted_audio_bandwidth  = tr_a_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
-    statistics.jitter = tr_a_statistics.m_averageJitter;
-  }
+  // 100 * number of lost packets / by number of packets, on the last second
+  if (re_a_statistics.GetPacketRate () + re_v_statistics.GetPacketRate () != 0)
+    statistics.lost_packets = 100 * (re_a_statistics.GetLossRate () + re_v_statistics.GetLossRate ()) / (re_a_statistics.GetPacketRate () + re_v_statistics.GetPacketRate ());
+  if (tr_a_statistics.GetPacketRate () + tr_v_statistics.GetPacketRate () != 0)
+    statistics.remote_lost_packets = 100 * (tr_a_statistics.GetLossRate () + tr_v_statistics.GetLossRate ()) / (tr_a_statistics.GetPacketRate () + tr_v_statistics.GetPacketRate ());
 
-  if (re_a_statistics.m_startTime.IsValid ()) {
-    PTimeInterval t = (PTime () - re_a_statistics.m_startTime);
-    if (t.GetSeconds () > 0)
-      statistics.received_audio_bandwidth  = re_a_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
-    statistics.remote_jitter = re_a_statistics.m_averageJitter;
-  }
-
-  if (tr_v_statistics.m_startTime.IsValid ()) {
-    PTimeInterval t = (PTime () - tr_v_statistics.m_startTime);
-    if (t.GetSeconds () > 0) {
-      statistics.transmitted_video_bandwidth  = tr_v_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
-      statistics.transmitted_fps = tr_v_statistics.m_totalFrames / t.GetSeconds ();
-    }
-  }
-
-  if (re_v_statistics.m_startTime.IsValid ()) {
-    PTimeInterval t = (PTime () - re_v_statistics.m_startTime);
-    if (t.GetSeconds () > 0) {
-      statistics.received_video_bandwidth  = re_v_statistics.m_totalBytes / t.GetSeconds () * 8 / 1024;
-      statistics.received_fps = re_v_statistics.m_totalFrames / t.GetSeconds ();
-    }
-  }
-
-  unsigned tr_total_packets = tr_a_statistics.m_totalPackets + tr_v_statistics.m_totalPackets;
-  unsigned tr_lost_packets = tr_a_statistics.m_packetsLost + tr_v_statistics.m_packetsLost;
-  unsigned re_total_packets = re_a_statistics.m_totalPackets + re_v_statistics.m_totalPackets;
-  unsigned re_lost_packets = re_a_statistics.m_packetsLost + re_v_statistics.m_packetsLost;
-
-  if (tr_total_packets > 0 && tr_total_packets > tr_lost_packets)
-    statistics.lost_packets = (unsigned) (100 * tr_lost_packets / tr_total_packets);
-  if (re_total_packets > 0 && re_total_packets > re_lost_packets)
-    statistics.lost_packets = (unsigned) (100 * re_lost_packets / re_total_packets);
   return statistics;
 }
 

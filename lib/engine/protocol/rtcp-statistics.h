@@ -41,8 +41,12 @@ class RTCPStatistics {
 
 public:
     RTCPStatistics () :
+        transmitted_audio_bandwidth (0),
+        received_audio_bandwidth (0),
         jitter (0),
         remote_jitter (0),
+        transmitted_video_bandwidth (0),
+        received_video_bandwidth (0),
         received_fps (0),
         transmitted_fps (0),
         lost_packets (0),

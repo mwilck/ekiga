@@ -240,9 +240,13 @@ private:
 
     bool outgoing;
 
-private:
     PTime start_time;
     RTCPStatistics statistics;
+    OpalMediaStatistics re_a_statistics;
+    OpalMediaStatistics tr_a_statistics;
+    OpalMediaStatistics re_v_statistics;
+    OpalMediaStatistics tr_v_statistics;
+
     bool auto_answer;
 
     PDECLARE_NOTIFIER(PTimer, Opal::Call, OnNoAnswerTimeout);
