@@ -897,30 +897,25 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
   uri = result.text ("uri");
   uri = canonize_uri (uri);
 
-  if (is_supported_uri (uri)) {
-    xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
-    xmlAddChild (roster_node, presnode);
-    trigger_saving ();
-
-    Opal::PresentityPtr pres(new Presentity (*this, presence_core, existing_groups, presnode));
-    pres->trigger_saving.connect (boost::ref (trigger_saving));
-    pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
-    pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
-    pres->questions.connect (boost::ref (Ekiga::Heap::questions));
-    add_object (pres);
-    presentity_added (pres);
-    fetch (pres->get_uri ());
-
-    return true;
-  }
-  else {
-    if (is_supported_uri (uri))
-      error = _("You supplied an unsupported address");
-    else
-      error = _("You already have a contact with this address!");
+  if (!is_supported_uri (uri)) {
+    error = _("You supplied an unsupported address");
+    return false;
   }
 
-  return false;
+  xmlNodePtr presnode = Opal::Presentity::build_node (name, uri, groups);
+  xmlAddChild (roster_node, presnode);
+  trigger_saving ();
+
+  Opal::PresentityPtr pres(new Presentity (*this, presence_core, existing_groups, presnode));
+  pres->trigger_saving.connect (boost::ref (trigger_saving));
+  pres->removed.connect (boost::bind (boost::ref (presentity_removed), pres));
+  pres->updated.connect (boost::bind (boost::ref (presentity_updated), pres));
+  pres->questions.connect (boost::ref (Ekiga::Heap::questions));
+  add_object (pres);
+  presentity_added (pres);
+  fetch (pres->get_uri ());
+
+  return true;
 }
 
 void
