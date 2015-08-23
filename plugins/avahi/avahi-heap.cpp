@@ -35,6 +35,7 @@
  */
 
 #include <cstdlib>
+#include <iostream>
 #include <glib/gi18n.h>
 
 #include "avahi-heap.h"
