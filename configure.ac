@@ -143,8 +143,8 @@ PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.
 PKG_CHECK_MODULES([GTK_SIDEBAR], [gtk+-3.0 >=  3.16.0], [have_sidebar="yes"], [have_sidebar="no"])
 if test "x${have_sidebar}" = "xyes" ; then
   AC_DEFINE(HAVE_SIDEBAR,1,[GtkSideBar support])
-  AM_CONDITIONAL(HAVE_SIDEBAR, true)
 fi
+AM_CONDITIONAL(HAVE_SIDEBAR, test "x${have_sidebar}" = "xyes")
 
 AC_ARG_ENABLE([gtk-debug],
               [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
