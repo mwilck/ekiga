@@ -35,6 +35,7 @@
  *
  */
 
+#include <iostream>
 #include <ctime>
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -117,6 +118,7 @@ G_DEFINE_TYPE (RosterViewGtk, roster_view_gtk, GTK_TYPE_FRAME);
 enum {
 
   COLUMN_TYPE,
+  // FIXME : Could disappear
   COLUMN_HEAP,
   COLUMN_PRESENTITY,
   COLUMN_NAME,
@@ -296,9 +298,9 @@ static void on_heap_removed (RosterViewGtk* self,
  * BEHAVIOR     : Adds in the heap presentities
  * PRE          : /
  */
-static bool visit_presentities (RosterViewGtk* self,
-				Ekiga::HeapPtr heap,
-				Ekiga::PresentityPtr presentity);
+static bool on_visit_presentities (RosterViewGtk* self,
+                                   GtkTreeIter heap_iter,
+                                   Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the presentity_added signal has been emitted
@@ -308,7 +310,7 @@ static bool visit_presentities (RosterViewGtk* self,
  * PRE          : A valid Heap.
  */
 static void on_presentity_added (RosterViewGtk* self,
-				 Ekiga::HeapPtr heap,
+				 GtkTreeIter heap_iter,
 				 Ekiga::PresentityPtr presentity);
 
 
@@ -318,7 +320,7 @@ static void on_presentity_added (RosterViewGtk* self,
  * PRE          : A valid Heap.
  */
 static void on_presentity_updated (RosterViewGtk* self,
-				   Ekiga::HeapPtr heap,
+                                   GtkTreeIter heap_iter,
 				   Ekiga::PresentityPtr presentity);
 
 
@@ -328,7 +330,7 @@ static void on_presentity_updated (RosterViewGtk* self,
  * PRE          : A valid Heap.
  */
 static void on_presentity_removed (RosterViewGtk* self,
-				   Ekiga::HeapPtr heap,
+				   GtkTreeIter heap_iter,
 				   Ekiga::PresentityPtr presentity);
 
 
@@ -360,11 +362,10 @@ static void roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
  *                in the given Heap.
  * PRE          : /
  */
-static void roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
-						 Ekiga::HeapPtr heap,
-                                                 GtkTreeIter *heap_iter,
-                                                 const std::string name,
-                                                 GtkTreeIter *iter);
+static void roster_view_gtk_get_iter_for_group (RosterViewGtk *view,
+                                                GtkTreeIter heap_iter,
+                                                const std::string name,
+                                                GtkTreeIter *iter);
 
 
 /* DESCRIPTION  : /
@@ -387,6 +388,24 @@ static void roster_view_gtk_find_iter_for_presentity (RosterViewGtk *view,
  */
 static void roster_view_gtk_update_groups (RosterViewGtk *view,
                                            GtkTreeIter *heap_iter);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Update the presentity in the Roster.
+ * PRE          : /
+ */
+static void roster_view_gtk_update_presentity (RosterViewGtk* self,
+                                               GtkTreeIter iter,
+                                               Ekiga::PresentityPtr presentity);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Remove presentity from the Roster.
+ * PRE          : /
+ */
+static void roster_view_gtk_remove_presentity (RosterViewGtk* self,
+                                               GtkTreeIter iter,
+                                               Ekiga::PresentityPtr presentity);
 
 /* Implementation of the debuggers */
 
@@ -940,6 +959,7 @@ on_visit_clusters (RosterViewGtk* self,
 		   Ekiga::ClusterPtr cluster)
 {
   on_cluster_added (self, cluster);
+
   return true;
 }
 
@@ -947,7 +967,17 @@ static void
 on_cluster_added (RosterViewGtk* self,
 		  Ekiga::ClusterPtr cluster)
 {
+  boost::signals2::connection conn;
   cluster->visit_heaps (boost::bind (&visit_heaps, self, cluster, _1));
+
+  conn = cluster->heap_added.connect (boost::bind (&on_heap_added, self, _1));
+  self->priv->connections.add (conn);
+
+  conn = cluster->heap_updated.connect (boost::bind (&on_heap_updated, self, _1));
+  self->priv->connections.add (conn);
+
+  conn = cluster->heap_removed.connect (boost::bind (&on_heap_removed, self, _1));
+  self->priv->connections.add (conn);
 }
 
 static bool
@@ -1016,6 +1046,9 @@ static void
 on_heap_added (RosterViewGtk* self,
 	       Ekiga::HeapPtr heap)
 {
+  GtkTreeIter heap_iter;
+  GtkTreeModel* model = NULL;
+  gchar *heap_name = NULL;
   boost::signals2::connection conn;
 
   Ekiga::AccountPtr account = boost::dynamic_pointer_cast <Ekiga::Account> (heap);
@@ -1029,14 +1062,37 @@ on_heap_added (RosterViewGtk* self,
    * and all Heaps that are not Accounts (Avahi).
    */
   if (account) {
-    on_account_updated (account, heap, self);
+    //on_account_updated (account, heap, self);
 
-    conn = account->updated.connect (boost::bind (&on_account_updated, account, heap, self));
-    self->priv->connections.add (conn);
+    std::cout << "FIXME" << std::endl;
+    //conn = account->updated.connect (boost::bind (&on_account_updated, account, heap, self));
+    //self->priv->connections.add (conn);
   }
 
+  gtk_tree_store_append (self->priv->store, &heap_iter, NULL);
+  heap_name = g_strdup_printf ("<span weight=\"bold\" size=\"larger\" variant=\"smallcaps\">%s</span>",
+                               heap->get_name ().c_str ());
+
+  gtk_tree_store_set (self->priv->store, &heap_iter,
+		      COLUMN_TYPE, TYPE_HEAP,
+		      COLUMN_HEAP, heap.get (),
+		      COLUMN_NAME, heap_name, -1);
+  g_free (heap_name);
+
+  conn = heap->presentity_added.connect (boost::bind (&on_presentity_added, self, heap_iter, _1));
+  self->priv->connections.add (conn);
+
+  conn = heap->presentity_updated.connect (boost::bind (&on_presentity_updated, self, heap_iter, _1));
+  self->priv->connections.add (conn);
+
+  conn = heap->presentity_removed.connect (boost::bind (&on_presentity_removed, self, heap_iter, _1));
+  self->priv->connections.add (conn);
+
+  /*
   on_heap_updated (self, heap);
-  heap->visit_presentities (boost::bind (&visit_presentities, self, heap, _1));
+  */
+
+  heap->visit_presentities (boost::bind (&on_visit_presentities, self, heap_iter, _1));
 }
 
 static void
@@ -1098,23 +1154,23 @@ on_heap_removed (RosterViewGtk* self,
 
 
 static bool
-visit_presentities (RosterViewGtk* self,
-		    Ekiga::HeapPtr heap,
-		    Ekiga::PresentityPtr presentity)
+on_visit_presentities (RosterViewGtk* self,
+                       GtkTreeIter heap_iter,
+                       Ekiga::PresentityPtr presentity)
 {
-  on_presentity_added (self, heap, presentity);
+  on_presentity_added (self, heap_iter, presentity);
 
   return true;
 }
 
+/*
 static void
 on_presentity_added (RosterViewGtk* self,
-		     Ekiga::HeapPtr heap,
+                     GtkTreeIter heap_iter,
 		     Ekiga::PresentityPtr presentity)
 {
   GdkRGBA color;
   GdkPixbuf *pixbuf = NULL;
-  GtkTreeIter heap_iter;
   std::list<std::string> groups = presentity->get_groups ();
   GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
   GtkTreeModelFilter* filtered_model = GTK_TREE_MODEL_FILTER (gtk_tree_view_get_model (self->priv->tree_view));
@@ -1131,8 +1187,6 @@ on_presentity_added (RosterViewGtk* self,
 
   // This should not happen
   g_return_if_fail (!presentity->get_presence ().empty ());
-
-  roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
 
   // Refer to what we know
   if (presentity->get_presence () == "available"
@@ -1154,7 +1208,7 @@ on_presentity_added (RosterViewGtk* self,
        group != groups.end ();
        group++) {
 
-    roster_view_gtk_find_iter_for_group (self, heap, &heap_iter, *group, &group_iter);
+    roster_view_gtk_find_iter_for_group (self, &heap_iter, *group, &group_iter);
     roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
 
     if (gtk_tree_store_iter_is_valid (self->priv->store, &iter)
@@ -1233,7 +1287,6 @@ on_presentity_added (RosterViewGtk* self,
     gtk_tree_store_set (self->priv->store, &iter,
                         COLUMN_TYPE, TYPE_PRESENTITY,
                         COLUMN_OFFLINE, active,
-                        COLUMN_HEAP, heap.get (),
                         COLUMN_PRESENTITY, presentity.get (),
                         COLUMN_NAME, presentity->get_name ().c_str (),
                         COLUMN_STATUS, (presence == "unknown" || presence == "offline")? "":presentity->get_status ().c_str (),
@@ -1255,19 +1308,46 @@ on_presentity_added (RosterViewGtk* self,
   if (should_emit)
     g_signal_emit (self, signals[ACTIONS_CHANGED_SIGNAL], 0, NULL);
 }
+*/
+
+
+static void
+on_presentity_added (RosterViewGtk* self,
+                     GtkTreeIter heap_iter,
+		     Ekiga::PresentityPtr presentity)
+{
+  std::list<std::string> groups = presentity->get_groups ();
+  GtkTreeIter group_iter;
+  GtkTreeIter iter;
+
+  if (groups.empty ())
+    groups.push_back (_("Unsorted"));
+
+  /* Add the presentity to all heap groups it belongs to */
+  for (std::list<std::string>::const_iterator group = groups.begin ();
+       group != groups.end ();
+       group++) {
+
+    roster_view_gtk_get_iter_for_group (self, heap_iter, *group, &group_iter);
+    gtk_tree_store_append (self->priv->store, &iter, &group_iter);
+    roster_view_gtk_update_presentity (self, iter, presentity);
+  }
+
+  /* Clean up */
+  roster_view_gtk_update_groups (self, &heap_iter);
+}
 
 
 static void
 on_presentity_updated (RosterViewGtk* self,
-		       Ekiga::HeapPtr heap,
+                       GtkTreeIter heap_iter,
 		       Ekiga::PresentityPtr presentity)
 {
   GtkTreeModel *model;
-  GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
   GtkTreeIter iter;
   gchar *group_name = NULL;
-  int timeout = 0;
+  Ekiga::Presentity *presentity_pointer = NULL;
   std::list<std::string> groups = presentity->get_groups ();
 
   model = GTK_TREE_MODEL (self->priv->store);
@@ -1275,58 +1355,75 @@ on_presentity_updated (RosterViewGtk* self,
   if (groups.empty ())
     groups.push_back (_("Unsorted"));
 
-  // This makes sure we are in all groups where we should
-  on_presentity_added (self, heap, presentity);
-
-  // Now let's remove from all the others
-  roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
-
   if (gtk_tree_model_iter_nth_child (model, &group_iter, &heap_iter, 0)) {
 
     do {
 
-      gtk_tree_model_get (model, &group_iter,
-                          COLUMN_GROUP_NAME, &group_name,
-                          -1);
-      if (group_name != NULL) {
+      bool in_group = false;
+      bool found_presentity = false;
 
-        if (std::find (groups.begin (), groups.end (), group_name) == groups.end ()) {
+      gtk_tree_model_get (model, &group_iter, COLUMN_GROUP_NAME, &group_name, -1);
+      if (std::find (groups.begin (), groups.end (), (const char*) group_name) != groups.end ())
+        in_group = true;
 
-          roster_view_gtk_find_iter_for_presentity (self, &group_iter, presentity, &iter);
-          gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
-                              COLUMN_TIMEOUT, &timeout,
-                              -1);
-          if (timeout > 0) {
-            g_source_remove (timeout);
-            gtk_tree_store_set (GTK_TREE_STORE (self->priv->store), &iter,
-                                COLUMN_TIMEOUT, 0, -1);
+      if (gtk_tree_model_iter_nth_child (model, &iter, &group_iter, 0)) {
+
+        do {
+
+          gtk_tree_model_get (model, &iter,
+                              COLUMN_PRESENTITY, &presentity_pointer, -1);
+
+          if (presentity_pointer == presentity.get ()) {
+            found_presentity = true;
+            if (!in_group)
+              roster_view_gtk_remove_presentity (self, iter, presentity);
+            else
+              roster_view_gtk_update_presentity (self, iter, presentity);
+            groups.remove (group_name);
           }
-          gtk_tree_store_remove (self->priv->store, &iter);
-        }
-        g_free (group_name);
+
+        } while (!found_presentity && gtk_tree_model_iter_next (model, &iter));
       }
+
+      /* We have looped through all presentities of the group */
+      if (!found_presentity && in_group) {
+        gtk_tree_store_append (self->priv->store, &iter, &group_iter);
+        roster_view_gtk_update_presentity (self, iter, presentity);
+      }
+
+      if (group_name != NULL)
+        g_free (group_name);
+
     } while (gtk_tree_model_iter_next (model, &group_iter));
   }
 
+  /* Add the presentity to all new groups it belongs to */
+  for (std::list<std::string>::const_iterator group = groups.begin ();
+       group != groups.end ();
+       group++) {
+
+    roster_view_gtk_get_iter_for_group (self, heap_iter, *group, &group_iter);
+    gtk_tree_store_append (self->priv->store, &iter, &group_iter);
+    roster_view_gtk_update_presentity (self, iter, presentity);
+  }
+
+  /* Clean up */
   model = gtk_tree_view_get_model (self->priv->tree_view);
   gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
-
   roster_view_gtk_update_groups (self, &heap_iter);
 }
 
 
 static void
 on_presentity_removed (RosterViewGtk* self,
-		       Ekiga::HeapPtr heap,
+                       GtkTreeIter heap_iter,
 		       Ekiga::PresentityPtr presentity)
 {
   GtkTreeModel *model = NULL;
-  GtkTreeIter heap_iter;
   GtkTreeIter group_iter;
   GtkTreeIter iter;
   int timeout = 0;
 
-  roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
   model = GTK_TREE_MODEL (self->priv->store);
 
   if (gtk_tree_model_iter_nth_child (model, &group_iter, &heap_iter, 0)) {
@@ -1389,11 +1486,10 @@ roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
 
 
 static void
-roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
-				     Ekiga::HeapPtr heap,
-                                     GtkTreeIter *heap_iter,
-                                     const std::string name,
-                                     GtkTreeIter *iter)
+roster_view_gtk_get_iter_for_group (RosterViewGtk *view,
+                                    GtkTreeIter heap_iter,
+                                    const std::string name,
+                                    GtkTreeIter *group_iter)
 {
   GtkTreeModel *model = NULL;
   gchar *group_name = NULL;
@@ -1401,24 +1497,23 @@ roster_view_gtk_find_iter_for_group (RosterViewGtk *view,
 
   model = GTK_TREE_MODEL (view->priv->store);
 
-  if (gtk_tree_model_iter_nth_child (model, iter, heap_iter, 0)) {
+  if (gtk_tree_model_iter_nth_child (model, group_iter, &heap_iter, 0)) {
 
     do {
 
-      gtk_tree_model_get (model, iter, COLUMN_GROUP_NAME, &group_name, -1);
+      gtk_tree_model_get (model, group_iter, COLUMN_GROUP_NAME, &group_name, -1);
       if (group_name != NULL && name == group_name)
         found = TRUE;
       if (group_name != NULL)
         g_free (group_name);
-    } while (!found && gtk_tree_model_iter_next (model, iter));
+    } while (!found && gtk_tree_model_iter_next (model, group_iter));
   }
 
   if (!found) {
 
-    gtk_tree_store_append (view->priv->store, iter, heap_iter);
-    gtk_tree_store_set (view->priv->store, iter,
+    gtk_tree_store_append (view->priv->store, group_iter, &heap_iter);
+    gtk_tree_store_set (view->priv->store, group_iter,
                         COLUMN_TYPE, TYPE_GROUP,
-                        COLUMN_HEAP, heap.get (),
                         COLUMN_NAME, name.c_str (),
                         COLUMN_GROUP_NAME, name.c_str (),
                         -1);
@@ -1528,6 +1623,84 @@ roster_view_gtk_update_groups (RosterViewGtk *view,
     } while (go_on);
   }
 }
+
+
+static void
+roster_view_gtk_update_presentity (RosterViewGtk* self,
+                                   GtkTreeIter iter,
+                                   Ekiga::PresentityPtr presentity)
+{
+  GdkRGBA color;
+  GdkPixbuf *pixbuf = NULL;
+  bool active = false;
+  bool away = false;
+  std::string presence;
+
+  // Refer to what we know
+  if (presentity->get_presence () == "available"
+      || presentity->get_presence () == "busy"
+      || presentity->get_presence () == "away"
+      || presentity->get_presence () == "inacall"
+      || presentity->get_presence () == "offline")
+    presence = presentity->get_presence ();
+  else
+    presence = "unknown";
+
+  active = (presence != "offline");
+  away = (presence == "away");
+
+  std::string icon = "user-offline";
+  if (presence != "unknown")
+    icon = "user-" + std::string(presence);
+
+  gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
+                               (!active||away)?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
+                               &color);
+
+  pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
+                                     "avatar-default-symbolic",
+                                     48,
+                                     GTK_ICON_LOOKUP_GENERIC_FALLBACK,
+                                     NULL);
+
+  gtk_tree_store_set (self->priv->store, &iter,
+                      COLUMN_TYPE, TYPE_PRESENTITY,
+                      COLUMN_PRESENCE_ICON, icon.c_str (),
+                      COLUMN_PRESENCE, presence.c_str (),
+                      COLUMN_OFFLINE, active,
+                      COLUMN_PRESENTITY, presentity.get (),
+                      COLUMN_NAME, presentity->get_name ().c_str (),
+                      COLUMN_STATUS, (presence == "unknown" || presence == "offline")? "":presentity->get_status ().c_str (),
+                      COLUMN_PRESENCE, presentity->get_presence ().c_str (),
+                      COLUMN_AVATAR_PIXBUF, pixbuf,
+                      COLUMN_TIMEOUT, 0,
+                      COLUMN_FOREGROUND_COLOR, &color, -1);
+
+  g_object_unref (pixbuf);
+}
+
+
+static void
+roster_view_gtk_remove_presentity (RosterViewGtk* self,
+                                   GtkTreeIter iter,
+                                   Ekiga::PresentityPtr presentity)
+{
+  GtkTreeModel *model = NULL;
+  int timeout = 0;
+
+  model = GTK_TREE_MODEL (self->priv->store);
+
+  gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                      COLUMN_TIMEOUT, &timeout,
+                      -1);
+
+  if (timeout > 0)
+    g_source_remove (timeout);
+
+  gtk_tree_store_remove (self->priv->store, &iter);
+}
+
+
 
 /*
  * GObject stuff
@@ -1751,18 +1924,7 @@ roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> pcore)
   /* Presence */
   conn = pcore->cluster_added.connect (boost::bind (&on_cluster_added, self, _1));
   self->priv->connections.add (conn);
-  conn = pcore->heap_added.connect (boost::bind (&on_heap_added, self, _1));
-  self->priv->connections.add (conn);
-  conn = pcore->heap_updated.connect (boost::bind (&on_heap_updated, self, _1));
-  self->priv->connections.add (conn);
-  conn = pcore->heap_removed.connect (boost::bind (&on_heap_removed, self, _1));
-  self->priv->connections.add (conn);
-  conn = pcore->presentity_added.connect (boost::bind (&on_presentity_added, self, _1, _2));
-  self->priv->connections.add (conn);
-  conn = pcore->presentity_updated.connect (boost::bind (&on_presentity_updated, self, _1, _2));
-  self->priv->connections.add (conn);
-  conn = pcore->presentity_removed.connect (boost::bind (&on_presentity_removed, self, _1, _2));
-  self->priv->connections.add (conn);
+
   conn = pcore->questions.connect (boost::bind (&on_handle_questions, self, _1));
   self->priv->connections.add (conn);
 
