@@ -351,9 +351,9 @@ static bool on_handle_questions (RosterViewGtk* self,
  *                the GtkTreeIter corresponding to the given Heap.
  * PRE          : /
  */
-static void roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
-                                                Ekiga::HeapPtr heap,
-                                                GtkTreeIter *iter);
+static void roster_view_gtk_get_iter_for_heap (RosterViewGtk *view,
+                                               Ekiga::HeapPtr heap,
+                                               GtkTreeIter *iter);
 
 
 /* DESCRIPTION  : /
@@ -406,6 +406,24 @@ static void roster_view_gtk_update_presentity (RosterViewGtk* self,
 static void roster_view_gtk_remove_presentity (RosterViewGtk* self,
                                                GtkTreeIter iter,
                                                Ekiga::PresentityPtr presentity);
+
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Update the given Heap.
+ * PRE          : /
+ */
+static void roster_view_gtk_update_heap (RosterViewGtk* self,
+                                         GtkTreeIter iter,
+                                         Ekiga::HeapPtr heap);
+
+/* DESCRIPTION  : /
+ * BEHAVIOR     : Remove the given Heap.
+ * PRE          : /
+ */
+static void roster_view_gtk_remove_heap (RosterViewGtk* self,
+                                         GtkTreeIter iter,
+                                         Ekiga::HeapPtr heap);
+
 
 /* Implementation of the debuggers */
 
@@ -999,7 +1017,7 @@ on_account_updated (Ekiga::AccountPtr account,
   gchar *icon_name = NULL;
   GdkPixbuf *pixbuf = NULL;
 
-  roster_view_gtk_find_iter_for_heap (self, heap, &iter);
+  roster_view_gtk_get_iter_for_heap (self, heap, &iter);
 
   switch (account->get_state ()) {
   case Ekiga::Account::Processing:
@@ -1047,8 +1065,6 @@ on_heap_added (RosterViewGtk* self,
 	       Ekiga::HeapPtr heap)
 {
   GtkTreeIter heap_iter;
-  GtkTreeModel* model = NULL;
-  gchar *heap_name = NULL;
   boost::signals2::connection conn;
 
   Ekiga::AccountPtr account = boost::dynamic_pointer_cast <Ekiga::Account> (heap);
@@ -1064,20 +1080,13 @@ on_heap_added (RosterViewGtk* self,
   if (account) {
     //on_account_updated (account, heap, self);
 
-    std::cout << "FIXME" << std::endl;
+    std::cout << "FIXME: Account added" << std::endl;
     //conn = account->updated.connect (boost::bind (&on_account_updated, account, heap, self));
     //self->priv->connections.add (conn);
   }
 
   gtk_tree_store_append (self->priv->store, &heap_iter, NULL);
-  heap_name = g_strdup_printf ("<span weight=\"bold\" size=\"larger\" variant=\"smallcaps\">%s</span>",
-                               heap->get_name ().c_str ());
-
-  gtk_tree_store_set (self->priv->store, &heap_iter,
-		      COLUMN_TYPE, TYPE_HEAP,
-		      COLUMN_HEAP, heap.get (),
-		      COLUMN_NAME, heap_name, -1);
-  g_free (heap_name);
+  roster_view_gtk_update_heap (self, heap_iter, heap);
 
   conn = heap->presentity_added.connect (boost::bind (&on_presentity_added, self, heap_iter, _1));
   self->priv->connections.add (conn);
@@ -1088,68 +1097,29 @@ on_heap_added (RosterViewGtk* self,
   conn = heap->presentity_removed.connect (boost::bind (&on_presentity_removed, self, heap_iter, _1));
   self->priv->connections.add (conn);
 
-  /*
-  on_heap_updated (self, heap);
-  */
-
   heap->visit_presentities (boost::bind (&on_visit_presentities, self, heap_iter, _1));
 }
+
 
 static void
 on_heap_updated (RosterViewGtk* self,
 		 Ekiga::HeapPtr heap)
 {
-  gchar *heap_name = NULL;
   GtkTreeIter iter;
 
-  roster_view_gtk_find_iter_for_heap (self, heap, &iter);
-  heap_name = g_strdup_printf ("<span weight=\"bold\" size=\"larger\" variant=\"smallcaps\">%s</span>",
-                               heap->get_name ().c_str ());
-
-
-  gtk_tree_store_set (self->priv->store, &iter,
-		      COLUMN_TYPE, TYPE_HEAP,
-		      COLUMN_HEAP, heap.get (),
-		      COLUMN_NAME, heap_name, -1);
-
-  g_free (heap_name);
+  roster_view_gtk_get_iter_for_heap (self, heap, &iter);
+  roster_view_gtk_update_heap (self, iter, heap);
 }
+
 
 static void
 on_heap_removed (RosterViewGtk* self,
 		 Ekiga::HeapPtr heap)
 {
-  GtkTreeIter iter;
   GtkTreeIter heap_iter;
-  GtkTreeIter group_iter;
-  guint timeout = 0;
-  GtkTreeSelection* selection = gtk_tree_view_get_selection (self->priv->tree_view);
 
-  roster_view_gtk_find_iter_for_heap (self, heap, &heap_iter);
-
-  gtk_tree_selection_unselect_all (selection);
-
-  // Remove all timeout-based effects for the heap presentities
-  if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
-                                     &group_iter, &heap_iter, 0)) {
-    do {
-      if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
-                                         &iter, &group_iter, 0)) {
-        do {
-          gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
-                              COLUMN_TIMEOUT, &timeout,
-                              -1);
-          if (timeout > 0) {
-            g_source_remove (timeout);
-            gtk_tree_store_set (GTK_TREE_STORE (self->priv->store), &iter,
-                                COLUMN_TIMEOUT, 0, -1);
-          }
-        } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &iter));
-      }
-    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &group_iter));
-  }
-
-  gtk_tree_store_remove (self->priv->store, &heap_iter);
+  roster_view_gtk_get_iter_for_heap (self, heap, &heap_iter);
+  roster_view_gtk_remove_heap (self, heap_iter, heap);
 }
 
 
@@ -1460,9 +1430,9 @@ on_handle_questions (RosterViewGtk* self,
  * Implementation of the static helpers.
  */
 static void
-roster_view_gtk_find_iter_for_heap (RosterViewGtk *view,
-                                    Ekiga::HeapPtr heap,
-                                    GtkTreeIter *iter)
+roster_view_gtk_get_iter_for_heap (RosterViewGtk *view,
+                                   Ekiga::HeapPtr heap,
+                                   GtkTreeIter *iter)
 {
   GtkTreeModel *model = NULL;
   Ekiga::Heap *iter_heap = NULL;
@@ -1700,6 +1670,61 @@ roster_view_gtk_remove_presentity (RosterViewGtk* self,
   gtk_tree_store_remove (self->priv->store, &iter);
 }
 
+
+static void
+roster_view_gtk_update_heap (RosterViewGtk* self,
+                             GtkTreeIter iter,
+                             Ekiga::HeapPtr heap)
+{
+  gchar *heap_name = NULL;
+
+  heap_name = g_strdup_printf ("<span weight=\"bold\" size=\"larger\" variant=\"smallcaps\">%s</span>",
+                               heap->get_name ().c_str ());
+
+  gtk_tree_store_set (self->priv->store, &iter,
+		      COLUMN_TYPE, TYPE_HEAP,
+		      COLUMN_HEAP, heap.get (),
+		      COLUMN_NAME, heap_name, -1);
+
+  g_free (heap_name);
+}
+
+
+static void
+roster_view_gtk_remove_heap (RosterViewGtk* self,
+                             GtkTreeIter heap_iter,
+                             Ekiga::HeapPtr heap)
+{
+  GtkTreeIter iter;
+  GtkTreeIter group_iter;
+  guint timeout = 0;
+  GtkTreeSelection* selection = NULL;
+
+  selection = gtk_tree_view_get_selection (self->priv->tree_view);
+  gtk_tree_selection_unselect_all (selection);
+
+  // Remove all timeout-based effects for the heap presentities
+  if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
+                                     &group_iter, &heap_iter, 0)) {
+    do {
+      if (gtk_tree_model_iter_nth_child (GTK_TREE_MODEL (self->priv->store),
+                                         &iter, &group_iter, 0)) {
+        do {
+          gtk_tree_model_get (GTK_TREE_MODEL (self->priv->store), &iter,
+                              COLUMN_TIMEOUT, &timeout,
+                              -1);
+          if (timeout > 0) {
+            g_source_remove (timeout);
+            gtk_tree_store_set (GTK_TREE_STORE (self->priv->store), &iter,
+                                COLUMN_TIMEOUT, 0, -1);
+          }
+        } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &iter));
+      }
+    } while (gtk_tree_model_iter_next (GTK_TREE_MODEL (self->priv->store), &group_iter));
+  }
+
+  gtk_tree_store_remove (self->priv->store, &heap_iter);
+}
 
 
 /*
