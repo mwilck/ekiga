@@ -35,6 +35,7 @@
  */
 
 #include <glib/gi18n.h>
+#include <iostream>
 
 #include "evolution-contact.h"
 #include "form-request-simple.h"
