@@ -1,5 +1,6 @@
+
 /* Ekiga -- A VoIP and Video-Conferencing application
- * Copyright (C) 2000-2009 Damien Sandras <dsandras@seconix.com>
+ * Copyright (C) 2000-2016 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,19 +27,23 @@
 
 
 /*
- *                         roster-view-gtk.h  -  description
+ *                         roster-view-gtk.h -  description
  *                         ------------------------------------------
- *   begin                : written in 2007 by Julien Puydt
+ *   begin                : written in 2006 by Julien Puydt
  *   copyright            : (c) 2007 by Julien Puydt
- *   description          : declaration of the widget representing the roster
+ *                          (c) 2014 by Damien Sandras
+ *   description          : implementation of the roster view
  *
  */
+
 
 #ifndef __ROSTER_VIEW_GTK_H__
 #define __ROSTER_VIEW_GTK_H__
 
 #include <gtk/gtk.h>
+
 #include "presence-core.h"
+#include "account-core.h"
 
 typedef struct _RosterViewGtk RosterViewGtk;
 typedef struct _RosterViewGtkPrivate RosterViewGtkPrivate;
@@ -51,7 +56,8 @@ typedef struct _RosterViewGtkClass RosterViewGtkClass;
 
 /* Creating the widget, connected to an Ekiga::PresenceCore object
  */
-GtkWidget *roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> pcore);
+GtkWidget *roster_view_gtk_new (boost::shared_ptr<Ekiga::PresenceCore> pcore,
+                                boost::shared_ptr<Ekiga::AccountCore> acore);
 
 
 /* Signals emitted by that widget :
