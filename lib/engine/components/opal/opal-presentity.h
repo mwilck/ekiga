@@ -125,6 +125,8 @@ namespace Opal
                 boost::function0<std::list<std::string> > existing_groups_,
                 xmlNodePtr node_);
 
+    void add_actions ();
+
     /* this pair of method is to let the user edit the presentity with
      * a nice form
      */

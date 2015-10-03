@@ -107,6 +107,7 @@ Opal::Presentity::create (const Account & _account,
                                                                _presence_core,
                                                                _existing_groups,
                                                                _node));
+  presentity->add_actions ();
 
   return presentity;
 }
@@ -122,6 +123,20 @@ Opal::Presentity::Presentity (const Opal::Account & account_,
   node(node_),
   presence("unknown")
 {
+}
+
+
+Opal::Presentity::~Presentity ()
+{
+#if DEBUG
+    std::cout << "Opal::Presentity: Destructor invoked" << std::endl;
+#endif
+}
+
+
+void
+Opal::Presentity::add_actions ()
+{
   /* Pull actions */
   boost::shared_ptr<Ekiga::PresenceCore> pcore = presence_core.lock ();
   if (pcore)
@@ -131,15 +146,11 @@ Opal::Presentity::Presentity (const Opal::Account & account_,
                                                    boost::bind (&Opal::Presentity::edit_presentity, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"),
                                                    boost::bind (&Opal::Presentity::remove, this))));
+  std::cout << "Crash HERE" << std::endl;
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("rename", _("Rename _Groups"),
                                                    boost::bind (&Opal::Account::on_rename_group,
                                                                 (Opal::Account *) &account,
-                                                                PresentityPtr (this)))));
-}
-
-
-Opal::Presentity::~Presentity ()
-{
+                                                                this->shared_from_this ()))));
 }
 
 
