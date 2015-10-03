@@ -146,7 +146,6 @@ Opal::Presentity::add_actions ()
                                                    boost::bind (&Opal::Presentity::edit_presentity, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove", _("_Remove"),
                                                    boost::bind (&Opal::Presentity::remove, this))));
-  std::cout << "Crash HERE" << std::endl;
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("rename", _("Rename _Groups"),
                                                    boost::bind (&Opal::Account::on_rename_group,
                                                                 (Opal::Account *) &account,
