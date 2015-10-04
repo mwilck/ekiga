@@ -1460,8 +1460,6 @@ roster_view_gtk_remove_heap (RosterViewGtk* self,
                              GtkTreeIter heap_iter,
                              G_GNUC_UNUSED Ekiga::HeapPtr heap)
 {
-  GtkTreeIter iter;
-  GtkTreeIter group_iter;
   GtkTreeSelection* selection = NULL;
 
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
