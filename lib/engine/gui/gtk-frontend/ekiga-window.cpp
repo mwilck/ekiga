@@ -660,7 +660,8 @@ ekiga_window_init_status_toolbar (EkigaWindow *mw)
 static void
 ekiga_window_init_contact_list (EkigaWindow *mw)
 {
-  mw->priv->roster_view = roster_view_gtk_new (mw->priv->presence_core);
+  mw->priv->roster_view = roster_view_gtk_new (mw->priv->presence_core,
+                                               mw->priv->account_core);
   gtk_stack_add_named (GTK_STACK (mw->priv->main_stack), mw->priv->roster_view, "contacts");
   gtk_container_child_set (GTK_CONTAINER (mw->priv->main_stack),
                            mw->priv->roster_view,
@@ -839,6 +840,11 @@ ekiga_window_dispose (GObject* gobject)
     mw->priv->builder = NULL;
   }
 
+  if (mw->priv->roster_view) {
+    g_object_unref (mw->priv->roster_view);
+    mw->priv->roster_view = NULL;
+  }
+
   G_OBJECT_CLASS (ekiga_window_parent_class)->dispose (gobject);
 }
 
@@ -885,8 +891,10 @@ ekiga_window_connect_engine_signals (EkigaWindow *mw)
   g_return_if_fail (EKIGA_IS_WINDOW (mw));
 
   /* Engine Signals callbacks */
-  conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
+  /*conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
   mw->priv->connections.add (conn);
+*/
+  std::cout << "FIXME" << std::endl;
 
   conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
