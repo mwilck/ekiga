@@ -93,6 +93,10 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 
 Opal::Bank::~Bank ()
 {
+#if DEBUG
+    std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
+
   delete protocols_settings;
 }
 
@@ -114,9 +118,9 @@ Opal::Bank::load_account (boost::function0<std::list<std::string> > _existing_gr
                                                                     _existing_groups,
                                                                     _node);
 
-  std::cout << "FIXME: Use add_connection here" << std::endl;
-  account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this));
-  account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1));
+  accounts.add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
+  accounts.add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1)));
+
   add_account (account);
   add_heap (account);
 
@@ -153,7 +157,7 @@ Opal::Bank::load ()
     if (child->type == XML_ELEMENT_NODE
         && child->name != NULL
         && xmlStrEqual(BAD_CAST "account", child->name))
-      boost::shared_ptr<Opal::Account> account = load_account (boost::bind(&Opal::Bank::existing_groups, this), child);
+      load_account (boost::bind(&Opal::Bank::existing_groups, this), child);
   }
 }
 
@@ -301,13 +305,11 @@ Opal::Bank::add (Account::Type acc_type,
                  unsigned timeout)
 {
   xmlNodePtr child = Opal::Account::build_node (acc_type, name, host, outbound_proxy, user, auth_user, password, enabled, timeout);
-
   xmlAddChild (node, child);
 
   save ();
 
-
-  AccountPtr account = load_account (boost::bind(&Opal::Bank::existing_groups, this), child);
+  load_account (boost::bind(&Opal::Bank::existing_groups, this), child);
 }
 
 
