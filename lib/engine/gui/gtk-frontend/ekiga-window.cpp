@@ -283,8 +283,7 @@ url_changed_cb (GtkEditable *e,
 
 
 static void
-on_account_updated (Ekiga::BankPtr /*bank*/,
-                    Ekiga::AccountPtr account,
+on_account_updated (Ekiga::AccountPtr account,
                     gpointer data)
 {
   g_return_if_fail (EKIGA_IS_WINDOW (data));
@@ -891,10 +890,11 @@ ekiga_window_connect_engine_signals (EkigaWindow *mw)
   g_return_if_fail (EKIGA_IS_WINDOW (mw));
 
   /* Engine Signals callbacks */
-  /*conn = mw->priv->account_core->account_updated.connect (boost::bind (&on_account_updated, _1, _2, (gpointer) mw));
+  // FIXME: We should NOT use the Opal::Bank directly here. It makes no sense.
+  // We should visit Banks and Accounts.
+  boost::shared_ptr<Opal::Bank> b = mw->priv->bank.lock ();
+  conn = b->account_updated.connect (boost::bind (&on_account_updated, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
-*/
-  std::cout << "FIXME" << std::endl;
 
   conn = mw->priv->call_core->setup_call.connect (boost::bind (&on_setup_call_cb, _1, (gpointer) mw));
   mw->priv->connections.add (conn);
