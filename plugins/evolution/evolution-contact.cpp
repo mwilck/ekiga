@@ -87,12 +87,12 @@ Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 
 Evolution::Contact::~Contact ()
 {
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << " for " << get_name () << std::endl << std::flush;
+#endif
+
   if (E_IS_CONTACT (econtact))
     g_object_unref (econtact);
-
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
 
 const std::string
