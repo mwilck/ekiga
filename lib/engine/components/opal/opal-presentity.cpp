@@ -129,7 +129,7 @@ Opal::Presentity::Presentity (const Opal::Account & account_,
 Opal::Presentity::~Presentity ()
 {
 #if DEBUG
-    std::cout << "Opal::Presentity: Destructor invoked" << std::endl;
+    std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl;
 #endif
 }
 
@@ -148,8 +148,7 @@ Opal::Presentity::add_actions ()
                                                    boost::bind (&Opal::Presentity::remove, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("rename", _("Rename _Groups"),
                                                    boost::bind (&Opal::Account::on_rename_group,
-                                                                (Opal::Account *) &account,
-                                                                this->shared_from_this ()))));
+                                                                (Opal::Account *) &account, get_groups ()))));
 }
 
 
