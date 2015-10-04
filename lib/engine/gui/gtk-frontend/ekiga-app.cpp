@@ -44,7 +44,6 @@
 #include "form-dialog-gtk.h"
 #include "ekiga-app.h"
 #include "account-core.h"
-#include "chat-core.h"
 #include "contact-core.h"
 #include "presence-core.h"
 #include "addressbook-window.h"
@@ -132,8 +131,7 @@ static bool on_visit_banks_cb (Ekiga::BankPtr bank,
 static bool on_handle_questions_cb (Ekiga::FormRequestPtr request,
                                     GmApplication *application);
 
-static void on_account_modified_cb (Ekiga::BankPtr bank,
-                                    Ekiga::AccountPtr account,
+static void on_account_modified_cb (Ekiga::AccountPtr account,
                                     GmApplication *app);
 
 static void call_window_destroyed_cb (GtkWidget *widget,
@@ -242,6 +240,8 @@ on_visit_banks_cb (Ekiga::BankPtr bank,
   GmApplication *self = GM_APPLICATION (data);
 
   self->priv->banks_menu.push_back (Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*bank, "", "app")));
+  self->priv->conns.add (bank->account_added.connect (boost::bind (&on_account_modified_cb, _1, self)));
+  self->priv->conns.add (bank->account_removed.connect (boost::bind (&on_account_modified_cb, _1, self)));
 
   return true;
 }
@@ -262,8 +262,7 @@ on_handle_questions_cb (Ekiga::FormRequestPtr request,
 
 
 static void
-on_account_modified_cb (G_GNUC_UNUSED Ekiga::BankPtr bank,
-                        G_GNUC_UNUSED Ekiga::AccountPtr account,
+on_account_modified_cb (G_GNUC_UNUSED Ekiga::AccountPtr account,
                         GmApplication *app)
 {
   g_return_if_fail (GM_IS_APPLICATION (app));
@@ -401,8 +400,6 @@ ekiga_main (int argc,
 
     boost::shared_ptr<Ekiga::AccountCore> account_core = app->priv->core.get<Ekiga::AccountCore> ("account-core");
     app->priv->conns.add (account_core->questions.connect (boost::bind (&on_handle_questions_cb, _1, app)));
-    app->priv->conns.add (account_core->account_added.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
-    app->priv->conns.add (account_core->account_removed.connect (boost::bind (&on_account_modified_cb, _1, _2, app)));
   }
 
   /* Create the main application window */
