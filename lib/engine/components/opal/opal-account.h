@@ -211,7 +211,7 @@ public:
     const PString get_full_uri (const PString & uri) const;
 
 protected:
-    void on_rename_group (Opal::PresentityPtr pres);
+    void on_rename_group (const std::list<std::string> & groups);
 
 private:
     Account (Bank & bank,

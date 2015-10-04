@@ -274,6 +274,9 @@ Opal::Account::Account (Opal::Bank & _bank,
 
 Opal::Account::~Account ()
 {
+#if DEBUG
+  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
+#endif
 }
 
 
@@ -566,6 +569,7 @@ Opal::Account::enable ()
       sip_endpoint->EnableAccount (*this);
     break;
   }
+
   updated (this->shared_from_this ());
 
   disable_action ("enable-account");
@@ -975,10 +979,9 @@ Opal::Account::load_presentity (boost::weak_ptr<Ekiga::PresenceCore> _presence_c
 
   // When the presentity emits trigger_saving, we relay it "upstream" so that the
   // Bank can save everything.
-  std::cout << "FIXME: Use add_connection here" << std::endl;
-  pres->trigger_saving.connect (boost::ref (trigger_saving));
-  pres->removed.connect (boost::bind (&Opal::Account::unfetch, this, pres->get_uri ()));
-  pres->updated.connect (boost::bind (&Opal::Account::fetch, this, pres->get_uri ()));
+  presentities.add_connection (pres, pres->trigger_saving.connect (boost::ref (trigger_saving)));
+  presentities.add_connection (pres, pres->removed.connect (boost::bind (&Opal::Account::unfetch, this, pres->get_uri ())));
+  presentities.add_connection (pres, pres->updated.connect (boost::bind (&Opal::Account::fetch, this, pres->get_uri ())));
   add_presentity (pres);
 
   return pres;
@@ -1051,6 +1054,10 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       state = state_;
       failed_registration_already_notified = false;
 
+      boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
+      if (details)
+        const_cast<Account*>(this)->publish (*details);
+
       if (opal_presentity) {
 
         opal_presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
@@ -1073,9 +1080,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
           sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_full_uri (get_aor ()));
         }
       }
-      boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
-      if (details)
-        const_cast<Account*>(this)->publish (*details);
     }
     break;
 
@@ -1347,15 +1351,14 @@ Opal::Account::presence_status_in_main (std::string uri,
 
 
 void
-Opal::Account::on_rename_group (Opal::PresentityPtr pres)
+Opal::Account::on_rename_group (const std::list<std::string> & groups)
 {
   boost::shared_ptr<Ekiga::FormRequestSimple> request =
-    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_rename_group_form_submitted,
-                                                                                            this, _1, _2, _3, pres->get_groups ())));
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Account::on_rename_group_form_submitted, this, _1, _2, _3, groups)));
 
   request->title (_("Renaming Groups"));
   request->editable_list ("groups", "",
-                          pres->get_groups (), std::list<std::string>(),
+                          groups, std::list<std::string>(),
                           false, true);
 
   Ekiga::Heap::questions (request);
