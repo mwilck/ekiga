@@ -1526,6 +1526,21 @@ roster_view_gtk_update_account (RosterViewGtk *self,
  * GObject stuff
  */
 static void
+roster_view_gtk_dispose (GObject *obj)
+{
+  RosterViewGtk *view = NULL;
+
+  view = (RosterViewGtk *)obj;
+
+  if (view->priv->pulse_timeout_id > -1)
+    g_source_remove (view->priv->pulse_timeout_id);
+  view->priv->pulse_timeout_id = -1;
+
+  G_OBJECT_CLASS (roster_view_gtk_parent_class)->dispose (obj);
+}
+
+
+static void
 roster_view_gtk_finalize (GObject *obj)
 {
   RosterViewGtk *view = NULL;
@@ -1538,6 +1553,7 @@ roster_view_gtk_finalize (GObject *obj)
   g_slist_free (view->priv->folded_groups);
   view->priv->folded_groups = NULL;
   delete view->priv;
+
 
   G_OBJECT_CLASS (roster_view_gtk_parent_class)->finalize (obj);
 }
@@ -1720,6 +1736,7 @@ roster_view_gtk_class_init (RosterViewGtkClass* klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+  gobject_class->dispose = roster_view_gtk_dispose;
   gobject_class->finalize = roster_view_gtk_finalize;
 
   signals[ACTIONS_CHANGED_SIGNAL] =
