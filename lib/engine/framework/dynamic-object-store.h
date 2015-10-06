@@ -38,9 +38,10 @@
 
 #include <boost/signals2.hpp>
 #include <boost/bind.hpp>
-#include <list>
+#include <iostream>
 
 #include <boost/smart_ptr.hpp>
+#include <typeinfo>
 
 #include "map-key-iterator.h"
 #include "map-key-const-iterator.h"
@@ -127,7 +128,7 @@ Ekiga::DynamicObjectStore<ObjectType>::add_connection (boost::shared_ptr<ObjectT
 {
   typename container_type::iterator iter = objects.find (obj);
   if (iter == objects.end ())
-    objects[obj] = boost::shared_ptr<scoped_connections> (new scoped_connections);
+    add_object (obj); // Add object
   objects[obj]->add (connection);
 }
 
