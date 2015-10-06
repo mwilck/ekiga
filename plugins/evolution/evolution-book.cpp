@@ -38,6 +38,7 @@
 
 #include <string>
 #include <glib/gi18n.h>
+#include <iostream>
 
 #include "form-request-simple.h"
 
