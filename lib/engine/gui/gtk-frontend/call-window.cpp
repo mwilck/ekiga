@@ -76,7 +76,6 @@
 #include "audioinput-core.h"
 #include "audiooutput-core.h"
 #include "videooutput-manager.h"
-#include "foe-list.h"
 #include "rtcp-statistics.h"
 
 #define STAGE_WIDTH 640
@@ -104,7 +103,6 @@ struct _EkigaCallWindowPrivate
   boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core;
   boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core;
   boost::shared_ptr<Ekiga::FriendOrFoe> friend_or_foe;
-  boost::shared_ptr<Ekiga::FoeList> foe_list;
 
   GtkAccelGroup *accel;
 
@@ -131,6 +129,7 @@ struct _EkigaCallWindowPrivate
 #endif
   GtkWidget *settings_button;
 
+  unsigned int destroy_timeout_id;
   unsigned int timeout_id;
 
   GtkWidget *info_bar;
@@ -144,7 +143,8 @@ struct _EkigaCallWindowPrivate
   std::string received_video_codec;
   std::string received_audio_codec;
 
-  Ekiga::GActorMenuPtr menu;
+  Ekiga::GActorMenuPtr call_menu;
+  Ekiga::GActorMenuPtr fof_menu;
 
   Ekiga::scoped_connections connections;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
@@ -166,27 +166,6 @@ static void show_extended_video_window_cb (G_GNUC_UNUSED GSimpleAction *action,
 static void fullscreen_changed_cb (G_GNUC_UNUSED GSimpleAction *action,
                                    G_GNUC_UNUSED GVariant *parameter,
                                    gpointer data);
-
-static void pick_up_call_cb (GtkWidget * /*widget*/,
-                             gpointer data);
-
-static void hang_up_call_cb (GtkWidget * /*widget*/,
-                             gpointer data);
-
-static void hold_current_call_cb (GtkWidget *widget,
-                                  gpointer data);
-
-static void blacklist_cb (GtkWidget* widget,
-			  gpointer data);
-
-static void toggle_audio_stream_pause_cb (GtkWidget * /*widget*/,
-                                          gpointer data);
-
-static void toggle_video_stream_pause_cb (GtkWidget * /*widget*/,
-                                          gpointer data);
-
-static void transfer_current_call_cb (GtkWidget *widget,
-                                      gpointer data);
 
 static void show_call_devices_settings_cb (G_GNUC_UNUSED GSimpleAction *action,
                                            G_GNUC_UNUSED GVariant *parameter,
@@ -394,25 +373,6 @@ fullscreen_changed_cb (G_GNUC_UNUSED GSimpleAction *action,
   g_return_if_fail (data);
 
   ekiga_call_window_toggle_fullscreen (EKIGA_CALL_WINDOW (data));
-}
-
-
-static void
-blacklist_cb (G_GNUC_UNUSED GtkWidget *widget,
-	      gpointer data)
-{
-  EkigaCallWindow *cw = EKIGA_CALL_WINDOW (data);
-
-  if (cw->priv->current_call) {
-
-    const std::string uri = cw->priv->current_call->get_remote_uri ();
-    Ekiga::FriendOrFoe::Identification id = cw->priv->friend_or_foe->decide ("call", uri);
-    if (id == Ekiga::FriendOrFoe::Unknown) {
-
-      cw->priv->foe_list->add_foe (uri);
-      gtk_widget_set_sensitive (GTK_WIDGET (cw->priv->blacklist_button), false);
-    }
-  }
 }
 
 
@@ -803,10 +763,13 @@ on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
 
   if (self->priv->current_call) {
     self->priv->current_call = boost::shared_ptr<Ekiga::Call>();
+    g_source_remove (self->priv->destroy_timeout_id);
     g_source_remove (self->priv->timeout_id);
-    self->priv->timeout_id = -1;
+    self->priv->destroy_timeout_id = 0;
+    self->priv->timeout_id = 0;
     self->priv->bad_connection = false;
-    self->priv->menu.reset ();
+    self->priv->fof_menu.reset ();
+    self->priv->call_menu.reset ();
   }
 
   ekiga_call_window_clear_signal_levels (self);
@@ -824,7 +787,8 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call> call,
     return; // Trying to clear another call than the current active one
   }
   self->priv->bad_connection = false;
-  self->priv->menu.reset ();
+  self->priv->fof_menu.reset ();
+  self->priv->call_menu.reset ();
 
   ekiga_call_window_update_calling_state (self, Standby);
   ekiga_call_window_update_title (self, Standby);
@@ -965,7 +929,7 @@ ekiga_call_window_delete_event_cb (GtkWidget *widget,
   /* Destroying the call window directly is not nice
    * from the user perspective.
    */
-  g_timeout_add_seconds (2, on_delayed_destroy_cb, self);
+  self->priv->destroy_timeout_id = g_timeout_add_seconds (2, on_delayed_destroy_cb, self);
 
   return true;
 }
@@ -1420,6 +1384,19 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
                                _("Transfer the current call"));
   gtk_widget_show (button);
 
+  /* Blacklist */
+  button = gtk_button_new ();
+  icon = g_themed_icon_new ("edit-delete-symbolic");
+  image = gtk_image_new_from_gicon (icon, GTK_ICON_SIZE_BUTTON);
+  g_object_unref (icon);
+  gtk_button_set_image (GTK_BUTTON (button), image);
+  gtk_button_set_always_show_image (GTK_BUTTON (button), TRUE);
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.blacklist");
+  gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
+  gtk_widget_set_tooltip_text (GTK_WIDGET (button),
+                               _("Add caller to the blacklist"));
+  gtk_widget_show (button);
+
   /* Devices settings */
   self->priv->settings_button = gtk_button_new ();
   icon = g_themed_icon_new ("emblem-system-symbolic");
@@ -1496,7 +1473,8 @@ ekiga_call_window_init (EkigaCallWindow *self)
   g_object_unref (self->priv->accel);
 
   self->priv->current_call = boost::shared_ptr<Ekiga::Call>();
-  self->priv->timeout_id = -1;
+  self->priv->destroy_timeout_id = 0;
+  self->priv->timeout_id = 0;
   self->priv->calling_state = Standby;
   self->priv->fullscreen = false;
   self->priv->dead = false;
@@ -1576,7 +1554,6 @@ call_window_new (GmApplication *app)
   self->priv->audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
   self->priv->audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
   self->priv->friend_or_foe = core.get<Ekiga::FriendOrFoe> ("friend-or-foe");
-  self->priv->foe_list = core.get<Ekiga::FoeList> ("foe-list");
 
   ekiga_call_window_init_gui (self);
 
@@ -1653,22 +1630,14 @@ call_window_add_call (GtkWidget *call_window,
   self->priv->current_call = call;
 
   /* Update menu */
-  self->priv->menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*call));
+  self->priv->call_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*call));
+  self->priv->fof_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->friend_or_foe));
 
   /* Update UI elements */
   CallingState s = call->is_outgoing () ? Calling : Called;
   ekiga_call_window_update_calling_state (self, s);
   ekiga_call_window_update_title (self, s, call->is_outgoing () ? call->get_remote_uri () : call->get_remote_party_name ());
   ekiga_call_window_update_header_bar_actions (self, s);
-
-  { // do we know about this contact already?
-    const std::string uri = self->priv->current_call->get_remote_uri ();
-    Ekiga::FriendOrFoe::Identification id = self->priv->friend_or_foe->decide ("call", uri);
-    if (id == Ekiga::FriendOrFoe::Unknown)
-      gtk_widget_set_sensitive (GTK_WIDGET (self->priv->blacklist_button), true);
-    else
-      gtk_widget_set_sensitive (GTK_WIDGET (self->priv->blacklist_button), false);
-  }
 
   /* Connect new signals */
   boost::signals2::connection conn;
