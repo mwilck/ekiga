@@ -33,6 +33,12 @@
  *
  */
 
+
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "hal-core.h"
 #include "hal-manager.h"
 
@@ -43,8 +49,12 @@ HalCore::HalCore ()
 {
 }
 
+
 HalCore::~HalCore ()
 {
+#if DEBUG
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+#endif
 }
 
 

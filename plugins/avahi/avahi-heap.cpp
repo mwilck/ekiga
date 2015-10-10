@@ -34,7 +34,6 @@
  *
  */
 
-#include <iostream>
 #include <cstdlib>
 #include <iostream>
 #include <glib/gi18n.h>
@@ -42,7 +41,6 @@
 #include "avahi-presentity.h"
 #include "avahi-heap.h"
 
-#define DEBUG 0
 
 static void
 avahi_client_callback (AvahiClient *client,
@@ -193,11 +191,6 @@ Avahi::Heap::ClientCallback (AvahiClient *_client,
 			       (AvahiLookupFlags)0,
 			       avahi_browser_callback,
 			       this);
-#if DEBUG
-    std::cout << __PRETTY_FUNCTION__ << " AVAHI_CLIENT_S_RUNNING" << std::endl;
-    if (browser == NULL)
-      std::cout << "but NULL browser!" << std::endl;
-#endif
     break;
   case AVAHI_CLIENT_CONNECTING:
   case AVAHI_CLIENT_S_REGISTERING:

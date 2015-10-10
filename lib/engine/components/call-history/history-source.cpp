@@ -52,9 +52,6 @@ History::Source::Source (Ekiga::ServiceCore &_core): core(_core)
 
 History::Source::~Source ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
 
 const std::list<std::string>

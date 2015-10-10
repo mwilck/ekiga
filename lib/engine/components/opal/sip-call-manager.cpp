@@ -35,6 +35,10 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
 
 #include "config.h"
 
@@ -78,7 +82,7 @@ Opal::Sip::CallManager::CallManager (Ekiga::ServiceCore& _core,
 Opal::Sip::CallManager::~CallManager ()
 {
 #if DEBUG
-  std::cout << "Opal::Sip::CallManager: Destructor invoked" << std::endl;
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
 #endif
 }
 

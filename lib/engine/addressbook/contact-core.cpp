@@ -48,9 +48,6 @@ on_search ()
 
 Ekiga::ContactCore::~ContactCore ()
 {
-#if DEBUG
-  std::cout << "Ekiga::ConcactCore: Destructor invoked" << std::endl << std::flush;
-#endif
 }
 
 void

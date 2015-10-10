@@ -34,6 +34,11 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "presence-core.h"
 #include "personal-details.h"
 

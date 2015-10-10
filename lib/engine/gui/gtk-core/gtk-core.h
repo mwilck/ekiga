@@ -46,8 +46,7 @@ namespace Gtk
 
     Core ();
 
-    ~Core ()
-    { }
+    ~Core ();
 
     const std::string get_name () const
     { return "gtk-core"; }

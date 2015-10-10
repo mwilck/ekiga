@@ -176,9 +176,6 @@ History::Contact::Contact (boost::shared_ptr<Ekiga::ContactCore> _contact_core,
 
 History::Contact::~Contact ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
 
 const std::string

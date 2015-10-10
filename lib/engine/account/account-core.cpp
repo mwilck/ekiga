@@ -32,6 +32,11 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "account-core.h"
 #include "bank.h"
 
@@ -42,6 +47,9 @@ Ekiga::AccountCore::AccountCore ()
 
 Ekiga::AccountCore::~AccountCore ()
 {
+#if DEBUG
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+#endif
 }
 
 

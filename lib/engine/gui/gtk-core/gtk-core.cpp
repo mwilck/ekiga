@@ -32,8 +32,20 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "gtk-core.h"
 
 Gtk::Core::Core ()
 {
+}
+
+Gtk::Core::~Core ()
+{
+#if DEBUG
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+#endif
 }

@@ -402,9 +402,6 @@ OPENLDAP::Book::Book (Ekiga::ServiceCore &_core,
 
 OPENLDAP::Book::~Book ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
 
 bool

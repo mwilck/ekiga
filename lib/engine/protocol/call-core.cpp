@@ -33,6 +33,11 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "config.h"
 
 #include <glib/gi18n.h>
@@ -54,7 +59,7 @@ CallCore::CallCore (boost::shared_ptr<Ekiga::FriendOrFoe> _iff,
 CallCore::~CallCore ()
 {
 #if DEBUG
-  std::cout << "Ekiga::CallCore: Destructor invoked" << std::endl << std::flush;
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
 #endif
 }
 

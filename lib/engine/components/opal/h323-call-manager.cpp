@@ -35,6 +35,10 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
 
 #include "config.h"
 
@@ -64,7 +68,7 @@ Opal::H323::CallManager::CallManager (Ekiga::ServiceCore& _core,
 Opal::H323::CallManager::~CallManager ()
 {
 #if DEBUG
-  std::cout << "Opal::H323::CallManager: Destructor invoked" << std::endl;
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
 #endif
 }
 

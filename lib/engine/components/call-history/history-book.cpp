@@ -67,10 +67,8 @@ History::Book::Book (Ekiga::ServiceCore& core):
 
 History::Book::~Book ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
+
 
 const std::string
 History::Book::get_name () const

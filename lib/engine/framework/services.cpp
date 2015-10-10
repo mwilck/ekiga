@@ -104,10 +104,13 @@ Ekiga::ServiceCore::~ServiceCore ()
 		<< std::endl;
     }
   }
+
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+
   if (count)
     std::cout << "  (which means " << count << " leaked services)" << std::endl;
   else
-    std::cout << "  (no service leaked)" << std::endl;
+    std::cout << "  (NO SERVICE LEAKED)" << std::endl;
 #endif
 }
 

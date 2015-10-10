@@ -128,9 +128,6 @@ Opal::Presentity::Presentity (const Opal::Account & account_,
 
 Opal::Presentity::~Presentity ()
 {
-#if DEBUG
-    std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl;
-#endif
 }
 
 

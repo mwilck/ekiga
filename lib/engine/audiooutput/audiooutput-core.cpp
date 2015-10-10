@@ -33,6 +33,11 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include <algorithm>
 #include <math.h>
 
@@ -112,9 +117,6 @@ AudioOutputCore::AudioOutputCore (Ekiga::ServiceCore& core)
 
 AudioOutputCore::~AudioOutputCore ()
 {
-#if DEBUG
-  std::cout << "AudioOutputCore: Destructor invoked" << std::endl;
-#endif
   PWaitAndSignal m_pri(core_mutex[primary]);
   PWaitAndSignal m_sec(core_mutex[secondary]);
 
@@ -129,6 +131,10 @@ AudioOutputCore::~AudioOutputCore ()
 
   g_clear_object (&sound_events_settings);
   g_clear_object (&audio_device_settings);
+
+#if DEBUG
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+#endif
 }
 
 

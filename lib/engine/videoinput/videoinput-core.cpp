@@ -33,7 +33,10 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
 #include <iostream>
+#endif
 
 #include <glib/gi18n.h>
 
@@ -64,6 +67,10 @@ VideoInputCore::VideoPreviewManager::VideoPreviewManager (VideoInputCore& _video
 VideoInputCore::VideoPreviewManager::~VideoPreviewManager ()
 {
   quit ();
+
+#if DEBUG
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+#endif
 }
 
 void VideoInputCore::VideoPreviewManager::quit ()
@@ -191,6 +198,7 @@ VideoInputCore::VideoInputCore (Ekiga::ServiceCore & _core,
   video_codecs_settings->changed.connect (boost::bind (&VideoInputCore::setup, this, _1));
 }
 
+
 VideoInputCore::~VideoInputCore ()
 {
   delete preview_manager;
@@ -206,10 +214,6 @@ VideoInputCore::~VideoInputCore ()
 
   delete device_settings;
   delete video_codecs_settings;
-
-#if DEBUG
-  std::cout << "Ekiga::VideoInputCore: Destructor invoked" << std::endl << std::flush;
-#endif
 }
 
 

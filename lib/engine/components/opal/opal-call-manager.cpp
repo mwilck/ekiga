@@ -62,9 +62,6 @@ Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
 
 Opal::CallManager::~CallManager ()
 {
-#if DEBUG
-  std::cout << "Opal::CallManager: Destructor invoked" << std::endl;
-#endif
 }
 
 

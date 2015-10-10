@@ -38,6 +38,11 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "menu-builder.h"
 
 namespace Ekiga
@@ -62,6 +67,12 @@ namespace Ekiga
        *  - The low-level implementation API (e.g. Ekiga::BookImpl<ContactType>)
        *
        */
+#if DEBUG
+      virtual ~DynamicObject ()
+      {
+        std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+      }
+#endif
 
       /**
        * Signals on that object

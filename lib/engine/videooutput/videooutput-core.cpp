@@ -33,6 +33,11 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
+#include <iostream>
+#endif
+
 #include "config.h"
 
 #include "videooutput-core.h"
@@ -49,6 +54,7 @@ VideoOutputCore::VideoOutputCore ()
   number_times_started = 0;
 }
 
+
 VideoOutputCore::~VideoOutputCore ()
 {
   PWaitAndSignal m(core_mutex);
@@ -61,7 +67,7 @@ VideoOutputCore::~VideoOutputCore ()
   managers.clear();
 
 #if DEBUG
-  std::cout << "Ekiga::VideoOutputCore: Destructor invoked" << std::endl << std::flush;
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
 #endif
 }
 

@@ -274,9 +274,6 @@ Opal::Account::Account (Opal::Bank & _bank,
 
 Opal::Account::~Account ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
 
 

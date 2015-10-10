@@ -93,10 +93,6 @@ Opal::Bank::Bank (Ekiga::ServiceCore& core,
 
 Opal::Bank::~Bank ()
 {
-#if DEBUG
-    std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
-
   delete protocols_settings;
 }
 

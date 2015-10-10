@@ -35,13 +35,10 @@
  */
 
 #include <glib/gi18n.h>
-#include <iostream>
 
 #include "evolution-contact.h"
 #include "form-request-simple.h"
 #include "menu-builder-tools.h"
-
-#define DEBUG 1
 
 /* at one point we will return a smart pointer on this... and if we don't use
  * a false smart pointer, we will crash : the reference count isn't embedded!
@@ -87,10 +84,6 @@ Evolution::Contact::Contact (Ekiga::ServiceCore &_services,
 
 Evolution::Contact::~Contact ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << " for " << get_name () << std::endl << std::flush;
-#endif
-
   if (E_IS_CONTACT (econtact))
     g_object_unref (econtact);
 }

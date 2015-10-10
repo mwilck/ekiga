@@ -33,7 +33,11 @@
  *
  */
 
+#if DEBUG
+#include <typeinfo>
 #include <iostream>
+#endif
+
 #include <math.h>
 
 #include <glib/gi18n.h>
@@ -102,6 +106,10 @@ AudioInputCore::~AudioInputCore ()
 
   g_clear_object (&audio_device_settings);
   managers.clear();
+
+#if DEBUG
+  std::cout << "Destroyed object of type " << typeid(*this).name () << std::endl;
+#endif
 }
 
 void

@@ -68,9 +68,6 @@ OPENLDAP::Contact::Contact (Ekiga::ServiceCore &_core,
 
 OPENLDAP::Contact::~Contact ()
 {
-#if DEBUG
-  std::cout << __FUNCTION__ << " invoked in " << __FILE__ << std::endl << std::flush;
-#endif
 }
 
 const std::string
