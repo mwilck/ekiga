@@ -106,9 +106,6 @@ Opal::Call::Call (Opal::EndPoint& _manager,
 
 Opal::Call::~Call ()
 {
-#if DEBUG
-  std::cout << "Opal::Call: Destructor invoked" << std::endl << std::flush;
-#endif
 }
 
 
