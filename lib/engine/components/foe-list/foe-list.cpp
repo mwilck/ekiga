@@ -37,6 +37,7 @@
 #include "ekiga-settings.h"
 
 #include "foe-list.h"
+#include <iostream>
 
 Ekiga::FoeList::FoeList(boost::shared_ptr<FriendOrFoe> fof):
   friend_or_foe(fof)
@@ -48,40 +49,25 @@ Ekiga::FoeList::~FoeList()
 {
 }
 
-bool
-Ekiga::FoeList::populate_menu (ContactPtr /*contact*/,
-			       const std::string uri,
-			       MenuBuilder& builder)
-{
-  bool result = false;
-  boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
-
-  if (fof) {
-
-    Ekiga::FriendOrFoe::Identification current = fof->decide ("" /* FIXME */,
-							      uri);
-
-    if (current == Ekiga::FriendOrFoe::Unknown) {
-
-      builder.add_action ("blacklist", _("Add to blacklist"),
-			  boost::bind(&Ekiga::FoeList::add_foe, this, uri));
-      result = true;
-    }
-  }
-
-  return result;
-}
-
 Ekiga::FriendOrFoe::Identification
 Ekiga::FoeList::decide (const std::string /*domain*/,
-			const std::string token) const
+			const std::string uri) const
 {
   boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
   std::list<std::string> foes = settings->get_string_list ("foe-list");
   Ekiga::FriendOrFoe::Identification result = Ekiga::FriendOrFoe::Unknown;
 
-  if (std::find (foes.begin (), foes.end (), token) != foes.end ())
+  if (std::find (foes.begin (), foes.end (), uri) != foes.end ())
     result = Ekiga::FriendOrFoe::Foe;
+
+  boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
+  if (fof) {
+    if (result != Ekiga::FriendOrFoe::Foe)
+      fof->add_helper_action (Ekiga::ActionPtr (new Ekiga::Action ("blacklist", _("_Blacklist"),
+                                                                   boost::bind (&Ekiga::FoeList::add_foe, (Ekiga::FoeList *) this, uri))));
+    else
+      fof->remove_helper_action ("blacklist");
+  }
 
   return result;
 }
@@ -93,4 +79,8 @@ Ekiga::FoeList::add_foe (const std::string token)
   std::list<std::string> foes = settings->get_string_list ("foe-list");
   foes.push_back (token);
   settings->set_string_list ("foe-list", foes);
+
+  boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
+  if (fof)
+    fof->remove_helper_action ("blacklist");
 }

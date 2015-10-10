@@ -37,7 +37,6 @@
 
 #include "contact-core.h"
 #include "friend-or-foe.h"
-#include "menu-builder.h"
 
 namespace Ekiga
 {
@@ -59,19 +58,12 @@ namespace Ekiga
     const std::string get_description () const
     { return "List of persons the user does not want to hear about"; }
 
-    /* Ekiga::ContactDecorator api */
-
-    bool populate_menu (ContactPtr contact,
-			const std::string uri,
-			MenuBuilder& builder);
 
     /* Ekiga::FriendOrFoe::Helper api */
-
     FriendOrFoe::Identification decide (const std::string domain,
 					const std::string token) const;
 
     /* specific api */
-
     void add_foe (const std::string token);
 
   private:

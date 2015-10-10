@@ -52,10 +52,13 @@
  */
 
 #include "services.h"
+#include "actor.h"
 
 namespace Ekiga
 {
-  class FriendOrFoe: public Ekiga::Service
+  class FriendOrFoe:
+      public Ekiga::Service,
+      public virtual Actor
   {
   public:
 
@@ -76,6 +79,20 @@ namespace Ekiga
 			   const std::string token) const;
 
     void add_helper (boost::shared_ptr<Helper> helper);
+
+    /* Allow our helpers to add actions */
+    // FIXME: It is not clean. Perhaps we should use an ActionProvider.
+    // But I am not sure that having a FoeList as a component and
+    // a FriendOrFoe engine class is the way to go.
+    void add_helper_action (ActionPtr action)
+    {
+      add_action (action);
+    }
+
+    void remove_helper_action (const std::string & action)
+    {
+      remove_action (action);
+    }
 
     /* this turns us into a service */
     const std::string get_name () const
