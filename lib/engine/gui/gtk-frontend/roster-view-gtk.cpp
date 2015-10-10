@@ -50,7 +50,6 @@
 #include "gm-cell-renderer-expander.h"
 #include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
-#include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
 #include "gactor-menu.h"
@@ -611,7 +610,6 @@ on_selection_changed (GtkTreeSelection* selection,
   gint column_type;
   Ekiga::Heap *heap = NULL;
   Ekiga::Presentity *presentity = NULL;
-  Ekiga::MenuBuilder builder;
 
   gchar *name = NULL;
   gchar *group_name = NULL;
