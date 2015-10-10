@@ -1420,7 +1420,7 @@ roster_view_gtk_update_presentity (RosterViewGtk* self,
                       COLUMN_PRESENTITY, presentity.get (),
                       COLUMN_NAME, presentity->get_name ().c_str (),
                       COLUMN_AVATAR_PIXBUF, pixbuf,
-                      COLUMN_PRESENCE_ICON, "user-offline",
+                      COLUMN_PRESENCE_ICON, icon.c_str (),
                       COLUMN_FOREGROUND_COLOR, &color, -1);
 
   g_object_unref (pixbuf);
