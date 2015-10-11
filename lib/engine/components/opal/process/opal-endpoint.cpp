@@ -164,6 +164,8 @@ Opal::EndPoint::EndPoint (Ekiga::ServiceCore& _core) : core(_core)
 #ifdef HAVE_H323
   h323_endpoint= new H323::EndPoint (*this, core);
 #endif
+
+  call_core = core.get<Ekiga::CallCore> ("call-core");
 }
 
 
@@ -173,6 +175,11 @@ Opal::EndPoint::~EndPoint ()
     stun_thread->WaitForTermination ();
 
   g_async_queue_unref (queue);
+
+  for (PSafePtr<OpalCall> call = activeCalls; call != NULL; ++call)
+    DestroyCall (call);
+
+  activeCalls.RemoveAll (TRUE);
 }
 
 
@@ -476,7 +483,6 @@ void Opal::EndPoint::GetVideoOptions (Opal::EndPoint::VideoOptions & options) co
 
 OpalCall *Opal::EndPoint::CreateCall (void *uri)
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
   boost::shared_ptr<Opal::Call> call = Opal::Call::create (*this, uri ? (const char*) uri : std::string (), noAnswerDelay);
 
   Ekiga::Runtime::run_in_main (boost::bind (&Ekiga::CallCore::add_call, call_core, call));
@@ -496,9 +502,10 @@ Opal::EndPoint::DestroyCall (OpalCall *__call)
    * be destroyed by boost.
    */
   Opal::Call *_call = dynamic_cast<Opal::Call *>(__call);
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-  if (_call)
-    Ekiga::Runtime::run_in_main (boost::bind (static_cast<void (Opal::EndPoint::*)(boost::shared_ptr<Ekiga::Call>)>(&Opal::EndPoint::DestroyCall), this, _call->shared_from_this ()));
+  if (_call) {
+    boost::shared_ptr<Ekiga::Call> call = _call->shared_from_this ();
+    Ekiga::Runtime::run_in_main (boost::bind (static_cast<void (Opal::EndPoint::*)(boost::shared_ptr<Ekiga::Call>)>(&Opal::EndPoint::DestroyCall), this, call));
+  }
 }
 
 
@@ -557,8 +564,6 @@ Opal::EndPoint::HandleSTUNResult ()
 void
 Opal::EndPoint::ReportSTUNError (const std::string error)
 {
-  boost::shared_ptr<Ekiga::CallCore> call_core = core.get<Ekiga::CallCore> ("call-core");
-
   // notice we're in for an infinite loop if nobody ever reports to the user!
   if (!call_core->errors (error))
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::EndPoint::ReportSTUNError, this, error), 10);

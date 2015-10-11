@@ -170,6 +170,8 @@ private:
 #ifdef HAVE_H323
     H323::EndPoint *h323_endpoint;
 #endif
+    /* Make sure the CallCore is destroyed after the EndPoint */
+    boost::shared_ptr<Ekiga::CallCore> call_core;
     Ekiga::ServiceCore& core;
   };
 };
