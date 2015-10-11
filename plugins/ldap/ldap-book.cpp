@@ -443,20 +443,6 @@ OPENLDAP::Book::get_name () const
   return bookinfo.name;
 }
 
-bool
-OPENLDAP::Book::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  builder.add_action ("refresh", _("_Refresh"),
-		      boost::bind (&OPENLDAP::Book::refresh, this));
-  builder.add_separator ();
-  builder.add_action ("remove", _("_Remove addressbook"),
-		      boost::bind (&OPENLDAP::Book::remove, this));
-  builder.add_action ("edit", _("Addressbook _properties"),
-		      boost::bind (&OPENLDAP::Book::edit, this));
-
-  return true;
-}
-
 void
 OPENLDAP::Book::set_search_filter (const std::string _search_filter)
 {

@@ -70,8 +70,6 @@ namespace Evolution
 
     ~Source ();
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
     /* this object is an Ekiga::Service too */
     const std::string get_name () const
     { return "evolution-source"; }

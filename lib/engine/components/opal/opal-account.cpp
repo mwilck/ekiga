@@ -53,7 +53,6 @@
 
 #include "robust-xml.h"
 #include "form-request-simple.h"
-#include "menu-builder-tools.h"
 #include "platform.h"
 
 #include "opal-presentity.h"

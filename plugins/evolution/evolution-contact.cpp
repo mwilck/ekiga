@@ -38,7 +38,6 @@
 
 #include "evolution-contact.h"
 #include "form-request-simple.h"
-#include "menu-builder-tools.h"
 
 /* at one point we will return a smart pointer on this... and if we don't use
  * a false smart pointer, we will crash : the reference count isn't embedded!

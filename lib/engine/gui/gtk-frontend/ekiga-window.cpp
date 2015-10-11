@@ -44,8 +44,6 @@
 #include "statusmenu.h"
 #include "gm-entry.h"
 
-#include "menu-builder-tools.h"
-#include "menu-builder-gtk.h"
 #include "gm-info-bar.h"
 #include "scoped-connections.h"
 

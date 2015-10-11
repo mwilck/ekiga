@@ -303,14 +303,6 @@ Evolution::Book::get_ebook () const
   return book;
 }
 
-bool
-Evolution::Book::populate_menu (Ekiga::MenuBuilder &builder)
-{
-  builder.add_action ("add", _("A_dd Contact"),
-		      boost::bind (&Evolution::Book::new_contact_action, this));
-  return true;
-}
-
 void
 Evolution::Book::set_search_filter (const std::string _search_filter)
 {

@@ -157,18 +157,12 @@ libekiga_la_SOURCES += \
 	engine/framework/robust-xml.cpp \
 	engine/framework/form-visitor.h \
 	engine/framework/runtime.h \
-	engine/framework/menu-builder.h \
-	engine/framework/menu-builder.cpp \
-	engine/framework/menu-builder-tools.h \
-	engine/framework/menu-builder-tools.cpp \
 	engine/framework/form-builder.cpp \
 	engine/framework/form-dumper.cpp \
 	engine/framework/form-request-simple.cpp \
 	engine/framework/runtime-glib.cpp \
 	engine/framework/services.cpp \
 	engine/framework/trigger.h \
-	engine/framework/menu-xml.h \
-	engine/framework/menu-xml.cpp \
 	engine/framework/kickstart.h \
 	engine/framework/kickstart.cpp \
 	engine/framework/personal-details.h \
@@ -323,8 +317,6 @@ libekiga_la_SOURCES += \
 ##
 
 libekiga_la_SOURCES += \
-	engine/gui/gtk-core/menu-builder-gtk.h \
-	engine/gui/gtk-core/menu-builder-gtk.cpp \
 	engine/gui/gtk-core/form-dialog-gtk.h \
 	engine/gui/gtk-core/form-dialog-gtk.cpp \
 	engine/gui/gtk-core/gactor-menu.h \

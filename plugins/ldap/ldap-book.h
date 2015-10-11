@@ -107,8 +107,6 @@ namespace OPENLDAP
 
     const std::string get_name () const;
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
     void set_search_filter (const std::string search_string);
 
     const std::string get_search_filter () const;

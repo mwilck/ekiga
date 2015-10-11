@@ -48,7 +48,6 @@
 
 #include "gm-cell-renderer-bitext.h"
 #include "gm-cell-renderer-expander.h"
-#include "menu-builder-tools.h"
 #include "roster-view-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"

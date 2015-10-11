@@ -148,18 +148,6 @@ Avahi::Heap::get_name () const
   return _("Neighbours");
 }
 
-bool
-Avahi::Heap::populate_menu (Ekiga::MenuBuilder& /*builder*/)
-{
-  return false;
-}
-
-bool
-Avahi::Heap::populate_menu_for_group (const std::string /*name*/,
-				      Ekiga::MenuBuilder& /*builder*/)
-{
-  return false;
-}
 
 void
 Avahi::Heap::ClientCallback (AvahiClient *_client,

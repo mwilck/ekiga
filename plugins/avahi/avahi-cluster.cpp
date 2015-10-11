@@ -68,11 +68,3 @@ Avahi::Cluster::Cluster (Ekiga::ServiceCore &_core): core(_core)
 Avahi::Cluster::~Cluster ()
 {
 }
-
-
-bool
-Avahi::Cluster::populate_menu (Ekiga::MenuBuilder &/*builder*/)
-{
-  /* nothing */
-  return false;
-}

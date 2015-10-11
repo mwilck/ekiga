@@ -61,8 +61,6 @@ namespace Avahi
 
     ~Cluster ();
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
     /* this is a service */
     const std::string get_name () const
     { return "avahi-core"; }

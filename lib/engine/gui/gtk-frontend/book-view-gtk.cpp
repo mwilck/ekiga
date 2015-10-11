@@ -44,8 +44,6 @@
 #include "filterable.h"
 
 #include "gactor-menu.h"
-#include "menu-builder-tools.h"
-#include "menu-builder-gtk.h"
 #include "scoped-connections.h"
 
 /*

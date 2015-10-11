@@ -76,8 +76,6 @@ namespace Evolution
 
     EBook *get_ebook () const;
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
     void set_search_filter (const std::string search_filter);
 
     const std::string get_search_filter () const;

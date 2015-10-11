@@ -40,8 +40,6 @@
 
 #include "call-history-view-gtk.h"
 
-#include "menu-builder-tools.h"
-#include "menu-builder-gtk.h"
 #include "gm-cell-renderer-bitext.h"
 #include "gactor-menu.h"
 #include "scoped-connections.h"

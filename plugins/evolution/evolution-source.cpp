@@ -231,13 +231,6 @@ Evolution::Source::~Source ()
 #endif
 }
 
-bool
-Evolution::Source::populate_menu (Ekiga::MenuBuilder &/*builder*/)
-{
-  /* FIXME: add back creating a new addressbook later */
-  return false;
-}
-
 void
 Evolution::Source::load ()
 {

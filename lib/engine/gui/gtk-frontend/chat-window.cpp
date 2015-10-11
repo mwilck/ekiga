@@ -39,8 +39,6 @@
 #include <gdk/gdkkeysyms.h>
 #include <glib/gi18n.h>
 
-#include "menu-builder-gtk.h"
-
 #include "chat-core.h"
 #include "audiooutput-core.h"
 #include "notification-core.h"

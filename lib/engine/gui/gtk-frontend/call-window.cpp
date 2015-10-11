@@ -52,8 +52,6 @@
 #include "gactor-menu.h"
 #include "trigger.h"
 #include "scoped-connections.h"
-#include "menu-builder-tools.h"
-#include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "ext-window.h"
 

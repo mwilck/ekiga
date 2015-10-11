@@ -72,12 +72,6 @@ namespace Avahi
 
     const std::string get_name () const;
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
-    bool populate_menu_for_group (const std::string name,
-				  Ekiga::MenuBuilder& builder);
-
-
     /* The PresenceFetcher interface: we don't do what we're told ;-) */
     void fetch (std::string) {}
     void unfetch (std::string) {}

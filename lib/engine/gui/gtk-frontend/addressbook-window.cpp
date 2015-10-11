@@ -38,7 +38,6 @@
 
 #include "addressbook-window.h"
 #include "book-view-gtk.h"
-#include "menu-builder-gtk.h"
 #include "form-dialog-gtk.h"
 #include "scoped-connections.h"
 #include "gactor-menu.h"

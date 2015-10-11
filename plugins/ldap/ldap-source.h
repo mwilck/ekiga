@@ -67,8 +67,6 @@ namespace OPENLDAP
 
     ~Source ();
 
-    bool populate_menu (Ekiga::MenuBuilder &builder);
-
     const std::string get_name () const
     { return "ldap-source"; }
 

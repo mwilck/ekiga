@@ -35,6 +35,7 @@
 #ifndef __DYNAMIC_OBJECT_H__
 #define __DYNAMIC_OBJECT_H__
 
+#include <boost/signals2.hpp>
 #include <boost/smart_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
@@ -43,7 +44,6 @@
 #include <iostream>
 #endif
 
-#include "menu-builder.h"
 
 namespace Ekiga
 {

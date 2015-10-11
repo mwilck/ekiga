@@ -41,7 +41,6 @@
 
 #include <glib/gi18n.h>
 
-#include "menu-builder.h"
 #include "form-request-simple.h"
 
 #include "opal-bank.h"
