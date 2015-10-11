@@ -192,7 +192,8 @@ namespace Ekiga
 
   private:
 
-      void on_missed_call (const boost::shared_ptr<Call> & call);
+      void on_setup_call (const boost::shared_ptr<Call> call);
+      void on_missed_call (const boost::shared_ptr<Call> call);
 
       boost::shared_ptr<Ekiga::FriendOrFoe> iff;
       boost::weak_ptr<Ekiga::NotificationCore> notification_core;
