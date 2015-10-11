@@ -763,8 +763,12 @@ on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
 
   if (self->priv->current_call) {
     self->priv->current_call = boost::shared_ptr<Ekiga::Call>();
-    g_source_remove (self->priv->destroy_timeout_id);
-    g_source_remove (self->priv->timeout_id);
+
+    if (self->priv->destroy_timeout_id > 0)
+      g_source_remove (self->priv->destroy_timeout_id);
+    if (self->priv->timeout_id > 0)
+      g_source_remove (self->priv->timeout_id);
+
     self->priv->destroy_timeout_id = 0;
     self->priv->timeout_id = 0;
     self->priv->bad_connection = false;
