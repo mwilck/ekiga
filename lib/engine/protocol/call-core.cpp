@@ -166,19 +166,24 @@ void CallCore::add_call (const boost::shared_ptr<Call> & call)
 {
   Ekiga::FriendOrFoe::Identification id = iff->decide ("call", call->get_remote_uri ());
 
-  if (id == Ekiga::FriendOrFoe::Foe) {
-
-//    call->hang_up ();
-//    return;
-  }
-
   calls.add_object (call);
 
   // Relay signals
   calls.add_connection (call, call->ringing.connect (boost::bind (boost::ref (ringing_call), _1)));
-  calls.add_connection (call, call->setup.connect (boost::bind (boost::ref (setup_call), _1)));
   calls.add_connection (call, call->missed.connect (boost::bind (&CallCore::on_missed_call, this, _1)));
   calls.add_connection (call, call->cleared.connect (boost::bind (boost::ref (cleared_call), _1, _2)));
+  calls.object_removed.connect (boost::bind (boost::ref (removed_call), _1));
+
+  created_call (call);
+
+  // Reject call
+  if (id == Ekiga::FriendOrFoe::Foe) {
+    call->hang_up ();
+    return;
+  }
+
+  // Or other signal relays
+  calls.add_connection (call, call->setup.connect (boost::bind (boost::ref (setup_call), _1)));
   calls.add_connection (call, call->established.connect (boost::bind (boost::ref (established_call), _1)));
   calls.add_connection (call, call->held.connect (boost::bind (boost::ref (held_call), _1)));
   calls.add_connection (call, call->retrieved.connect (boost::bind (boost::ref (retrieved_call), _1)));
@@ -186,9 +191,6 @@ void CallCore::add_call (const boost::shared_ptr<Call> & call)
   calls.add_connection (call, call->stream_closed.connect (boost::bind (boost::ref (stream_closed), _1, _2, _3, _4)));
   calls.add_connection (call, call->stream_paused.connect (boost::bind (boost::ref (stream_paused), _1, _2, _3)));
   calls.add_connection (call, call->stream_resumed.connect (boost::bind (boost::ref (stream_resumed), _1, _2, _3)));
-  calls.object_removed.connect (boost::bind (boost::ref (removed_call), _1));
-
-  created_call (call);
 }
 
 
