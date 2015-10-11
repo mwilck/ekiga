@@ -168,8 +168,8 @@ void CallCore::add_call (const boost::shared_ptr<Call> & call)
 
   if (id == Ekiga::FriendOrFoe::Foe) {
 
-    call->hang_up ();
-    return;
+//    call->hang_up ();
+//    return;
   }
 
   calls.add_object (call);
@@ -186,16 +186,9 @@ void CallCore::add_call (const boost::shared_ptr<Call> & call)
   calls.add_connection (call, call->stream_closed.connect (boost::bind (boost::ref (stream_closed), _1, _2, _3, _4)));
   calls.add_connection (call, call->stream_paused.connect (boost::bind (boost::ref (stream_paused), _1, _2, _3)));
   calls.add_connection (call, call->stream_resumed.connect (boost::bind (boost::ref (stream_resumed), _1, _2, _3)));
-  calls.add_connection (call, call->removed.connect (boost::bind (&CallCore::remove_call, this, _1)));
+  calls.object_removed.connect (boost::bind (boost::ref (removed_call), _1));
 
   created_call (call);
-}
-
-
-void CallCore::remove_call (const boost::shared_ptr<Call> & call)
-{
-  calls.remove_object (call);
-  removed_call (call);
 }
 
 

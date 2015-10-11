@@ -103,11 +103,6 @@ namespace Ekiga
        */
       void add_call (const boost::shared_ptr<Call> & call);
 
-      /** Remove a call handled by the CallCore serice.
-       * @param call is the call to be removed.
-       */
-      void remove_call (const boost::shared_ptr<Call> & call);
-
       /** Adds a CallManager to the CallCore service.
        * @param The manager to be added.
        */
