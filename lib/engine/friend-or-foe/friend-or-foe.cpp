@@ -36,16 +36,19 @@
 
 Ekiga::FriendOrFoe::Identification
 Ekiga::FriendOrFoe::decide (const std::string domain,
-			    const std::string token) const
+			    const std::string token)
 {
   Identification answer = Unknown;
   Identification iter_answer;
+
+  remove_actions ();
 
   for (helpers_type::const_iterator iter = helpers.begin ();
        iter != helpers.end ();
        ++iter) {
 
     iter_answer = (*iter)->decide (domain, token);
+    (*iter)->pull_actions (*this, std::string (), token);
     if (answer < iter_answer)
       answer = iter_answer;
   }

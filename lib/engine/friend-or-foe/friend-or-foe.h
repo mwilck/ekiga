@@ -53,6 +53,7 @@
 
 #include "services.h"
 #include "actor.h"
+#include "action-provider.h"
 
 namespace Ekiga
 {
@@ -65,34 +66,26 @@ namespace Ekiga
     /* beware of the order : we prefer erring on the side of safety */
     typedef enum { Unknown, Foe, Neutral, Friend } Identification;
 
-    class Helper
+    class Helper : public URIActionProvider
     {
+    friend class FriendOrFoe;
     public:
       virtual ~Helper ()
       {}
 
       virtual Identification decide (const std::string domain,
-				     const std::string token) const = 0;
+				     const std::string token) = 0;
+
+    protected:
+      virtual void pull_actions (Actor & actor,
+                                 const std::string & display_name,
+                                 const std::string & uri) = 0;
     };
 
     Identification decide (const std::string domain,
-			   const std::string token) const;
+			   const std::string token);
 
     void add_helper (boost::shared_ptr<Helper> helper);
-
-    /* Allow our helpers to add actions */
-    // FIXME: It is not clean. Perhaps we should use an ActionProvider.
-    // But I am not sure that having a FoeList as a component and
-    // a FriendOrFoe engine class is the way to go.
-    void add_helper_action (ActionPtr action)
-    {
-      add_action (action);
-    }
-
-    void remove_helper_action (const std::string & action)
-    {
-      remove_action (action);
-    }
 
     /* this turns us into a service */
     const std::string get_name () const

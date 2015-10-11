@@ -49,9 +49,10 @@ Ekiga::FoeList::~FoeList()
 {
 }
 
+
 Ekiga::FriendOrFoe::Identification
 Ekiga::FoeList::decide (const std::string /*domain*/,
-			const std::string uri) const
+			const std::string uri)
 {
   boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
   std::list<std::string> foes = settings->get_string_list ("foe-list");
@@ -60,17 +61,9 @@ Ekiga::FoeList::decide (const std::string /*domain*/,
   if (std::find (foes.begin (), foes.end (), uri) != foes.end ())
     result = Ekiga::FriendOrFoe::Foe;
 
-  boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
-  if (fof) {
-    if (result != Ekiga::FriendOrFoe::Foe)
-      fof->add_helper_action (Ekiga::ActionPtr (new Ekiga::Action ("blacklist", _("_Blacklist"),
-                                                                   boost::bind (&Ekiga::FoeList::add_foe, (Ekiga::FoeList *) this, uri))));
-    else
-      fof->remove_helper_action ("blacklist");
-  }
-
   return result;
 }
+
 
 void
 Ekiga::FoeList::add_foe (const std::string token)
@@ -82,5 +75,16 @@ Ekiga::FoeList::add_foe (const std::string token)
 
   boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
   if (fof)
-    fof->remove_helper_action ("blacklist");
+    remove_action (*fof, "blacklist");
+}
+
+
+void
+Ekiga::FoeList::pull_actions (Actor & actor,
+                              G_GNUC_UNUSED const std::string & display_name,
+                              const std::string & uri)
+{
+  if (decide (std::string (), uri) != Ekiga::FriendOrFoe::Foe)
+    add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("blacklist", _("_Blacklist"),
+                                                            boost::bind (&Ekiga::FoeList::add_foe, this, uri))));
 }

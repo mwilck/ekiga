@@ -45,6 +45,7 @@ namespace Ekiga
     public Service,
     public FriendOrFoe::Helper
   {
+
   public:
     FoeList(boost::shared_ptr<FriendOrFoe> friend_or_foo);
 
@@ -61,12 +62,17 @@ namespace Ekiga
 
     /* Ekiga::FriendOrFoe::Helper api */
     FriendOrFoe::Identification decide (const std::string domain,
-					const std::string token) const;
+					const std::string token);
 
     /* specific api */
     void add_foe (const std::string token);
 
   private:
+    /* ActionProvider api */
+    void pull_actions (Actor & actor,
+                       const std::string & display_name,
+                       const std::string & uri);
+
 
     // beware of dependency loops!
     boost::weak_ptr<FriendOrFoe> friend_or_foe;
