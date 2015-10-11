@@ -60,6 +60,8 @@ namespace Ekiga {
   protected:
     virtual void add_action (Actor & actor,
                              ActionPtr action);
+    virtual void remove_action (Actor & actor,
+                                const std::string & action);
   };
   typedef boost::shared_ptr< ActionProvider > ActionProviderPtr;
 

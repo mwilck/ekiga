@@ -45,6 +45,15 @@ ActionProvider::add_action (Actor & actor,
   actor.add_action (action);
 }
 
+
+void
+ActionProvider::remove_action (Actor & actor,
+                               const std::string & action)
+{
+  actor.remove_action (action);
+}
+
+
 void
 URIActionProviderStore::pull_actions (Actor & actor,
                                       const std::string & name,
