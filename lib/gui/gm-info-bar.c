@@ -87,9 +87,13 @@ static gboolean
 on_info_bar_delayed_hide (gpointer self)
 {
   g_return_if_fail (GM_IS_INFO_BAR (self));
+  GmInfoBar *bar = GM_INFO_BAR (self);
+
   /* Display (again) the new last element or hide the infobar */
-  if (!gm_info_bar_display_last_message (self))
-    gtk_widget_hide (GTK_WIDGET (self));
+  if (!gm_info_bar_display_last_message (bar))
+    gtk_widget_hide (GTK_WIDGET (bar));
+
+  bar->priv->timeout = 0;
 
   return FALSE;
 }
