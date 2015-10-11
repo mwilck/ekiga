@@ -41,8 +41,6 @@ Ekiga::FriendOrFoe::decide (const std::string domain,
   Identification answer = Unknown;
   Identification iter_answer;
 
-  remove_actions ();
-
   for (helpers_type::const_iterator iter = helpers.begin ();
        iter != helpers.end ();
        ++iter) {
@@ -60,4 +58,5 @@ void
 Ekiga::FriendOrFoe::add_helper (boost::shared_ptr<Ekiga::FriendOrFoe::Helper> helper)
 {
   helpers.push_front (helper);
+  helper->questions.connect (boost::ref (Ekiga::Actor::questions));
 }

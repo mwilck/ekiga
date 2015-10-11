@@ -448,25 +448,6 @@ static void sound_event_setting_changed (GSettings *,
                                          gpointer data);
 
 
-/* DESCRIPTION : This callback is triggered when the user asks to edit
- *               the blacklist
- * BEHAVIOR    : Display a form to edit the blacklist
- * PRE         : A pointer to the preferences window
- */
-static void edit_blacklist_cb (GtkWidget* widget,
-			       gpointer data);
-
-
-/* DESCRIPTION : This callback is triggered when the user submits the
- *               blacklist-editing form
- * BEHAVIOR    : /
- * PRE         : A pointer to the preferences window
- */
-static bool on_edit_blacklist_form_submitted (bool submitted,
-					      Ekiga::Form& result,
-                                              std::string& error);
-
-
 /* Implementation */
 static void
 gm_prefs_window_sound_events_list_build (PreferencesWindow *self)
@@ -592,17 +573,6 @@ gm_pw_init_general_page (PreferencesWindow *self,
                   self->priv->protocols_settings, "rtp-tos-field",
                   _("The Type of Service (TOS) byte on outgoing RTP IP packets. This byte is used by the network to provide some level of Quality of Service (QoS). Default value 184 (0xB8) corresponds to Expedited Forwarding (EF) PHB as defined in RFC 3246."),
                   0.0, 255.0, 1.0);
-
-  /* Blacklist Settings */
-  gm_pw_subsection_new (container, _("Blacklist"));
-  GtkWidget* edit_blacklist_button = gtk_button_new_with_label(_("Edit"));
-  g_signal_connect (edit_blacklist_button, "clicked",
-		    G_CALLBACK (edit_blacklist_cb), (gpointer)self);
-  int pos = 0;
-  GTK_GRID_LAST_ROW (container, pos);
-  gtk_widget_set_halign (edit_blacklist_button, GTK_ALIGN_START);
-  gtk_container_set_border_width (GTK_CONTAINER (edit_blacklist_button), 0);
-  gtk_grid_attach (GTK_GRID (container), edit_blacklist_button, 0, pos-1, 2, 1);
 }
 
 static void
@@ -1634,43 +1604,6 @@ sound_event_toggled_cb (G_GNUC_UNUSED GtkCellRendererToggle *cell,
 
   g_free (key);
   gtk_tree_path_free (path);
-}
-
-static void
-edit_blacklist_cb (GtkWidget* /*widget*/,
-		   gpointer data)
-{
-  g_return_if_fail (data != NULL);
-
-  boost::shared_ptr<Ekiga::FormRequestSimple> request (new Ekiga::FormRequestSimple (&on_edit_blacklist_form_submitted));
-
-  request->title (_("Edit the Blacklist"));
-
-  boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
-  std::list<std::string> foes(settings->get_string_list ("foe-list"));
-
-  request->editable_list ("foes", _("Current list of undesirables"),
-			 std::list<std::string> (foes.begin (), foes.end ()),
-			 std::list<std::string>());
-
-  FormDialog dialog(request, GTK_WIDGET (data));
-
-  dialog.run ();
-}
-
-static bool
-on_edit_blacklist_form_submitted (bool submitted,
-				  Ekiga::Form& result,
-                                  G_GNUC_UNUSED std::string& error)
-{
-  if (!submitted)
-    return false;
-
-  std::list<std::string> foes = result.editable_list ("foes");
-  boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
-  settings->set_string_list ("foe-list", foes);
-
-  return true;
 }
 
 

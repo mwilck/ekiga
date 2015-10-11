@@ -66,7 +66,7 @@ namespace Ekiga
     /* beware of the order : we prefer erring on the side of safety */
     typedef enum { Unknown, Foe, Neutral, Friend } Identification;
 
-    class Helper : public URIActionProvider
+    class Helper : public URIActionProvider, public Actor
     {
     friend class FriendOrFoe;
     public:

@@ -37,11 +37,13 @@
 #include "ekiga-settings.h"
 
 #include "foe-list.h"
-#include <iostream>
+#include "form-request-simple.h"
 
-Ekiga::FoeList::FoeList(boost::shared_ptr<FriendOrFoe> fof):
-  friend_or_foe(fof)
+Ekiga::FoeList::FoeList(boost::shared_ptr<FriendOrFoe> fof)
 {
+  /* This Action can be added to the FriendOrFoe */
+  Ekiga::URIActionProvider::add_action (*fof, Ekiga::ActionPtr (new Ekiga::Action ("blacklist-edit", _("_Edit Blacklist"),
+                                                                                   boost::bind (&Ekiga::FoeList::edit_foes, this))));
 }
 
 
@@ -72,19 +74,49 @@ Ekiga::FoeList::add_foe (const std::string token)
   std::list<std::string> foes = settings->get_string_list ("foe-list");
   foes.push_back (token);
   settings->set_string_list ("foe-list", foes);
-
-  boost::shared_ptr<FriendOrFoe> fof = friend_or_foe.lock ();
-  if (fof)
-    remove_action (*fof, "blacklist");
 }
 
+void
+Ekiga::FoeList::edit_foes ()
+{
+  boost::shared_ptr<Ekiga::FormRequestSimple> request =
+    boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Ekiga::FoeList::on_edit_foes_form_submitted, this, _1, _2, _3)));
+
+  request->title (_("Edit the Blacklist"));
+
+  boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
+  std::list<std::string> foes(settings->get_string_list ("foe-list"));
+
+  request->editable_list ("foes",
+                          _("Blacklist"),
+			 std::list<std::string> (foes.begin (), foes.end ()),
+			 std::list<std::string>());
+
+  questions (request);
+}
+
+bool
+Ekiga::FoeList::on_edit_foes_form_submitted (bool submitted,
+                                             Ekiga::Form& result,
+                                             G_GNUC_UNUSED std::string& error)
+{
+  if (!submitted)
+    return false;
+
+  std::list<std::string> foes = result.editable_list ("foes");
+  boost::scoped_ptr<Ekiga::Settings> settings(new Ekiga::Settings (CONTACTS_SCHEMA));
+  settings->set_string_list ("foe-list", foes);
+
+  return true;
+}
 
 void
 Ekiga::FoeList::pull_actions (Actor & actor,
                               G_GNUC_UNUSED const std::string & display_name,
                               const std::string & uri)
 {
+  Ekiga::URIActionProvider::remove_action (actor, "blacklist-add");
   if (decide (std::string (), uri) != Ekiga::FriendOrFoe::Foe)
-    add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("blacklist", _("_Blacklist"),
-                                                            boost::bind (&Ekiga::FoeList::add_foe, this, uri))));
+    Ekiga::URIActionProvider::add_action (actor, Ekiga::ActionPtr (new Ekiga::Action ("blacklist-add", _("_Blacklist"),
+                                                                                      boost::bind (&Ekiga::FoeList::add_foe, this, uri))));
 }

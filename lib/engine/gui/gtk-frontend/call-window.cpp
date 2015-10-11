@@ -144,7 +144,6 @@ struct _EkigaCallWindowPrivate
   std::string received_audio_codec;
 
   Ekiga::GActorMenuPtr call_menu;
-  Ekiga::GActorMenuPtr fof_menu;
 
   Ekiga::scoped_connections connections;
   boost::shared_ptr<Ekiga::Settings> video_display_settings;
@@ -772,7 +771,6 @@ on_cleared_call_cb (boost::shared_ptr<Ekiga::Call> call,
     self->priv->destroy_timeout_id = 0;
     self->priv->timeout_id = 0;
     self->priv->bad_connection = false;
-    self->priv->fof_menu.reset ();
     self->priv->call_menu.reset ();
   }
 
@@ -791,7 +789,6 @@ static void on_missed_call_cb (boost::shared_ptr<Ekiga::Call> call,
     return; // Trying to clear another call than the current active one
   }
   self->priv->bad_connection = false;
-  self->priv->fof_menu.reset ();
   self->priv->call_menu.reset ();
 
   ekiga_call_window_update_calling_state (self, Standby);
@@ -1395,10 +1392,10 @@ ekiga_call_window_init_gui (EkigaCallWindow *self)
   g_object_unref (icon);
   gtk_button_set_image (GTK_BUTTON (button), image);
   gtk_button_set_always_show_image (GTK_BUTTON (button), TRUE);
-  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.blacklist");
+  gtk_actionable_set_detailed_action_name (GTK_ACTIONABLE (button), "win.blacklist-add");
   gtk_header_bar_pack_start (GTK_HEADER_BAR (self->priv->call_panel_toolbar), button);
   gtk_widget_set_tooltip_text (GTK_WIDGET (button),
-                               _("Add caller to the blacklist"));
+                               _("Add remote party to the blacklist"));
   gtk_widget_show (button);
 
   /* Devices settings */
@@ -1635,7 +1632,6 @@ call_window_add_call (GtkWidget *call_window,
 
   /* Update menu */
   self->priv->call_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*call));
-  self->priv->fof_menu = Ekiga::GActorMenuPtr (new Ekiga::GActorMenu (*self->priv->friend_or_foe));
 
   /* Update UI elements */
   CallingState s = call->is_outgoing () ? Calling : Called;

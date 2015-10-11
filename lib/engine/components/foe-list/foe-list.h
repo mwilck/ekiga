@@ -68,6 +68,11 @@ namespace Ekiga
     void add_foe (const std::string token);
 
   private:
+    void edit_foes ();
+    bool on_edit_foes_form_submitted (bool submitted,
+                                      Ekiga::Form& result,
+                                      G_GNUC_UNUSED std::string& error);
+
     /* ActionProvider api */
     void pull_actions (Actor & actor,
                        const std::string & display_name,
