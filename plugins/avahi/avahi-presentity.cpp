@@ -38,23 +38,90 @@
 
 
 boost::shared_ptr<Avahi::Presentity>
-Avahi::Presentity::create (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+Avahi::Presentity::create (boost::shared_ptr<Ekiga::PresenceCore> presence_core,
                            std::string _name,
                            std::string _uri,
                            std::list<std::string> _groups)
 {
-  return boost::shared_ptr<Avahi::Presentity> (new Avahi::Presentity (_presence_core, _name, _uri, _groups));
+  return boost::shared_ptr<Avahi::Presentity> (new Avahi::Presentity (presence_core, _name, _uri, _groups));
 }
 
-
-Avahi::Presentity::Presentity (boost::shared_ptr<Ekiga::PresenceCore> _presence_core,
+Avahi::Presentity::Presentity (boost::shared_ptr<Ekiga::PresenceCore> presence_core,
                                std::string _name,
                                std::string _uri,
-                               std::list<std::string> _groups) : URIPresentity (_presence_core, _name, _uri, _groups)
+                               std::list<std::string> _groups)
+        : name(_name), uri(_uri), presence("unknown"), groups(_groups)
 {
-}
+  boost::signals2::connection conn;
 
+  conn = presence_core->presence_received.connect (boost::bind (&Avahi::Presentity::on_presence_received, this, _1, _2));
+  connections.add (conn);
+
+  conn = presence_core->status_received.connect (boost::bind (&Avahi::Presentity::on_status_received, this, _1, _2));
+  connections.add (conn);
+
+  presence_core->pull_actions (*this, _name, _uri);
+}
 
 Avahi::Presentity::~Presentity ()
 {
+}
+
+
+const std::string
+Avahi::Presentity::get_name () const
+{
+  return name;
+}
+
+const std::string
+Avahi::Presentity::get_presence () const
+{
+  return presence;
+}
+
+const std::string
+Avahi::Presentity::get_status () const
+{
+  return status;
+}
+
+const std::list<std::string>
+Avahi::Presentity::get_groups () const
+{
+  return groups;
+}
+
+const std::string
+Avahi::Presentity::get_uri () const
+{
+  return uri;
+}
+
+bool
+Avahi::Presentity::has_uri (const std::string uri_) const
+{
+  return uri == uri_;
+}
+
+void
+Avahi::Presentity::on_presence_received (std::string uri_,
+                                         std::string presence_)
+{
+  if (uri == uri_) {
+
+    presence = presence_;
+    updated (this->shared_from_this ());
+  }
+}
+
+void
+Avahi::Presentity::on_status_received (std::string uri_,
+                                       std::string status_)
+{
+  if (uri == uri_) {
+
+    status = status_;
+    updated (this->shared_from_this ());
+  }
 }

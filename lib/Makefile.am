@@ -244,8 +244,6 @@ libekiga_la_SOURCES += \
 	engine/presence/heap-impl.h \
 	engine/presence/cluster.h \
 	engine/presence/cluster-impl.h \
-	engine/presence/uri-presentity.h \
-	engine/presence/uri-presentity.cpp \
 	engine/presence/presence-core.h \
 	engine/presence/presence-core.cpp
 

@@ -134,6 +134,9 @@ Avahi::Heap::Heap (Ekiga::ServiceCore & _core) : core(_core)
 
 Avahi::Heap::~Heap ()
 {
+  if (resolver != NULL)
+    avahi_service_resolver_free (resolver);
+
   if (client != NULL)
     avahi_client_free (client);
 
@@ -207,14 +210,14 @@ Avahi::Heap::BrowserCallback (AvahiServiceBrowser *browser,
 			      const char *domain,
 			      AvahiLookupResultFlags /*flags*/)
 {
-  AvahiServiceResolver *resolver = NULL;
-
   switch (event) {
 
   case AVAHI_BROWSER_NEW:
     /* this may not be the final valid resolver pointer...
      * we'll take what our callback gets
      */
+    if (resolver)
+      avahi_service_resolver_free (resolver);
     resolver = avahi_service_resolver_new (client, interface, protocol,
 					   name, type, domain,
 					   AVAHI_PROTO_UNSPEC,
@@ -296,7 +299,7 @@ private:
 };
 
 void
-Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
+Avahi::Heap::ResolverCallback (AvahiServiceResolver * /*resolver*/,
 			       AvahiIfIndex /*interface*/,
 			       AvahiProtocol /*protocol*/,
 			       AvahiResolverEvent event,
@@ -321,6 +324,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
   if (flags & AVAHI_LOOKUP_RESULT_LOCAL) {
 
     avahi_service_resolver_free (resolver);
+    resolver = NULL;
 #if DEBUG
     std::cout << __PRETTY_FUNCTION__ << " LOCAL RESULT" << std::endl;
 #endif
@@ -329,7 +333,8 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
 
   switch (event) {
 
-  case AVAHI_RESOLVER_FOUND: {
+  case AVAHI_RESOLVER_FOUND:
+  {
 #if DEBUG
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_RESOLVER_FOUND" << std::endl;
 #endif
@@ -365,7 +370,8 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       /* known contact has been updated */
       presence_received (helper.found_presentity ()->get_uri (), presence);
       status_received (helper.found_presentity ()->get_uri (), status);
-    } else {
+    }
+    else {
 
       /* ok, this is a new contact */
       gchar** broken = NULL;
@@ -385,14 +391,15 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver *resolver,
       }
       g_strfreev (broken);
     }
-    avahi_service_resolver_free (resolver);
-    break;}
+  }
+    break;
   case AVAHI_RESOLVER_FAILURE:
 
 #if DEBUG
     std::cout << __PRETTY_FUNCTION__ << " AVAHI_RESOLVER_FAILURE" << std::endl;
 #endif
     avahi_service_resolver_free (resolver);
+    resolver = NULL;
     break;
   default:
     /* shouldn't happen */

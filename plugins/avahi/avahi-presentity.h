@@ -38,14 +38,14 @@
 #define __AVAHI_PRESENTITY_H__
 
 #include "dynamic-object.h"
-#include "uri-presentity.h"
+#include "presentity.h"
 
 #include "presence-core.h"
 
 namespace Avahi
 {
   class Presentity:
-      public Ekiga::URIPresentity,
+      public Ekiga::Presentity,
       public Ekiga::DynamicObject<Presentity>
   {
 
@@ -56,6 +56,36 @@ public:
                                                  std::list<std::string> groups);
 
     ~Presentity ();
+
+    /**
+     * Getters for the presentity
+     */
+    const std::string get_name () const;
+
+    const std::string get_presence () const;
+
+    const std::string get_status () const;
+
+    const std::list<std::string> get_groups () const;
+
+    bool has_uri (const std::string uri_) const;
+
+    const std::string get_uri () const;
+
+  private:
+    Ekiga::scoped_connections connections;
+
+    std::string name;
+    std::string uri;
+    std::string presence;
+    std::list<std::string> groups;
+    std::string status;
+
+    void on_presence_received (std::string uri_,
+			       std::string presence_);
+
+    void on_status_received (std::string uri_,
+			     std::string status_);
 
 private:
     Presentity (boost::shared_ptr<Ekiga::PresenceCore> presence_core,

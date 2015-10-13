@@ -62,8 +62,7 @@ entry_group_cb (AvahiEntryGroup* group,
   publisher->entry_group_callback (group, state);
 }
 
-/* here is the real code of the Avahi::PresencePublisher implementation */
-
+/* Here is the real code of the Avahi::PresencePublisher implementation */
 Avahi::PresencePublisher::PresencePublisher (Ekiga::ServiceCore& core_,
 					     Ekiga::PersonalDetails& details_,
 					     Ekiga::CallCore& call_core_):
