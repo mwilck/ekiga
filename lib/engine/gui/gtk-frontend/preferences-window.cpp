@@ -544,8 +544,6 @@ static void
 gm_pw_init_general_page (PreferencesWindow *self,
                          GtkWidget *container)
 {
-  GtkWidget *entry = NULL;
-
   /* Display */
   gm_pw_toggle_new (container, _("Show o_ffline contacts"),
                     self->priv->contacts_settings, "show-offline-contacts",
@@ -558,14 +556,6 @@ gm_pw_init_general_page (PreferencesWindow *self,
   gm_pw_toggle_new (container, _("Enable _Picture-In-Picture mode"),
                     self->priv->video_display_settings, "enable-pip",
                     _("This allows the local video stream to be displayed incrusted in the remote video stream. This is only effective when sending and receiving video"), false);
-
-  /* Personal Information */
-  gm_pw_subsection_new (container, _("Personal Information"));
-  entry = gm_pw_entry_new (container, _("_Full Name"),
-                           self->priv->personal_data_settings, "full-name",
-                           _("Enter your full name"), true);
-  g_object_set (entry, "allow-empty", FALSE, NULL);
-  gtk_entry_set_max_length (GTK_ENTRY (entry), 65);
 
   /* Network Settings */
   gm_pw_subsection_new (container, _("Network Settings"));

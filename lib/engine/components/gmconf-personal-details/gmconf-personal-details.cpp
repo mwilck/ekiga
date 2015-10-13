@@ -39,6 +39,7 @@ Gmconf::PersonalDetails::PersonalDetails ()
 {
   personal_details = new Ekiga::Settings (PERSONAL_DATA_SCHEMA);
   personal_details->changed.connect (boost::bind (&PersonalDetails::setup, this, _1));
+  display_name = g_get_real_name ();
 
   setup ();
 }
@@ -52,13 +53,6 @@ void
 Gmconf::PersonalDetails::setup (std::string setting)
 {
   std::string value;
-  if (setting.empty () || setting == "full-name")  {
-    value = personal_details->get_string ("full-name");
-    if (value != display_name) {
-      display_name = value;
-      updated ();
-    }
-  }
   if (setting.empty () || setting == "short-status")  {
     value = personal_details->get_string ("short-status");
     if (value != presence) {
@@ -66,7 +60,7 @@ Gmconf::PersonalDetails::setup (std::string setting)
       updated ();
     }
   }
-  if (setting.empty () || setting == "full-name")  {
+  if (setting.empty () || setting == "long-status")  {
     value = personal_details->get_string ("long-status");
     if (value != status) {
       status = value;
@@ -94,9 +88,9 @@ Gmconf::PersonalDetails::get_status () const
 }
 
 void
-Gmconf::PersonalDetails::set_display_name (const std::string display_name_)
+Gmconf::PersonalDetails::set_display_name (G_GNUC_UNUSED const std::string display_name_)
 {
-  personal_details->set_string ("full-name", display_name_);
+  // Ignored
 }
 
 void

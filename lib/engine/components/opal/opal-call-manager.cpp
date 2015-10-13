@@ -57,6 +57,8 @@ Opal::CallManager::CallManager (Ekiga::ServiceCore& _core,
   call_options_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_OPTIONS_SCHEMA, setup_cb));
   call_forwarding_settings = Ekiga::SettingsPtr (new Ekiga::Settings (CALL_FORWARDING_SCHEMA, setup_cb));
   personal_data_settings = Ekiga::SettingsPtr (new Ekiga::Settings (PERSONAL_DATA_SCHEMA, setup_cb));
+
+  set_display_name (g_get_real_name ());
 }
 
 
@@ -182,9 +184,6 @@ void Opal::CallManager::setup (const std::string & setting)
 
   if (setting.empty () || setting == "auto-answer")
     set_auto_answer (call_options_settings->get_bool ("auto-answer"));
-
-  if (setting.empty () || setting == "full-name")
-    set_display_name (personal_data_settings->get_string ("full-name"));
 
   if (setting.empty () || setting == "maximum-video-tx-bitrate") {
 

@@ -58,7 +58,6 @@ struct _AssistantWindowPrivate
   GdkPixbuf *icon;
 
   GtkWidget *welcome_page;
-  GtkWidget *personal_data_page;
   GtkWidget *info_page;
   GtkWidget *ekiga_net_page;
   GtkWidget *ekiga_out_page;
@@ -138,74 +137,6 @@ create_welcome_page (AssistantWindow *assistant)
   gtk_assistant_set_page_complete (GTK_ASSISTANT (assistant), label, TRUE);
 
   assistant->priv->welcome_page = label;
-}
-
-
-static void
-name_changed_cb (GtkEntry     *entry,
-                 GtkAssistant *assistant)
-{
-  set_current_page_complete (assistant,
-                             gm_entry_text_is_valid (GM_ENTRY (entry)));
-}
-
-
-static void
-create_personal_data_page (AssistantWindow *assistant)
-{
-  GtkWidget *vbox;
-  GtkWidget *label;
-  gchar *text;
-
-  vbox = create_page (assistant, _("Personal Information"), GTK_ASSISTANT_PAGE_CONTENT);
-
-  /* The user fields */
-  label = gtk_label_new (_("Please enter your first name and your surname:"));
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, FALSE, 0);
-
-  assistant->priv->name = gm_entry_new (NULL);
-  gm_entry_set_allow_empty (GM_ENTRY (assistant->priv->name), FALSE);
-  gtk_entry_set_activates_default (GTK_ENTRY (assistant->priv->name), TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), assistant->priv->name, FALSE, FALSE, 0);
-
-  label = gtk_label_new (NULL);
-  text = g_strdup_printf ("<i>%s</i>", _("Your first name and surname will be "
-					 "used when connecting to other VoIP and "
-					 "videoconferencing software."));
-  gtk_label_set_markup (GTK_LABEL (label), text);
-  g_free (text);
-  gtk_label_set_line_wrap (GTK_LABEL (label), TRUE);
-  gtk_box_pack_start (GTK_BOX (vbox), label, FALSE, TRUE, 0);
-
-  g_signal_connect (assistant->priv->name, "changed",
-                    G_CALLBACK (name_changed_cb), assistant);
-
-  assistant->priv->personal_data_page = vbox;
-  gtk_widget_show_all (vbox);
-}
-
-
-static void
-prepare_personal_data_page (AssistantWindow *assistant)
-{
-  std::string full_name =
-    assistant->priv->personal_data_settings->get_string ("full-name");
-
-  gtk_entry_set_text (GTK_ENTRY (assistant->priv->name),
-                      full_name.empty () ? g_get_real_name () : full_name.c_str ());
-}
-
-
-static void
-apply_personal_data_page (AssistantWindow *assistant)
-{
-  GtkEntry *entry = GTK_ENTRY (assistant->priv->name);
-  const gchar *full_name = gtk_entry_get_text (entry);
-
-  if (full_name && strlen (full_name) > 0)
-    assistant->priv->personal_data_settings->set_string ("full-name", full_name);
-  else
-    assistant->priv->personal_data_settings->set_string ("full-name", g_get_real_name ());
 }
 
 
@@ -633,7 +564,6 @@ assistant_window_init (AssistantWindow *assistant)
     boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (PERSONAL_DATA_SCHEMA));
 
   create_welcome_page (assistant);
-  create_personal_data_page (assistant);
   create_info_page (assistant);
   create_ekiga_net_page (assistant);
   create_ekiga_out_page (assistant);
@@ -663,11 +593,6 @@ assistant_window_prepare (GtkAssistant *gtkassistant,
   if (!forward)
     return;
 
-  if (page == assistant->priv->personal_data_page) {
-    prepare_personal_data_page (assistant);
-    return;
-  }
-
   if (page == assistant->priv->ekiga_net_page) {
     prepare_ekiga_net_page (assistant);
     return;
@@ -690,7 +615,6 @@ assistant_window_apply (GtkAssistant *gtkassistant)
 {
   AssistantWindow *assistant = ASSISTANT_WINDOW (gtkassistant);
 
-  apply_personal_data_page (assistant);
   apply_ekiga_net_page (assistant);
   apply_ekiga_out_page (assistant);
 }
