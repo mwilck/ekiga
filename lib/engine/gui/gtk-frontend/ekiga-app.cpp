@@ -560,6 +560,7 @@ gm_application_shutdown (GApplication *app)
 
   g_return_if_fail (self);
 
+  self->priv->fof_menu.reset ();
   self->priv->banks_menu.clear ();
   Ekiga::Runtime::quit ();
 
