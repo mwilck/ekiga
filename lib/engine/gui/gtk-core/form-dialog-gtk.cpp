@@ -728,7 +728,7 @@ FormDialog::FormDialog (Ekiga::FormRequestPtr _request,
                                      "use-header-bar", use_header,
                                      NULL));
   gtk_window_set_modal (GTK_WINDOW (window), TRUE);
-  gtk_window_set_resizable (GTK_WINDOW (window), FALSE);
+  gtk_window_set_resizable (GTK_WINDOW (window), TRUE);
   if (GTK_IS_WINDOW (parent))
     gtk_window_set_transient_for (GTK_WINDOW (window), GTK_WINDOW (parent));
   gtk_dialog_add_button (GTK_DIALOG (window),
@@ -1012,7 +1012,9 @@ FormDialog::text (const std::string name,
   gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
   gtk_entry_set_activates_default (GTK_ENTRY (entry), true);
   gtk_entry_set_text (GTK_ENTRY (entry), value.c_str ());
-  g_object_set (G_OBJECT (entry), "expand", TRUE, "allow-empty", allow_empty, NULL);
+  g_object_set (G_OBJECT (entry), "expand", TRUE,
+                "allow-empty", allow_empty,
+                "width-chars", 30, NULL);
 
   submitter = new TextSubmitter (name, description, placeholder_text, type, advanced, allow_empty, entry);
   submitters.push_back (submitter);
