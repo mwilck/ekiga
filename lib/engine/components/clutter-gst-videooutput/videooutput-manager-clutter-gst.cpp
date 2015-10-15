@@ -52,6 +52,7 @@
 GMVideoOutputManager_clutter_gst::GMVideoOutputManager_clutter_gst (G_GNUC_UNUSED Ekiga::ServiceCore & _core)
 {
   devices_nbr = 0;
+  frame = 0;
 
   for (int i = 0 ; i < 3 ; i++) {
     texture[i] = NULL;
@@ -149,6 +150,7 @@ GMVideoOutputManager_clutter_gst::close ()
     current_width[i] = 0;
   }
   devices_nbr = 0;
+  frame = 0;
 
   Ekiga::Runtime::run_in_main (boost::bind (&GMVideoOutputManager_clutter_gst::device_closed_in_main,
                                             this));
@@ -175,6 +177,10 @@ GMVideoOutputManager_clutter_gst::set_frame_data (const char *data,
   info.maxsize = buffer_size;
 
   PWaitAndSignal m(device_mutex);
+
+  frame++;
+  if (frame < 5)
+    return;
 
   if (!pipeline[i]) {
     PTRACE (1, "GMVideoOutputManager_clutter_gst\tTrying to upload frame to closed pipeline " << i);
@@ -219,6 +225,7 @@ GMVideoOutputManager_clutter_gst::set_frame_data (const char *data,
                                                 i,
                                                 width,
                                                 height));
+    return;
   }
 
   buffer = gst_buffer_new_and_alloc (buffer_size);

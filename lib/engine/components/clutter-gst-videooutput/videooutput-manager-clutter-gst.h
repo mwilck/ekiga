@@ -95,6 +95,7 @@ private:
   GstElement *pipeline[3];
   ClutterActor *texture[3];
 
+  unsigned int frame;
   int devices_nbr;
 };
 
