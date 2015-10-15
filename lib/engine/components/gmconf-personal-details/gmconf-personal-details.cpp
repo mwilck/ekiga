@@ -40,6 +40,8 @@ Gmconf::PersonalDetails::PersonalDetails ()
   personal_details = new Ekiga::Settings (PERSONAL_DATA_SCHEMA);
   personal_details->changed.connect (boost::bind (&PersonalDetails::setup, this, _1));
   display_name = g_get_real_name ();
+  if (display_name.empty ())
+    display_name = g_get_user_name ();
 
   setup ();
 }
