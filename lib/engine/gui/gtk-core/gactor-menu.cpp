@@ -40,6 +40,7 @@
 #include "action.h"
 #include "gactor-menu.h"
 
+#include <iostream>
 
 static void
 action_activated (GSimpleAction *a,
@@ -178,9 +179,8 @@ Ekiga::GActorMenu::add_gio_action (Ekiga::ActionPtr a)
   if (!a->is_enabled ())
     return;
 
-  if (g_action_map_lookup_action (G_ACTION_MAP (g_application_get_default ()),
-                                  a->get_name ().c_str ()))
-    return;
+  g_action_map_remove_action (G_ACTION_MAP (g_application_get_default ()),
+                              a->get_name ().c_str ());
 
   action = g_simple_action_new (a->get_name ().c_str (), NULL);
   g_object_set_data_full (G_OBJECT (action), "action",
