@@ -559,6 +559,11 @@ gm_application_shutdown (GApplication *app)
   GmApplication *self = GM_APPLICATION (app);
 
   g_return_if_fail (self);
+  {
+    boost::shared_ptr<Ekiga::VideoInputCore> video_input_core =
+      self->priv->core.get<Ekiga::VideoInputCore> ("videoinput-core");
+    video_input_core->stop_preview ();
+  }
 
   self->priv->fof_menu.reset ();
   self->priv->banks_menu.clear ();
