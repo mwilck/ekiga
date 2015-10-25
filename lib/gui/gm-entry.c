@@ -465,7 +465,7 @@ gm_entry_set_activate_icon (GmEntry *self,
 const gchar *
 gm_entry_get_activate_icon (GmEntry *self)
 {
-  g_return_val_if_fail (GM_IS_ENTRY (self), TRUE);
+  g_return_val_if_fail (GM_IS_ENTRY (self), NULL);
 
   return self->priv->activate_icon;
 }

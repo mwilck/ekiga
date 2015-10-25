@@ -86,7 +86,7 @@ static void gm_info_bar_display_message (GmInfoBar *self,
 static gboolean
 on_info_bar_delayed_hide (gpointer self)
 {
-  g_return_if_fail (GM_IS_INFO_BAR (self));
+  g_return_val_if_fail (GM_IS_INFO_BAR (self), FALSE);
   GmInfoBar *bar = GM_INFO_BAR (self);
 
   /* Display (again) the new last element or hide the infobar */

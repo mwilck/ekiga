@@ -707,7 +707,6 @@ gm_application_command_line (GApplication *app,
 static void
 gm_application_class_init (GmApplicationClass *klass)
 {
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
   GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
 
   app_class->startup = gm_application_startup;
