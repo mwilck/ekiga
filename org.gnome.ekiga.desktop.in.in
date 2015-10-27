@@ -1,0 +1,17 @@
+[Desktop Entry]
+_Name=Ekiga Softphone
+TryExec=@PACKAGE_NAME@
+_GenericName=IP Telephony, VoIP and Video Conferencing
+_Comment=Talk to and see people over the Internet
+StartupNotify=true
+Exec=@PACKAGE_NAME@ -c %u
+Icon=@PACKAGE_NAME@
+MimeType=x-scheme-handler/sip;x-scheme-handler/h323;
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;Network;Telephony;
+DBusActivatable=true
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=@PACKAGE_NAME@
+X-GNOME-Bugzilla-Component=general
+X-GNOME-Bugzilla-Version=@PACKAGE_VERSION@

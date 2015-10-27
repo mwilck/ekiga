@@ -138,9 +138,9 @@ static void on_account_modified_cb (Ekiga::AccountPtr account,
 static void call_window_destroyed_cb (GtkWidget *widget,
                                       gpointer data);
 
-static gboolean option_context_parse (GOptionContext *context,
-                                      gchar **arguments,
-                                      GError **error);
+static void engine_call_uri_action_cb (GSimpleAction *simple,
+                                       GVariant *parameter,
+                                       gpointer data);
 
 static void quit_activated (GSimpleAction *action,
                             GVariant *parameter,
@@ -284,29 +284,17 @@ call_window_destroyed_cb (G_GNUC_UNUSED GtkWidget *widget,
 }
 
 
-static gboolean
-option_context_parse (GOptionContext *context,
-                      gchar **arguments,
-                      GError **error)
+static void
+engine_call_uri_action_cb (G_GNUC_UNUSED GSimpleAction *simple,
+                           GVariant *parameter,
+                           gpointer data)
 {
-  gint argc;
-  gchar **argv;
-  gint i;
-  gboolean ret;
+  g_return_if_fail (GM_IS_APPLICATION (data));
 
-  /* We have to make an extra copy of the array, since g_option_context_parse()
-   * assumes that it can remove strings from the array without freeing them.
-   */
-  argc = g_strv_length (arguments);
-  argv = g_new (gchar *, argc);
-  for (i = 0; i < argc; i++)
-    argv[i] = arguments[i];
-
-  ret = g_option_context_parse (context, &argc, &argv, error);
-
-  g_free (argv);
-
-  return ret;
+  const gchar *url = g_variant_get_string (parameter, NULL);
+  GmApplication *self = GM_APPLICATION (data);
+  boost::shared_ptr<Ekiga::CallCore> call_core = self->priv->core.get<Ekiga::CallCore> ("call-core");
+  call_core->dial (url);
 }
 
 
@@ -446,6 +434,8 @@ static void
 gm_application_startup (GApplication *app)
 {
   GmApplication *self = GM_APPLICATION (app);
+  GVariantType *type_string = NULL;
+  GSimpleAction *action = NULL;
   GMenuModel *app_menu = NULL;
   gchar *path = NULL;
 
@@ -462,7 +452,6 @@ gm_application_startup (GApplication *app)
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
-
 
   /* initialize platform-specific code */
   gm_platform_init ();
@@ -550,6 +539,14 @@ gm_application_startup (GApplication *app)
                     "changed::enable-preview",
                     G_CALLBACK (video_preview_changed), self);
   self->priv->call_window = NULL;
+
+  // We add DBUS specific actions, based on the Engine actions
+  type_string = g_variant_type_new ("s");
+  action = g_simple_action_new ("call-uri", type_string);
+  g_signal_connect (action, "activate", G_CALLBACK (engine_call_uri_action_cb), self);
+  g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
+                           G_ACTION (action));
+  g_variant_type_free (type_string);
 }
 
 
@@ -598,47 +595,80 @@ gm_application_shutdown (GApplication *app)
 
 
 static gint
-gm_application_command_line (GApplication *app,
-                             GApplicationCommandLine *cl)
+gm_application_handle_local_options (GApplication *app,
+                                     GVariantDict *options)
 {
-  gchar **arguments = NULL;
-  GOptionContext *context = NULL;
-  GError *error = NULL;
-
   GmApplication *self = GM_APPLICATION (app);
+  GVariant *value = NULL;
 
   g_return_val_if_fail (self, -1);
 
-  static gchar *url = NULL;
-  static int debug_level = 0;
-  static gboolean hangup = FALSE;
-  static gboolean help = FALSE;
-  static gboolean version = FALSE;
+  value = g_variant_dict_lookup_value (options, "call", G_VARIANT_TYPE_STRING);
+  if (value) {
+    g_action_group_activate_action (G_ACTION_GROUP (app), "call-uri", value);
+    g_variant_unref (value);
+    return 0;
+  }
+  else if (g_variant_dict_contains (options, "hangup")) {
+    g_action_group_activate_action (G_ACTION_GROUP (app), "hangup", NULL);
+    return 0;
+  }
+  else if (g_variant_dict_contains (options, "version")) {
+    g_print ("%s - Version %d.%d.%d\n",
+             g_get_application_name (),
+             MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER);
+    g_application_quit (app);
+    return 0;
+  }
+
+  g_application_activate (app);
+
+  return -1;
+}
+
+
+static void
+gm_application_class_init (GmApplicationClass *klass)
+{
+  GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
+
+  app_class->startup = gm_application_startup;
+  app_class->activate = gm_application_activate;
+  app_class->shutdown = gm_application_shutdown;
+  app_class->handle_local_options = gm_application_handle_local_options;
+}
+
+
+static void
+gm_application_init (G_GNUC_UNUSED GmApplication *self)
+{
+  self->priv = new GmApplicationPrivate ();
+  self->priv->banks_actions_count = 0;
 
   static GOptionEntry options [] =
     {
         {
-          "help", '?', 0, G_OPTION_ARG_NONE, &help,
+          "help", '?', 0, G_OPTION_ARG_NONE, NULL,
           N_("Show the application's help"), NULL
         },
 
         /* Version */
         {
-          "version", 'V', 0, G_OPTION_ARG_NONE, &version,
+          "version", 'V', 0, G_OPTION_ARG_NONE, NULL,
           N_("Show the application's version"), NULL
         },
         {
-          "debug", 'd', 0, G_OPTION_ARG_INT, &debug_level,
+          "debug", 'd', 0, G_OPTION_ARG_INT, NULL,
           N_("Prints debug messages in the console (level between 1 and 8)"),
           NULL
         },
         {
-          "call", 'c', 0, G_OPTION_ARG_STRING, &url,
+          "call", 'c', 0, G_OPTION_ARG_STRING, NULL,
           N_("Makes Ekiga call the given URI"),
           NULL
         },
         {
-          "hangup", '\0', 0, G_OPTION_ARG_NONE, &hangup,
+          "hangup", '\0', 0, G_OPTION_ARG_NONE, NULL,
           N_("Hangup the current call (if any)"),
           NULL
         },
@@ -649,78 +679,7 @@ gm_application_command_line (GApplication *app,
         }
     };
 
-  context = g_option_context_new (NULL);
-  g_option_context_add_main_entries (context, options, PACKAGE_NAME);
-  g_option_context_add_group (context, gtk_get_option_group (FALSE));
-
-  arguments = g_application_command_line_get_arguments (cl, NULL);
-
-  /* Avoid exit() on the main instance */
-  g_option_context_set_help_enabled (context, FALSE);
-
-  if (!option_context_parse (context, arguments, &error)) {
-    /* We should never get here since parsing would have
-     * failed on the client side... */
-    g_application_command_line_printerr (cl,
-                                         _("%s\nRun '%s --help' to see a full list of available command line options.\n"),
-                                         error->message, arguments[0]);
-
-    g_error_free (error);
-    g_application_command_line_set_exit_status (cl, 1);
-    g_application_quit (app);
-  }
-  else if (url) {
-    boost::shared_ptr<Ekiga::CallCore> call_core =
-      self->priv->core.get<Ekiga::CallCore> ("call-core");
-    call_core->dial (url);
-  }
-  else if (hangup) {
-    boost::shared_ptr<Ekiga::CallCore> call_core =
-      self->priv->core.get<Ekiga::CallCore> ("call-core");
-    call_core->hang_up ();
-  }
-  else if (version) {
-    g_print ("%s - Version %d.%d.%d\n",
-             g_get_application_name (),
-             MAJOR_VERSION, MINOR_VERSION, BUILD_NUMBER);
-    g_application_quit (app);
-  }
-  else if (help) {
-    g_print (g_option_context_get_help (context, TRUE, NULL));
-    g_application_quit (app);
-  }
-
-  g_strfreev (arguments);
-  g_option_context_free (context);
-
-  g_application_activate (app);
-
-  g_free (url);
-  url = NULL;
-  hangup = FALSE;
-  version = FALSE;
-  help = FALSE;
-
-  return 0;
-}
-
-static void
-gm_application_class_init (GmApplicationClass *klass)
-{
-  GApplicationClass *app_class = G_APPLICATION_CLASS (klass);
-
-  app_class->startup = gm_application_startup;
-  app_class->activate = gm_application_activate;
-  app_class->command_line = gm_application_command_line;
-  app_class->shutdown = gm_application_shutdown;
-}
-
-
-static void
-gm_application_init (G_GNUC_UNUSED GmApplication *self)
-{
-  self->priv = new GmApplicationPrivate ();
-  self->priv->banks_actions_count = 0;
+  g_application_add_main_option_entries (G_APPLICATION (self), options);
 }
 
 
@@ -729,8 +688,7 @@ gm_application_new ()
 {
   GmApplication *self =
     GM_APPLICATION (g_object_new (GM_TYPE_APPLICATION,
-                                  "application-id", "org.gnome.Ekiga",
-                                  "flags", G_APPLICATION_HANDLES_COMMAND_LINE,
+                                  "application-id", "org.gnome.ekiga",
                                   NULL));
 
   g_application_register (G_APPLICATION (self), NULL, NULL);

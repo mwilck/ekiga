@@ -12,8 +12,8 @@ endif
 @INTLTOOL_DESKTOP_RULE@
 @INTLTOOL_SCHEMAS_RULE@
 
-DESKTOP_IN_FILE=@PACKAGE_NAME@.desktop.in.in
-DESKTOP_FILE=@PACKAGE_NAME@.desktop
+DESKTOP_IN_FILE=org.gnome.@PACKAGE_NAME@.desktop.in.in
+DESKTOP_FILE=org.gnome.@PACKAGE_NAME@.desktop
 
 gsettings_SCHEMAS = org.gnome.@PACKAGE_NAME@.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
@@ -91,8 +91,14 @@ revision.h:
           fi \
         fi
 
+dbusservicedir = $(datadir)/dbus-1/services
+dbusservice_DATA = org.gnome.ekiga.service
+
+org.gnome.ekiga.service: Makefile
+	$(AM_V_GEN) (echo '[D-BUS Service]'; echo 'Name=org.gnome.ekiga'; echo 'Exec=${bindir}/ekiga --gapplication-service') > $@.tmp && mv $@.tmp $@
+
 ### Dist Clear
-DISTCLEANFILES=gnome-doc-utils.make ekiga.desktop org.gnome.ekiga.gschema revision.h $(appdata_DATA)
+DISTCLEANFILES=gnome-doc-utils.make org.gnome.ekiga.desktop org.gnome.ekiga.gschema revision.h $(appdata_DATA)
 
 MAINTAINERCLEANFILES= \
 	Makefile.in aclocal.m4 compile config.guess config.sub \
