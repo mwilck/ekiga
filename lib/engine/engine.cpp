@@ -73,10 +73,6 @@
 #include "hal-gudev-main.h"
 #endif
 
-#ifdef HAVE_DBUS
-#include "hal-main-dbus.h"
-#endif
-
 #include "opal-process.h"
 #include "opal-main.h"
 
@@ -153,10 +149,6 @@ engine_init (Ekiga::ServiceCore& core,
 
 #ifdef HAVE_GUDEV
   hal_gudev_init (kickstart);
-#endif
-
-#ifdef HAVE_DBUS
-  hal_dbus_init (kickstart);
 #endif
 
   opal_init (kickstart);

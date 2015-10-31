@@ -38,7 +38,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/foe-list \
 	-I$(top_srcdir)/lib/engine/components/glib-notify \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
-	-I$(top_srcdir)/lib/engine/components/hal-dbus \
 	-I$(top_srcdir)/lib/engine/components/hal-gudev \
 	-I$(top_srcdir)/lib/engine/components/mlogo-videoinput \
 	-I$(top_srcdir)/lib/engine/components/null-audioinput \
@@ -475,35 +474,6 @@ AM_CPPFLAGS += $(GUDEV_CFLAGS)
 libekiga_la_LDFLAGS += $(GUDEV_LIBS)
 endif
 
-##
-# Sources of the hal dbus component
-##
-if HAVE_DBUS
-
-libekiga_la_SOURCES += \
-	engine/components/hal-dbus/hal-manager-dbus.h \
-	engine/components/hal-dbus/hal-manager-dbus.cpp \
-	engine/components/hal-dbus/hal-main-dbus.h \
-	engine/components/hal-dbus/hal-main-dbus.cpp
-
-nodist_libekiga_la_SOURCES += \
-	engine/components/hal-dbus/hal-marshal.h \
-	engine/components/hal-dbus/hal-marshal.c
-
-libekiga_la_LDFLAGS += $(DBUS_LIBS)
-
-# forces the HAVE :
-BUILT_SOURCES += engine/components/hal-dbus/hal-marshal.h engine/components/hal-dbus/hal-marshal.c
-CLEANFILES += engine/components/hal-dbus/hal-marshal.h engine/components/hal-dbus/hal-marshal.c
-EXTRA_DIST += engine/components/hal-dbus/hal-marshal.list
-
-engine/components/hal-dbus/hal-marshal.h: engine/components/hal-dbus/hal-marshal.list
-	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --header > $@.tmp && mv $@.tmp $@
-
-engine/components/hal-dbus/hal-marshal.c: engine/components/hal-dbus/hal-marshal.list
-	$(AM_V_GEN)$(LIBTOOL) --mode=execute glib-genmarshal --prefix=gm_hal_dbus_marshal $^ --body > $@.tmp && mv $@.tmp $@
-
-endif
 
 ##
 # Sources of the Clutter video output component
