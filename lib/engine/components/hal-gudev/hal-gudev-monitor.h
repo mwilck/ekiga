@@ -39,6 +39,8 @@
 
 #include "services.h"
 #include "hal-manager.h"
+#include "audioinput-core.h"
+#include "audiooutput-core.h"
 
 #include <gudev/gudev.h>
 
@@ -47,7 +49,8 @@ class GUDevMonitor:
   public Ekiga::HalManager
 {
 public:
-  GUDevMonitor();
+  GUDevMonitor(boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core,
+               boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core);
 
   ~GUDevMonitor();
 
@@ -55,7 +58,7 @@ public:
   { return "gudev"; }
 
   const std::string get_description () const
-  { return "\tComponent monitoring Video4Linux devices using GUDev"; }
+  { return "\tComponent monitoring devices using GUDev"; }
 
 private:
 
@@ -63,15 +66,20 @@ private:
     std::string framework;
     std::string name;
     int caps;
-  } VideoInputDevice;
-  friend void gudev_monitor_videoinput_uevent_handler (GUdevClient* client,
-						       const gchar* action,
-						       GUdevDevice* device,
-						       GUDevMonitor* monitor);
-  void videoinput_add (GUdevDevice* device);
-  void videoinput_remove (GUdevDevice* device);
-  std::vector<VideoInputDevice> videoinput_devices;
-  GUdevClient* videoinput;
+  } Device;
+  friend void gudev_monitor_uevent_handler (GUdevClient* client,
+                                            const gchar* action,
+                                            GUdevDevice* device,
+                                            GUDevMonitor* monitor);
+  void device_change (GUdevDevice* device,
+                      const gchar* action);
+
+  GUdevClient* client;
+
+  boost::weak_ptr<Ekiga::AudioInputCore> audioinput_core;
+  boost::weak_ptr<Ekiga::AudioOutputCore> audiooutput_core;
+  std::vector<std::string> audio_input_devices;
+  std::vector<std::string> audio_output_devices;
 };
 
 #endif

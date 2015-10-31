@@ -1,4 +1,4 @@
-/* Ekiga -- A VoIP and Video-Conferencing application
+/* Ekiga -- A VoIP and -Conferencing application
  * Copyright (C) 2000-2014 Damien Sandras <dsandras@seconix.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -35,8 +35,7 @@
  */
 
 #include "hal-gudev-monitor.h"
-
-#define DEBUG 0
+#include <algorithm>
 
 #if DEBUG
 static void
@@ -59,85 +58,128 @@ print_gudev_device (GUdevDevice* device)
 }
 #endif
 
+
 void
-gudev_monitor_videoinput_uevent_handler (G_GNUC_UNUSED GUdevClient* client,
-					 const gchar* action,
-					 GUdevDevice* device,
-					 GUDevMonitor* monitor)
+gudev_monitor_uevent_handler (G_GNUC_UNUSED GUdevClient* client,
+                              const gchar* action,
+                              GUdevDevice* device,
+                              GUDevMonitor* monitor)
 {
-  if (g_str_equal ("remove", action)) {
-
-    monitor->videoinput_remove (device);
-  }
-  if (g_str_equal ("add", action)) {
-
-    monitor->videoinput_add (device);
-  }
+  if (g_str_equal (action, "add") || g_str_equal (action, "remove"))
+    monitor->device_change (device, action);
 }
 
-GUDevMonitor::GUDevMonitor ()
+
+GUDevMonitor::GUDevMonitor (boost::shared_ptr<Ekiga::AudioInputCore> _audioinput_core,
+                            boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core)
+        : audioinput_core(_audioinput_core), audiooutput_core(_audiooutput_core)
 {
-  const gchar* videoinput_subsystems[] = {"video4linux", NULL};
-  videoinput = g_udev_client_new (videoinput_subsystems);
-  g_signal_connect (G_OBJECT (videoinput), "uevent",
-		    G_CALLBACK (gudev_monitor_videoinput_uevent_handler), this);
+  const gchar* subsystems[] = { "video4linux", "sound", NULL};
+  client = g_udev_client_new (subsystems);
+
+  _audioinput_core->get_devices (audio_input_devices);
+  _audiooutput_core->get_devices (audio_output_devices);
+
+  g_signal_connect (G_OBJECT (client), "uevent",
+		    G_CALLBACK (gudev_monitor_uevent_handler), this);
 }
+
 
 GUDevMonitor::~GUDevMonitor ()
 {
-  g_object_unref (videoinput);
+  g_object_unref (client);
 }
 
+
 void
-GUDevMonitor::videoinput_add (GUdevDevice* device)
+GUDevMonitor::device_change (GUdevDevice* device,
+                             const gchar* action)
 {
 #if DEBUG
-  g_print ("%s\n", __PRETTY_FUNCTION__);
-  print_gudev_device (device);
+  //g_print ("%s\n", __PRETTY_FUNCTION__);
+  //print_gudev_device (device);
 #endif
   gint v4l_version = 0;
+  gboolean add = g_str_equal (action, "add");
+  gboolean remove = g_str_equal (action, "remove");
 
-  // first check the api version
-  v4l_version = g_udev_device_get_property_as_int (device, "ID_V4L_VERSION");
+  const char* subsystem = g_udev_device_get_subsystem (device);
+  if (g_str_equal (subsystem, "video4linux")) {
 
-  if (v4l_version == 1 || v4l_version == 2) {
+    // first check the api version
+    v4l_version = g_udev_device_get_property_as_int (device, "ID_V4L_VERSION");
 
-    // then check it can actually capture video
-    const char* caps = g_udev_device_get_property (device, "ID_V4L_CAPABILITIES");
-    if (caps != NULL && g_strstr_len (caps, -1, ":capture:") != NULL) {
+    if (v4l_version == 1 || v4l_version == 2) {
 
-      // we're almost good!
-      const gchar* file = g_udev_device_get_device_file (device);
+      // then check it can actually capture
+      const char* caps = g_udev_device_get_property (device, "ID_V4L_CAPABILITIES");
+      if (caps != NULL && g_strstr_len (caps, -1, ":capture:") != NULL) {
 
-      if (file != NULL) {
-	VideoInputDevice vdevice = {"video4linux", file, v4l_version};
-	videoinput_devices.push_back(vdevice);
-	videoinput_device_added ("video4linux", file, v4l_version);
+        // we're almost good!
+        const char* name = g_udev_device_get_property (device, "ID_V4L_PRODUCT");
+
+        if (name != NULL) {
+          if (add)
+            videoinput_device_added ("video4linux", name, v4l_version);
+          else if (remove)
+            videoinput_device_removed ("video4linux", name, v4l_version);
+        }
       }
     }
   }
-}
+  else if (g_str_equal (subsystem, "sound")) {
+    // Audio device detected
+    std::vector<std::string> new_audio_input_devices;
+    std::vector<std::string> new_audio_output_devices;
+    boost::shared_ptr<Ekiga::AudioInputCore> aicore = audioinput_core.lock ();
+    boost::shared_ptr<Ekiga::AudioOutputCore> aocore = audiooutput_core.lock ();
+    Ekiga::Device dev;
+    if (!aicore || !aocore)
+      return;
 
-void
-GUDevMonitor::videoinput_remove (GUdevDevice* device)
-{
-  const gchar* file = g_udev_device_get_device_file (device);
-  bool found = false;
-  std::vector<VideoInputDevice>::iterator iter;
+    aicore->get_devices (new_audio_input_devices);
+    aocore->get_devices (new_audio_output_devices);
 
-  for (iter = videoinput_devices.begin ();
-       iter != videoinput_devices.end ();
-       ++iter) {
-
-    if (iter->name == file) {
-
-      found = true;
-      break;
+    std::vector<std::string>::iterator iter;
+    // This is awful with an exploding O complexity. I'm ashamed.
+    for (iter = new_audio_input_devices.begin ();
+         iter != new_audio_input_devices.end ();
+         ++iter) {
+      std::vector<std::string>::iterator it = std::find (audio_input_devices.begin (), audio_input_devices.end (), (*iter));
+      if (it == audio_input_devices.end () && !(*iter).empty ()) {
+        if (add) {
+          dev.SetFromString (*iter);
+          audioinput_device_added (dev.source, dev.name);
+        }
+        break;
+      }
+      else
+        audio_input_devices.erase (it);
     }
-  }
-  if (found) {
+    if (remove && audio_input_devices.size () > 0) {
+      dev.SetFromString (audio_input_devices[0]);
+      audioinput_device_removed (dev.source, dev.name);
+    }
+    audio_input_devices = new_audio_input_devices;
 
-    videoinput_device_removed (iter->framework, iter->name, iter->caps);
-    videoinput_devices.erase (iter);
+    for (iter = new_audio_output_devices.begin ();
+         iter != new_audio_output_devices.end ();
+         ++iter) {
+      std::vector<std::string>::iterator it = std::find (audio_output_devices.begin (), audio_output_devices.end (), (*iter));
+      if (it == audio_output_devices.end () && !(*iter).empty ()) {
+        if (add) {
+          dev.SetFromString (*iter);
+          audiooutput_device_added (dev.source, dev.name);
+        }
+        break;
+      }
+      else
+        audio_output_devices.erase (it);
+    }
+    if (remove && audio_output_devices.size () > 0) {
+      dev.SetFromString (audio_output_devices[0]);
+      audiooutput_device_removed (dev.source, dev.name);
+    }
+    audio_output_devices = new_audio_output_devices;
   }
 }

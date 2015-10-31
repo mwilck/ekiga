@@ -50,10 +50,12 @@ struct GUDevSpark: public Ekiga::Spark
   {
     boost::shared_ptr<Ekiga::HalCore> hal_core = core.get<Ekiga::HalCore> ("hal-core");
     boost::shared_ptr<GUDevMonitor> monitor = core.get<GUDevMonitor> ("gudev");
+    boost::shared_ptr<Ekiga::AudioInputCore> audioinput_core = core.get<Ekiga::AudioInputCore> ("audioinput-core");
+    boost::shared_ptr<Ekiga::AudioOutputCore> audiooutput_core = core.get<Ekiga::AudioOutputCore> ("audiooutput-core");
 
     if (hal_core && !monitor) {
 
-      monitor = boost::shared_ptr<GUDevMonitor> (new GUDevMonitor);
+      monitor = boost::shared_ptr<GUDevMonitor> (new GUDevMonitor (audioinput_core, audiooutput_core));
 
       core.add (Ekiga::ServicePtr (monitor));
       hal_core->add_manager (*monitor);
