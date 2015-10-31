@@ -547,6 +547,7 @@ gm_application_startup (GApplication *app)
   g_action_map_add_action (G_ACTION_MAP (g_application_get_default ()),
                            G_ACTION (action));
   g_variant_type_free (type_string);
+  g_object_unref (action);
 }
 
 
