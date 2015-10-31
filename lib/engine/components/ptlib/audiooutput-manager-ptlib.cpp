@@ -204,7 +204,7 @@ void GMAudioOutputManager_ptlib::set_volume (Ekiga::AudioOutputPS ps, unsigned v
 
 bool GMAudioOutputManager_ptlib::has_device(const std::string & sink, const std::string & device_name, Ekiga::AudioOutputDevice & device)
 {
-  if (sink == "alsa") {
+  if (sink == "ALSA") {
     device.type = DEVICE_TYPE;
     device.source = "ALSA";
     device.name = device_name;

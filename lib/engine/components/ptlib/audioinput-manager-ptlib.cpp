@@ -202,7 +202,7 @@ void GMAudioInputManager_ptlib::set_volume (unsigned volume)
 
 bool GMAudioInputManager_ptlib::has_device(const std::string & source, const std::string & device_name, Ekiga::AudioInputDevice & device)
 {
-  if (source == "alsa") {
+  if (source == "ALSA") {
     device.type = DEVICE_TYPE;
     device.source = "ALSA";
     device.name = device_name;
