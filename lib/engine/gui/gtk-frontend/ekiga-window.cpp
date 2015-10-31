@@ -357,7 +357,7 @@ static void on_established_call_cb (boost::shared_ptr<Ekiga::Call> /*call*/,
   mw->priv->calling_state = Connected;
 
   /* Manage sound events */
-  mw->priv->audiooutput_core->stop_play_event("incoming_call_sound");
+  mw->priv->audiooutput_core->stop_play_event("incoming-call-sound");
   mw->priv->audiooutput_core->stop_play_event("ring_tone_sound");
 }
 
