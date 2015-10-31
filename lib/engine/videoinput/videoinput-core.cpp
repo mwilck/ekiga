@@ -374,7 +374,7 @@ void VideoInputCore::add_device (const std::string & source, const std::string &
 
       device_added (device);
 
-      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New device detected"), device.GetString (), _("Use it"), boost::bind (&VideoInputCore::on_set_device, (VideoInputCore*) this, device)));
+      boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("New Video Input Device"), device.GetString (), _("Use It"), boost::bind (&VideoInputCore::on_set_device, (VideoInputCore*) this, device)));
       notification_core->push_notification (notif);
     }
   }
@@ -400,9 +400,6 @@ void VideoInputCore::remove_device (const std::string & source, const std::strin
        }
 
        device_removed(device, current_device == device);
-
-       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("Device removed"), device.GetString ()));
-       notification_core->push_notification (notif);
      }
   }
 }

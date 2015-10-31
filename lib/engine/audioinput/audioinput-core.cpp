@@ -272,8 +272,8 @@ AudioInputCore::add_device (const std::string& source,
       device_added (device);
 
       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info,
-									     _("New device detected"),
-									     device.GetString (), _("Use it"),
+									     _("New Audio Input Device"),
+									     device.GetString (), _("Use It"),
 									     boost::bind (&AudioInputCore::on_set_device, (AudioInputCore*) this, device)));
       notification_core->push_notification (notif);
     }
@@ -305,10 +305,6 @@ AudioInputCore::remove_device (const std::string& source,
             internal_set_device( new_device);
        }
 
-       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info,
-									      _("Device removed"),
-									      device.GetString ()));
-       notification_core->push_notification (notif);
        device_removed (device,  current_device == device);
      }
   }

@@ -446,9 +446,9 @@ AudioOutputCore::add_device (const std::string& sink,
        device_added(device);
 
        boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info,
-									      _("New device detected"),
+									      _("New Audio Output Device"),
 									      device.GetString (),
-									      _("Use it"),
+									      _("Use It"),
 									      boost::bind (&AudioOutputCore::on_set_device, (AudioOutputCore*) this, device)));
        notification_core->push_notification (notif);
      }
@@ -480,9 +480,6 @@ AudioOutputCore::remove_device (const std::string& sink,
          new_device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
          internal_set_primary_device(new_device);
        }
-
-       boost::shared_ptr<Ekiga::Notification> notif (new Ekiga::Notification (Ekiga::Notification::Info, _("Device removed"), device.GetString ()));
-       notification_core->push_notification (notif);
 
        device_removed(device, device == current_device[primary]);
      }
