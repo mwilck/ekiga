@@ -138,7 +138,7 @@ if test "x${gm_platform}" = "xmingw" ; then
 else
    PKG_CHECK_MODULES([GTK], [gtk+-3.0 >= 3.12.0 gnome-icon-theme >= 3.0.0])
 fi
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.24.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.40.0 gmodule-2.0 gobject-2.0 gthread-2.0 gio-2.0])
 
 PKG_CHECK_MODULES([GTK_SIDEBAR], [gtk+-3.0 >=  3.16.0], [have_sidebar="yes"], [have_sidebar="no"])
 if test "x${have_sidebar}" = "xyes" ; then
@@ -246,31 +246,6 @@ fi],enable_eds=yes)
 fi
 
 AM_CONDITIONAL(HAVE_EDS, test "x$found_eds" = "xyes")
-
-
-dnl ###############################
-dnl   NOTIFY support
-dnl ###############################
-NOTIFY="disabled"
-
-if test "x${gm_platform}" != "xmingw" ; then
-  AC_ARG_ENABLE(notify, AS_HELP_STRING([--enable-notify],[enable libnotify support (default is enabled)]),
-[if test "x$enableval" = "xyes"; then
-  enable_notify=yes
-fi],enable_notify=yes)
-
-  if test "x$enable_notify" = "xyes"; then
-    PKG_CHECK_MODULES([NOTIFY], [libnotify], [found_notify=yes], foo=bar)
-    if test "x$found_notify" = "xyes"; then
-      AC_SUBST(NOTIFY_CFLAGS)
-      AC_SUBST(NOTIFY_LIBS)
-      NOTIFY="enabled"
-      AC_DEFINE(HAVE_NOTIFY,1,[NOTIFY support])
-    fi
-  fi
-fi
-
-AM_CONDITIONAL(HAVE_NOTIFY, test "x$found_notify" = "xyes")
 
 
 dnl ###############################
@@ -750,7 +725,7 @@ AC_CONFIG_FILES([Makefile
 Doxyfile
 org.gnome.ekiga.gschema.xml.in
 ekiga.convert
-ekiga.desktop.in
+org.gnome.ekiga.desktop.in
 lib/Makefile
 po/Makefile.in
 man/Makefile
@@ -765,7 +740,6 @@ plugins/gstreamer/Makefile
 plugins/kab/Makefile
 plugins/kde/Makefile
 plugins/ldap/Makefile
-plugins/libnotify/Makefile
 plugins/loudmouth/Makefile
 plugins/resource-list/Makefile
 plugins/xcap/Makefile
@@ -785,7 +759,6 @@ echo ""
 if test "x${gm_platform}" != "xmingw" ; then
 echo "                     GDU support  :  $GDU"
 echo "   Evolution-Data-Server support  :  $EDS"
-echo "                  NOTIFY support  :  $NOTIFY"
 echo ""
 echo "             Video4Linux support  :  $VIDEO4LINUX"
 fi

@@ -55,6 +55,7 @@
 #include "audiooutput-core.h"
 #include "hal-core.h"
 #include "history-main.h"
+#include "glib-notify-main.h"
 #include "gtk-core-main.h"
 #include "gmconf-personal-details.h"
 
@@ -147,6 +148,8 @@ engine_init (Ekiga::ServiceCore& core,
 
   audioinput_ptlib_init (kickstart);
   audiooutput_ptlib_init (kickstart);
+
+  gnotify_init (kickstart);
 
 #ifdef HAVE_GUDEV
   hal_gudev_init (kickstart);

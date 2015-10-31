@@ -36,6 +36,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/lib/engine/components/call-history \
 	-I$(top_srcdir)/lib/engine/components/echo \
 	-I$(top_srcdir)/lib/engine/components/foe-list \
+	-I$(top_srcdir)/lib/engine/components/glib-notify \
 	-I$(top_srcdir)/lib/engine/components/gmconf-personal-details \
 	-I$(top_srcdir)/lib/engine/components/hal-dbus \
 	-I$(top_srcdir)/lib/engine/components/hal-gudev \
@@ -412,6 +413,14 @@ libekiga_la_SOURCES += \
 	engine/components/call-history/history-source.cpp \
 	engine/components/call-history/history-main.h \
 	engine/components/call-history/history-main.cpp
+
+##
+# Sources of the glib notify component
+##
+
+libekiga_la_SOURCES += \
+	engine/components/glib-notify/glib-notify-main.cpp
+
 
 ##
 # Sources of the gmconf personal details component

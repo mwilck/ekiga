@@ -26,10 +26,6 @@ if HAVE_LOUDMOUTH
 LOUDMOUTH_DIR = loudmouth
 endif
 
-if HAVE_NOTIFY
-LIBNOTIFY_DIR = libnotify
-endif
-
 if HAVE_XCAP
 XCAP_DIRS = xcap resource-list
 endif
