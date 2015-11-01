@@ -718,6 +718,8 @@ on_view_event_after (GtkWidget *tree_view,
       if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->presentity_menu->get_menu ())
         gtk_menu_popup (GTK_MENU (self->priv->presentity_menu->get_menu ()),
                         NULL, NULL, NULL, NULL, event->button, event->time);
+      if ((event->type == GDK_2BUTTON_PRESS && event->button == 1) || (event->type == GDK_KEY_PRESS))
+        g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "call", NULL);
       break;
     default:
 
