@@ -208,7 +208,7 @@ gm_application_show_call_window (GmApplication *self)
   if (!self->priv->call_window)
     self->priv->call_window = call_window_new (self);
 
-  gtk_window_present (GTK_WINDOW (self->priv->call_window));
+  call_window_present (EKIGA_CALL_WINDOW (self->priv->call_window));
 
   g_signal_connect (G_OBJECT (self->priv->call_window), "destroy",
                     G_CALLBACK (call_window_destroyed_cb), self);

@@ -65,6 +65,8 @@ GType        ekiga_call_window_get_type   ();
 
 GtkWidget *call_window_new (GmApplication *app);
 
+void call_window_present (EkigaCallWindow *call_window);
+
 // Add a call to handle to the CallWindow.
 // The call is supposed to be in "setup" mode. The reason
 // is that the CallWindow should not handle calls that do

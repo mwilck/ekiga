@@ -1616,6 +1616,21 @@ call_window_new (GmApplication *app)
 
 
 void
+call_window_present (EkigaCallWindow *self)
+{
+  g_return_if_fail (EKIGA_IS_CALL_WINDOW (self));
+
+  if (self->priv->destroy_timeout_id > 0) {
+    g_source_remove (self->priv->destroy_timeout_id);
+    self->priv->destroy_timeout_id = 0;
+  }
+  self->priv->dead = false;
+
+  gtk_window_present (GTK_WINDOW (self));
+}
+
+
+void
 call_window_add_call (GtkWidget *call_window,
                       boost::shared_ptr<Ekiga::Call> call)
 {
