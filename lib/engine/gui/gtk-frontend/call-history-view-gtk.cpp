@@ -229,14 +229,18 @@ on_clicked (G_GNUC_UNUSED GtkWidget *tree,
 {
   CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
 
-  /* Ignore no click events */
-  if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS)
-    return TRUE;
+  // take into account only clicks and Enter keys
+  if (event->type != GDK_BUTTON_PRESS && event->type != GDK_2BUTTON_PRESS && event->type != GDK_KEY_PRESS)
+    return FALSE;
+  if (event->type == GDK_KEY_PRESS && ((GdkEventKey*)event)->keyval != GDK_KEY_Return && ((GdkEventKey*)event)->keyval != GDK_KEY_KP_Enter)
+    return FALSE;
 
-  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->contact_menu) {
+  if (event->type == GDK_BUTTON_PRESS && event->button == 3 && self->priv->contact_menu)
     gtk_menu_popup (GTK_MENU (self->priv->contact_menu->get_menu (boost::assign::list_of (self->priv->menu))),
                     NULL, NULL, NULL, NULL, event->button, event->time);
-  }
+
+  if ((event->type == GDK_2BUTTON_PRESS && event->button == 1) || (event->type == GDK_KEY_PRESS))
+    g_action_group_activate_action (G_ACTION_GROUP (g_application_get_default ()), "call", NULL);
 
   return TRUE;
 }
