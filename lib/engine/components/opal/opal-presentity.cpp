@@ -35,6 +35,7 @@
 #include <algorithm>
 #include <set>
 #include <glib/gi18n.h>
+#include <boost/algorithm/string.hpp>
 
 #include "form-request-simple.h"
 #include "robust-xml.h"
@@ -123,6 +124,8 @@ Opal::Presentity::Presentity (const Opal::Account & account_,
   node(node_),
   presence("unknown")
 {
+  if (get_uri ().find ("@ekiga.net"))
+    type = Opal::Presentity::Ekiga;
 }
 
 
@@ -282,11 +285,19 @@ Opal::Presentity::edit_presentity ()
                  _("John Doe"),
                  Ekiga::FormVisitor::STANDARD,
                  false, false);
-  request->text ("uri", _("URI"),
-                 get_uri (),
-                 _("sip:username@ekiga.net"),
-                 Ekiga::FormVisitor::URI,
-                 false, false);
+  if (type == Opal::Presentity::Ekiga) {
+    std::string user = get_uri ();
+    boost::replace_all (user, "sip:", "");
+    boost::replace_all (user, "@ekiga.net", "");
+    request->text ("user", _("_Username"), user, _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+  }
+  else
+    request->text ("uri", _("URI"),
+                   get_uri (),
+                   _("sip:username@ekiga.net"),
+                   Ekiga::FormVisitor::URI,
+                   false, false);
 
   request->editable_list ("groups", _("Groups"),
 			 get_groups (), existing_groups ());
@@ -318,8 +329,12 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
     error = _("You did not provide a valid address");
     return false;
   }
-
-  new_uri = canonize_uri (new_uri);
+  if (type == Opal::Presentity::Ekiga) {
+    new_uri = result.text ("user");
+    new_uri += "@ekiga.net";
+  }
+  else
+    new_uri = canonize_uri (new_uri);
 
   for (xmlNodePtr child = node->children ;
        child != NULL ;

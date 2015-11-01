@@ -202,7 +202,7 @@ Opal::Bank::new_account (Account::Type acc_type,
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("host", _("_Gatekeeper"), std::string (), _("h323.ekiga.net"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-    request->text ("user", _("_User"), username, _("jon"),
+    request->text ("user", _("_Username"), username, _("jon"),
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", username);
     request->text ("password", _("_Password"), password, _("1234"),
@@ -217,7 +217,7 @@ Opal::Bank::new_account (Account::Type acc_type,
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("host", _("_Registrar"), std::string (), _("ekiga.net"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-    request->text ("user", _("_User"), username, _("jon"),
+    request->text ("user", _("_Username"), username, _("jon"),
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("authentication_user", _("_Login"), std::string (), _("jon.doe"),
                    Ekiga::FormVisitor::STANDARD, true, true);

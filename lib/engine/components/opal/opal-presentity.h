@@ -63,6 +63,7 @@ namespace Opal
       public Ekiga::DynamicObject<Presentity>
   {
   public:
+    typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
 
     /* build a node describing a valid presentity, which the caller
      * will then use to create a valid instance using the ctor */
@@ -142,6 +143,7 @@ namespace Opal
 
     std::string presence;
     std::string status;
+    Type type;
   };
 
   typedef boost::shared_ptr<Presentity> PresentityPtr;

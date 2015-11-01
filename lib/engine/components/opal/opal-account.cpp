@@ -222,12 +222,8 @@ Opal::Account::Account (Opal::Bank & _bank,
   }
 
   /* Actor stuff */
-
-  /* Translators: Example: Add ekiga.net Contact */
-  char *text = g_strdup_printf (_("A_dd %s Contact"), get_host ().c_str ());
-  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", text,
+  add_action (Ekiga::ActionPtr (new Ekiga::Action ("add-contact", _("Add Contact"),
                                                    boost::bind (&Opal::Account::add_contact, this))));
-  g_free (text);
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("edit-account", _("_Edit"),
                                                    boost::bind (&Opal::Account::edit, this))));
   add_action (Ekiga::ActionPtr (new Ekiga::Action ("remove-account", _("_Remove"),
@@ -704,7 +700,7 @@ Opal::Account::edit ()
   case Opal::Account::Ekiga:
     request->hidden ("name", get_name ());
     request->hidden ("host", get_host ());
-    request->text ("user", _("_User"), get_username (), _("jon"),
+    request->text ("user", _("_Username"), get_username (), _("jon"),
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->hidden ("authentication_user", get_authentication_username ());
     request->text ("password", _("_Password"), get_password (), _("1234"),
@@ -730,7 +726,7 @@ Opal::Account::edit ()
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("host", _("_Gatekeeper"), get_host (), _("ekiga.net"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-    request->text ("user", _("_User"), get_username (), _("jon"),
+    request->text ("user", _("_Username"), get_username (), _("jon"),
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
@@ -743,7 +739,7 @@ Opal::Account::edit ()
                    Ekiga::FormVisitor::STANDARD, false, false);
     request->text ("host", _("_Registrar"), get_host (), _("ekiga.net"),
                    Ekiga::FormVisitor::STANDARD, false, false);
-    request->text ("user", _("_User"), get_username (), _("jon"),
+    request->text ("user", _("_Username"), get_username (), _("jon"),
                    Ekiga::FormVisitor::STANDARD, false, false);
     /* Translators:
      * SIP knows two usernames: The name for the client ("User") and the name
@@ -892,8 +888,12 @@ Opal::Account::add_contact ()
   request->text ("name", _("_Name"), std::string (), _("John Doe"),
                  Ekiga::FormVisitor::STANDARD, false, false);
 
-  request->text ("uri", _("_URI"), "sip:", "sip:john.doe@ekiga.net",
-                 Ekiga::FormVisitor::URI, false, false);
+  if (type == Opal::Account::Ekiga)
+    request->text ("user", _("_Username"), std::string (), _("jon"),
+                   Ekiga::FormVisitor::STANDARD, false, false);
+  else
+    request->text ("uri", _("_URI"), "sip:", "sip:john.doe@ekiga.net",
+                   Ekiga::FormVisitor::URI, false, false);
 
   request->editable_list ("groups",
                           _("Groups"),
@@ -914,7 +914,12 @@ Opal::Account::on_add_contact_form_submitted (bool submitted,
   std::string uri;
   const std::list<std::string> groups = result.editable_list ("groups");
 
-  uri = result.text ("uri");
+  if (type == Opal::Account::Ekiga) {
+    uri = result.text ("user");
+    uri += "@ekiga.net";
+  }
+  else
+    uri = result.text ("uri");
   uri = canonize_uri (uri);
 
   if (!is_supported_uri (uri)) {
