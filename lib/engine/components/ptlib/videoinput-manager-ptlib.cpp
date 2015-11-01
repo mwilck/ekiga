@@ -183,6 +183,14 @@ bool GMVideoInputManager_ptlib::get_frame_data (char *data)
 
   if ((unsigned) I != expectedFrameSize) {
     PTRACE(1, "GMVideoInputManager_ptlib\tExpected a frame of " << expectedFrameSize << " bytes but got " << I << " bytes");
+    memset (data, 0, current_state.width*current_state.height); //ff
+    memset (data + (current_state.width * current_state.height),
+            0x7f,
+            (current_state.width*current_state.height) >> 2);
+    memset (data + (current_state.width * current_state.height) +
+            ((current_state.width * current_state.height) >> 2),
+            0x7f,
+            (current_state.width*current_state.height) >> 2);
   }
   return ret;
 }
