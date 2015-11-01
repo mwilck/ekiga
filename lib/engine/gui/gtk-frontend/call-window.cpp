@@ -50,7 +50,6 @@
 #include "gmvideowidget.h"
 #include "gm-info-bar.h"
 #include "gactor-menu.h"
-#include "trigger.h"
 #include "scoped-connections.h"
 #include "form-dialog-gtk.h"
 #include "ext-window.h"

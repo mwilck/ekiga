@@ -40,7 +40,6 @@
 #include "ekiga-settings.h"
 #include "revision.h"
 
-#include "trigger.h"
 #include "form-dialog-gtk.h"
 #include "ekiga-app.h"
 #include "account-core.h"
