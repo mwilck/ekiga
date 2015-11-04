@@ -595,6 +595,10 @@ on_show_offline_contacts_changed_cb (GSettings *settings,
       roster_view_gtk_update_groups (self, &heaps);
     } while (gtk_tree_model_iter_next (model, &heaps));
   }
+
+  // Clean up
+  model = gtk_tree_view_get_model (self->priv->tree_view);
+  gtk_tree_model_filter_refilter (GTK_TREE_MODEL_FILTER (model));
 }
 
 
@@ -1384,8 +1388,7 @@ roster_view_gtk_update_presentity (RosterViewGtk* self,
   GdkRGBA color;
   GdkPixbuf *pixbuf = NULL;
   bool active = false;
-  bool away = false;
-  std::string icon = "user-offline";
+  std::string icon = "phone";
   std::string presence;
 
   // Refer to what we know
@@ -1401,10 +1404,9 @@ roster_view_gtk_update_presentity (RosterViewGtk* self,
     presence = "unknown";
 
   active = (presence != "offline");
-  away = (presence == "away");
 
   gtk_style_context_get_color (gtk_widget_get_style_context (GTK_WIDGET (self->priv->tree_view)),
-                               (!active||away)?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
+                               (presence != "available" && presence != "unknown")?GTK_STATE_FLAG_INSENSITIVE:GTK_STATE_FLAG_NORMAL,
                                &color);
 
   pixbuf = gtk_icon_theme_load_icon (gtk_icon_theme_get_default (),
@@ -1419,6 +1421,7 @@ roster_view_gtk_update_presentity (RosterViewGtk* self,
                       COLUMN_PRESENTITY, presentity.get (),
                       COLUMN_NAME, presentity->get_name ().c_str (),
                       COLUMN_AVATAR_PIXBUF, pixbuf,
+                      COLUMN_STATUS, presentity->get_status ().c_str (),
                       COLUMN_PRESENCE_ICON, icon.c_str (),
                       COLUMN_FOREGROUND_COLOR, &color, -1);
 
