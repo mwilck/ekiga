@@ -700,12 +700,14 @@ Opal::Account::edit ()
   request->title (title);
   g_free (title);
 
+  std::string uri = "sip:" + get_username () + "@" + get_host ();
+
   switch (type) {
   case Opal::Account::Ekiga:
     request->hidden ("name", get_name ());
     request->hidden ("host", get_host ());
-    request->text ("user", _("_User"), get_username (), _("jon"),
-                   Ekiga::FormVisitor::STANDARD, false, false);
+    request->text ("user", _("Ekiga.im _SIP address"), uri, _("sip:jon@ekiga.im"),
+                   Ekiga::FormVisitor::EKIGA_URI, false, false);
     request->hidden ("authentication_user", get_authentication_username ());
     request->text ("password", _("_Password"), get_password (), _("1234"),
                    Ekiga::FormVisitor::PASSWORD, false, false);
@@ -774,15 +776,23 @@ Opal::Account::on_edit_form_submitted (bool submitted,
     return false;
 
   std::string new_name, new_host;
-  if (type == Opal::Account::Ekiga || type == Opal::Account::DiamondCard) {
+  if (type == Opal::Account::Ekiga || type == Opal::Account::DiamondCard)
     new_name = result.hidden ("name");
-    new_host = result.hidden ("host");
-  } else {
+  else {
     new_name = result.text ("name");
     new_host = result.text ("host");
   }
+
   std::string new_outbound_proxy = result.text ("outbound_proxy");
   std::string new_user = result.text ("user");
+  // This should only happen with Ekiga.net accounts
+  if (!new_user.compare (0, 4, "sip:"))
+    new_user = new_user.substr (4, string::npos);  // remove leading sip:
+  std::size_t pos = new_user.find_first_of ("@");
+  if (pos != std::string::npos) {
+    new_user = new_user.substr (0, pos);  // remove trailing @ekiga.net
+    new_host = new_user.substr (pos);
+  }
   std::string new_authentication_user;
   if (type == Account::Ekiga || type == Account::DiamondCard)
     new_authentication_user = new_user;
@@ -1182,6 +1192,9 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   switch (info->m_state) {
 
   case OpalPresenceInfo::Unchanged:
+    if (info->m_infoData.Find("closed") != P_MAX_INDEX)
+      new_presence = "offline";
+    else
     // do not change presence
     return;
     break;
