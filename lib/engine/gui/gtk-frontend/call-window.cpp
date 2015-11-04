@@ -1494,6 +1494,8 @@ ekiga_call_window_finalize (GObject *gobject)
 
   if (self->priv->ext_video_win)
     gtk_widget_destroy (self->priv->ext_video_win);
+  if (self->priv->timeout_id > 0)
+    g_source_remove (self->priv->timeout_id);
 
   delete self->priv;
 
