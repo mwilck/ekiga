@@ -35,6 +35,7 @@
  */
 
 #include "actor.h"
+#include "runtime.h"
 
 using namespace Ekiga;
 
@@ -49,7 +50,7 @@ Actor::add_action (ActionPtr action)
   conns.add (action->enabled.connect (boost::bind (boost::ref (action_enabled), action->get_name ())));
   conns.add (action->disabled.connect (boost::bind (boost::ref (action_disabled), action->get_name ())));
 
-  action_added (action->get_name ());
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref(action_added), action->get_name ()));
 }
 
 
@@ -60,7 +61,7 @@ Actor::remove_action (const std::string & name)
   if (!a)
     return false;
 
-  action_removed (name);
+  Ekiga::Runtime::run_in_main (boost::bind (boost::ref(action_removed), name));
   actions.remove (a);
 
   return true;
