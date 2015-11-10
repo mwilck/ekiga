@@ -47,7 +47,7 @@
 GnomeMeeting *GnomeMeeting::GM = 0;
 
 /* The main GnomeMeeting Class  */
-GnomeMeeting::GnomeMeeting () : PProcess("", "", MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
+GnomeMeeting::GnomeMeeting () : PProcess(PACKAGE_NAME, PACKAGE_NAME, MAJOR_VERSION, MINOR_VERSION, BUILD_TYPE, BUILD_NUMBER)
 {
   GM = this;
 }
