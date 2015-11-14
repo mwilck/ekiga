@@ -812,7 +812,7 @@ gm_application_show_about (GmApplication *app)
       "Damien Sandras <dsandras@seconix.com>",
       "",
       N_("Contributors:"),
-      "Eugen Dedu <eugen.dedu@pu-pm.univ-fcomte.fr>",
+      "Eugen Dedu <eugen.dedu@univ-fcomte.fr>",
       "Julien Puydt <julien.puydt@laposte.net>",
       "Robert Jongbloed <rjongbloed@postincrement.com>",
       "",

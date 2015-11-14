@@ -1,7 +1,7 @@
 ;;  Romanian language strings for the Windows Ekiga NSIS installer.
 ;;  Windows Code page: 1252
 ;;
-;;  Author: Eugen Dedu <Eugen.Dedu@pu-pm.univ-fcomte.fr>, May 2010
+;;  Author: Eugen Dedu <eugen.dedu@univ-fcomte.fr>, May 2010
 
 ; License Page
 !define EKIGA_LICENSE_BUTTON			"Următorul >"
