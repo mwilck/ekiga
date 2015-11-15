@@ -810,8 +810,7 @@ status_menu_new (Ekiga::ServiceCore & core)
   renderer = gtk_cell_renderer_text_new ();
   gtk_cell_layout_pack_start (GTK_CELL_LAYOUT (self), renderer, FALSE);
   gtk_cell_layout_set_attributes (GTK_CELL_LAYOUT (self), renderer, "text", COL_MESSAGE, NULL);
-  g_object_set (renderer, "width", 130,
-                "ellipsize-set", true,
+  g_object_set (renderer, "ellipsize-set", true,
                 "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
   for (int i = 0 ; i < NUM_STATUS_TYPES ; i++)
