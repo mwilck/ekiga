@@ -268,6 +268,9 @@ Opal::Account::Account (Opal::Bank & _bank,
 
     bank.disable_action ("add-account-ekiga");
   }
+
+  if (sip_endpoint)
+    instance_id = sip_endpoint->GetInstanceID ().AsString ();
 }
 
 
@@ -965,6 +968,8 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
     OpalPresenceInfo opi = OpalPresenceInfo (OpalPresenceInfo::Available);
     opi.m_activities = PString (details.get_presence ());
     opi.m_note = details.get_status ();
+    opi.m_service = instance_id;
+
     opal_presentity->SetLocalPresence (opi);
     PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << details.get_presence () << ", note " << details.get_status ());
   }

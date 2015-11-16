@@ -284,6 +284,7 @@ private:
     EndPoint& endpoint;
     H323::EndPoint* h323_endpoint;
     Sip::EndPoint* sip_endpoint;
+    PString instance_id;
   };
 
   typedef boost::shared_ptr<Account> AccountPtr;
