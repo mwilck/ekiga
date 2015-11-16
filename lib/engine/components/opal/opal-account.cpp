@@ -961,17 +961,12 @@ Opal::Account::on_consult (const std::string url)
 void
 Opal::Account::publish (const Ekiga::PersonalDetails& details)
 {
-  std::string presence = details.get_presence ();
-
-  personal_state = OpalPresenceInfo::Available;
-  presence_status = details.get_status ();
-
   if (opal_presentity) {
-    OpalPresenceInfo opi = OpalPresenceInfo (personal_state);
-    opi.m_activities = PString (presence);
-    opi.m_note = presence_status;
+    OpalPresenceInfo opi = OpalPresenceInfo (OpalPresenceInfo::Available);
+    opi.m_activities = PString (details.get_presence ());
+    opi.m_note = details.get_status ();
     opal_presentity->SetLocalPresence (opi);
-    PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << presence << ", note " << presence_status);
+    PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << details.get_presence () << ", note " << details.get_status ());
   }
 }
 

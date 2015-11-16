@@ -270,8 +270,6 @@ private:
     boost::function0<std::list<std::string> > existing_groups;
     xmlNodePtr node;
     xmlNodePtr roster_node;
-    OpalPresenceInfo::State personal_state;
-    std::string presence_status;
     void presence_status_in_main (std::string uri,
 				  std::string presence,
 				  std::string status) const;
