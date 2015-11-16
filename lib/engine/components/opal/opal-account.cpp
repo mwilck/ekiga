@@ -1060,10 +1060,6 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
       state = state_;
       failed_registration_already_notified = false;
 
-      boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
-      if (details)
-        const_cast<Account*>(this)->publish (*details);
-
       if (opal_presentity) {
 
         opal_presentity->SetPresenceChangeNotifier (PCREATE_PresenceChangeNotifier (OnPresenceChange));
@@ -1081,11 +1077,12 @@ Opal::Account::handle_registration_event (Ekiga::Account::RegistrationState stat
              ++iter)
           fetch ((*iter)->get_uri());
 
-        opal_presentity->SetLocalPresence (personal_state, presence_status);
-        if (type != Account::H323 && sip_endpoint) {
+        if (type != Account::H323 && sip_endpoint)
           sip_endpoint->Subscribe (SIPSubscribe::MessageSummary, 3600, get_full_uri (get_aor ()));
-        }
       }
+      boost::shared_ptr<Ekiga::PersonalDetails> details = personal_details.lock ();
+      if (details)
+        const_cast<Account*>(this)->publish (*details);
     }
     break;
 
