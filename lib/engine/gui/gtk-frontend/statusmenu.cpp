@@ -521,13 +521,13 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
                                         (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
-                                        GTK_STOCK_DELETE,
+                                        "_Delete",
                                         GTK_RESPONSE_APPLY,
-                                        GTK_STOCK_CLOSE,
+                                        "_Close",
                                         GTK_RESPONSE_CLOSE,
                                         NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
-  gtk_window_set_icon_name (GTK_WINDOW (dialog), GTK_STOCK_DELETE);
+  gtk_window_set_icon_name (GTK_WINDOW (dialog), "edit-delete");
 
   vbox = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);
@@ -535,7 +535,11 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
 
 
   label = gtk_label_new (_("Delete custom messages:"));
+#if GTK_CHECK_VERSION(3,16,0)
+  gtk_label_set_xalign (GTK_LABEL (label), 0);
+#else
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+#endif
   gtk_box_pack_start (GTK_BOX (vbox), label, false, false, 2);
 
   list_store = gtk_list_store_new (3,
@@ -669,7 +673,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
                                         (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
-                                        GTK_STOCK_OK,
+                                        "_OK",
                                         GTK_RESPONSE_ACCEPT,
                                         NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
@@ -684,7 +688,11 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   gtk_box_pack_start (GTK_BOX (hbox), image, false, false, 2);
 
   label = gtk_label_new (_("Define a custom message:"));
+#if GTK_CHECK_VERSION(3,16,0)
+  gtk_label_set_xalign (GTK_LABEL (label), 0);
+#else
   gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+#endif
   gtk_box_pack_start (GTK_BOX (hbox), label, false, false, 2);
   gtk_box_pack_start (GTK_BOX (vbox), hbox, false, false, 2);
 
