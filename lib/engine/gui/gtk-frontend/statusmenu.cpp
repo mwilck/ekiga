@@ -521,9 +521,9 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
                                         (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
-                                        "_Delete",
+                                        _("_Delete"),
                                         GTK_RESPONSE_APPLY,
-                                        "_Close",
+                                        _("_Close"),
                                         GTK_RESPONSE_CLOSE,
                                         NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_CLOSE);
@@ -673,7 +673,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
                                         (GtkDialogFlags) (GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT),
-                                        "_OK",
+                                        _("_OK"),
                                         GTK_RESPONSE_ACCEPT,
                                         NULL);
   gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
