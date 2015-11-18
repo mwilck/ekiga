@@ -1,7 +1,7 @@
 icondir = $(datadir)/icons/gnome
 pixmapdir = $(datadir)/pixmaps/@PACKAGE_NAME@
 
-more_icons = @PACKAGE_NAME@-logo.png 256x256/@PACKAGE_NAME@-full-icon.png
+more_icons = @PACKAGE_NAME@-logo.png @PACKAGE_NAME@-full-icon.png
 
 theme_icons = \
 	gnome_actions_scalable_call-hold-symbolic.svg           \
@@ -38,6 +38,10 @@ install-icons:
 		mkdir -p $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT; \
 		$(INSTALL_DATA) $(srcdir)/$$icon $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
 	done;
+	for icon in $(more_icons); do \
+		mkdir -p $(DESTDIR)$(datadir)/pixmaps/@PACKAGE_NAME@; \
+		$(INSTALL_DATA) $(srcdir)/$$icon $(DESTDIR)$(datadir)/pixmaps/@PACKAGE_NAME@/; \
+	done;
 
 uninstall-icons:
 	for icon in $(theme_icons); do \
@@ -45,8 +49,10 @@ uninstall-icons:
 		CONTEXT=`echo $$icon | cut -d_ -f2`; \
 		SIZE=`echo $$icon | cut -d_ -f3`; \
 		ICONFILE=`echo $$icon | cut -d_ -f4`; \
-		mkdir -p $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT; \
 		rm -f $(DESTDIR)$(datadir)/icons/$$THEME/$$SIZE/$$CONTEXT/$$ICONFILE; \
+	done;
+	for icon in $(more_icons); do \
+		rm -f $(srcdir)/$$icon $(DESTDIR)$(datadir)/pixmaps/@PACKAGE_NAME@/$$icon; \
 	done;
 
 gtk_update_icon_cache = gtk-update-icon-cache-3.0 -f -t $(DESTDIR)$(datadir)/icons/gnome/
