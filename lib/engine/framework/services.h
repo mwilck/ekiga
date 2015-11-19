@@ -64,22 +64,6 @@ namespace Ekiga
     virtual const std::string get_name () const = 0;
 
     virtual const std::string get_description () const = 0;
-
-    /* beware that if you check the result directly (in an if, or passing it
-     * through a function, the obtained value will be wether or not the value
-     * is available, and not the value itself!
-     *
-     * To be more specific, you're supposed to:
-     * val = foo.get_bool_property ("bar");
-     * if (val) {
-     *   <do something with *val> (notice *val not val!)
-     * }
-     */
-    virtual boost::optional<bool> get_bool_property (const std::string) const;
-
-    virtual boost::optional<int> get_int_property (const std::string) const;
-
-    virtual boost::optional<std::string> get_string_property (const std::string) const;
   };
   typedef boost::shared_ptr<Service> ServicePtr;
 

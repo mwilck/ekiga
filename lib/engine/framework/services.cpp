@@ -44,30 +44,6 @@
 
 #include "services.h"
 
-boost::optional<bool>
-Ekiga::Service::get_bool_property (const std::string /*name*/) const
-{
-  boost::optional<bool> result;
-
-  return result;
-}
-
-boost::optional<int>
-Ekiga::Service::get_int_property (const std::string /*name*/) const
-{
-  boost::optional<int> result;
-
-  return result;
-}
-
-boost::optional<std::string>
-Ekiga::Service::get_string_property (const std::string /*name*/) const
-{
-  boost::optional<std::string> result;
-
-  return result;
-}
-
 Ekiga::ServiceCore::ServiceCore (): closed(false)
 {
 }
