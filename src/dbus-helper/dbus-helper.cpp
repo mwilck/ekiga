@@ -164,10 +164,6 @@ main (G_GNUC_UNUSED int argc,
   guint request_name_result;
   GError *error = NULL;
 
-#if !GLIB_CHECK_VERSION(2,36,0)
-  g_type_init ();
-#endif
-
   mainloop = g_main_loop_new (NULL, FALSE);
 
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);

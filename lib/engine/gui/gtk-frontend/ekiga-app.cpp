@@ -440,14 +440,6 @@ gm_application_startup (GApplication *app)
 
   G_APPLICATION_CLASS (gm_application_parent_class)->startup (app);
 
-  /* Globals */
-#if !GLIB_CHECK_VERSION(2,36,0)
-  g_type_init ();
-#endif
-#if !GLIB_CHECK_VERSION(2,32,0)
-  g_thread_init();
-#endif
-
 #ifndef WIN32
   signal (SIGPIPE, SIG_IGN);
 #endif
