@@ -75,22 +75,22 @@ struct null_deleter
 
 xmlNodePtr
 Opal::Presentity::build_node (const std::string name,
-			      const std::string uri,
-			      const std::list<std::string> groups)
+                              const std::string uri,
+                              const std::list<std::string> groups)
 {
   xmlNodePtr node = xmlNewNode (NULL, BAD_CAST "entry");
   xmlSetProp (node, BAD_CAST "uri", BAD_CAST uri.c_str ());
   xmlNewChild (node, NULL,
-	       BAD_CAST "name",
-	       BAD_CAST robust_xmlEscape (node->doc,
-					  name).c_str ());
+               BAD_CAST "name",
+               BAD_CAST robust_xmlEscape (node->doc,
+                                          name).c_str ());
   for (std::list<std::string>::const_iterator iter = groups.begin ();
        iter != groups.end ();
        ++iter)
     xmlNewChild (node, NULL,
-		 BAD_CAST "group",
-		 BAD_CAST robust_xmlEscape (node->doc,
-					    *iter).c_str ());
+                 BAD_CAST "group",
+                 BAD_CAST robust_xmlEscape (node->doc,
+                                            *iter).c_str ());
 
   return node;
 }
@@ -115,8 +115,8 @@ Opal::Presentity::create (const Account & _account,
 
 Opal::Presentity::Presentity (const Opal::Account & account_,
                               boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
-			      boost::function0<std::list<std::string> > existing_groups_,
-			      xmlNodePtr node_):
+                              boost::function0<std::list<std::string> > existing_groups_,
+                              xmlNodePtr node_):
   account(account_),
   presence_core(presence_core_),
   existing_groups(existing_groups_),
@@ -164,15 +164,15 @@ Opal::Presentity::get_name () const
 
       if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
 
-	xml_str = xmlNodeGetContent (child);
-	if (xml_str != NULL) {
+        xml_str = xmlNodeGetContent (child);
+        if (xml_str != NULL) {
 
-	  name = (const char*)xml_str;
-	  xmlFree (xml_str);
-	} else {
+          name = (const char*)xml_str;
+          xmlFree (xml_str);
+        } else {
 
-	  name = _("Unnamed");
-	}
+          name = _("Unnamed");
+        }
       }
     }
   }
@@ -209,12 +209,12 @@ Opal::Presentity::get_groups () const
 
       if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
-	xmlChar* xml_str = xmlNodeGetContent (child);
-	if (xml_str != NULL) {
+        xmlChar* xml_str = xmlNodeGetContent (child);
+        if (xml_str != NULL) {
 
-	  groups.push_back ((const char*) xml_str);
-	  xmlFree (xml_str);
-	}
+          groups.push_back ((const char*) xml_str);
+          xmlFree (xml_str);
+        }
       }
     }
   }
@@ -289,7 +289,7 @@ Opal::Presentity::edit_presentity ()
                  false, false);
 
   request->editable_list ("groups", _("Groups"),
-			 get_groups (), existing_groups ());
+                          get_groups (), existing_groups ());
 
   questions (request);
 }
@@ -297,7 +297,7 @@ Opal::Presentity::edit_presentity ()
 
 bool
 Opal::Presentity::edit_presentity_form_submitted (bool submitted,
-						  Ekiga::Form &result,
+                                                  Ekiga::Form &result,
                                                   std::string &error)
 {
   if (!submitted)
@@ -326,22 +326,19 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
        child = child->next) {
 
     if (child->type == XML_ELEMENT_NODE
-        && child->name != NULL) {
-
-      if (xmlStrEqual (BAD_CAST ("name"), child->name)) {
-
-	robust_xmlNodeSetContent (node, &child, "name", new_name);
-      }
-    }
+        && child->name != NULL)
+      if (xmlStrEqual (BAD_CAST ("name"), child->name))
+        robust_xmlNodeSetContent (node, &child, "name", new_name);
   }
 
   if (uri != new_uri) {
-
-    presence = "unknown";
     xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)new_uri.c_str ());
+    ((Account&)account).unfetch (uri);
+    ((Account&)account).fetch (new_uri);
+    Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, &account, new_uri, "unknown", ""));
   }
 
-  // the first loop looks at groups we were in : are we still in ?
+  // the first loop looks at groups we were in: are we still in?
   for (xmlNodePtr child = node->children ;
        child != NULL ;
        child = child->next) {
@@ -351,16 +348,13 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
 
       if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
-	xmlChar* xml_str = xmlNodeGetContent (child);
+        xmlChar* xml_str = xmlNodeGetContent (child);
 
-	if (xml_str != NULL) {
-
-	  if (std::find (new_groups.begin (), new_groups.end (), (const char*) xml_str) == new_groups.end ()) {
-
-	    nodes_to_remove.insert (child); // don't free what we loop on!
-	  }
-	  xmlFree (xml_str);
-	}
+        if (xml_str != NULL) {
+          if (std::find (new_groups.begin (), new_groups.end (), (const char*) xml_str) == new_groups.end ())
+            nodes_to_remove.insert (child); // don't free what we loop on!
+          xmlFree (xml_str);
+        }
       }
     }
   }
@@ -374,19 +368,17 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
     xmlFreeNode (*iter);
   }
 
-  // the second loop looking for groups we weren't in but are now
+  // the second loop looks for groups we weren't in but are now
   for (std::list<std::string>::const_iterator iter = new_groups.begin ();
        iter != new_groups.end ();
        iter++) {
 
-    if (std::find (groups.begin (), groups.end (), *iter) == groups.end ()) {
+    if (std::find (groups.begin (), groups.end (), *iter) == groups.end ())
       xmlNewChild (node, NULL,
-		   BAD_CAST "group",
-		   BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
-    }
+                   BAD_CAST "group",
+                   BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
   }
 
-  updated (this->shared_from_this ());
   trigger_saving ();
 
   return true;
@@ -395,7 +387,7 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
 
 void
 Opal::Presentity::rename_group (const std::string old_name,
-				const std::string new_name)
+                                const std::string new_name)
 {
   bool old_name_present = false;
   bool already_in_new_name = false;
@@ -413,21 +405,20 @@ Opal::Presentity::rename_group (const std::string old_name,
 
       if (xmlStrEqual (BAD_CAST ("group"), child->name)) {
 
-	xmlChar* xml_str = xmlNodeGetContent (child);
+        xmlChar* xml_str = xmlNodeGetContent (child);
 
-	if (xml_str != NULL) {
+        if (xml_str != NULL) {
 
-	  if (!xmlStrcasecmp ((const xmlChar*)old_name.c_str (), xml_str)) {
-	    nodes_to_remove.insert (child); // don't free what we loop on!
+          if (!xmlStrcasecmp ((const xmlChar*)old_name.c_str (), xml_str)) {
+            nodes_to_remove.insert (child); // don't free what we loop on!
             old_name_present = true;
-	  }
+          }
 
-	  if (!xmlStrcasecmp ((const xmlChar*)new_name.c_str (), xml_str)) {
-	    already_in_new_name = true;
-	  }
+          if (!xmlStrcasecmp ((const xmlChar*)new_name.c_str (), xml_str))
+            already_in_new_name = true;
 
-	  xmlFree (xml_str);
-	}
+          xmlFree (xml_str);
+        }
       }
     }
   }
@@ -441,14 +432,12 @@ Opal::Presentity::rename_group (const std::string old_name,
     xmlFreeNode (*iter);
   }
 
-  if (old_name_present && !already_in_new_name) {
-
+  if (old_name_present && !already_in_new_name)
     xmlNewChild (node, NULL,
-		 BAD_CAST "group",
-		 BAD_CAST robust_xmlEscape (node->doc,
-					    new_name).c_str ());
+                 BAD_CAST "group",
+                 BAD_CAST robust_xmlEscape (node->doc,
+                                            new_name).c_str ());
 
-  }
 
   updated (this->shared_from_this ());
   trigger_saving ();
