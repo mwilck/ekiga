@@ -92,22 +92,19 @@ Opal::Account::build_node(Opal::Account::Type typus,
   xmlNodePtr node = xmlNewNode (NULL, BAD_CAST "account");
 
   xmlNewChild (node, NULL, BAD_CAST "name",
-	       BAD_CAST robust_xmlEscape (node->doc, name).c_str ());
+               BAD_CAST robust_xmlEscape (node->doc, name).c_str ());
   xmlNewChild (node, NULL, BAD_CAST "host",
-	       BAD_CAST robust_xmlEscape (node->doc, host).c_str ());
+               BAD_CAST robust_xmlEscape (node->doc, host).c_str ());
   xmlNewChild (node, NULL, BAD_CAST "user",
-	       BAD_CAST robust_xmlEscape (node->doc, user).c_str ());
+               BAD_CAST robust_xmlEscape (node->doc, user).c_str ());
   xmlNewChild (node, NULL, BAD_CAST "auth_user",
-	       BAD_CAST robust_xmlEscape (node->doc, auth_user).c_str ());
+               BAD_CAST robust_xmlEscape (node->doc, auth_user).c_str ());
   xmlNewChild (node, NULL, BAD_CAST "password",
-	       BAD_CAST robust_xmlEscape (node->doc, password).c_str ());
-  if (enabled) {
-
+               BAD_CAST robust_xmlEscape (node->doc, password).c_str ());
+  if (enabled)
     xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "true");
-  } else {
-
+  else
     xmlSetProp (node, BAD_CAST "enabled", BAD_CAST "false");
-  }
   {
     std::stringstream sstream;
     sstream << timeout;
@@ -522,18 +519,12 @@ Opal::Account::set_authentication_settings (const std::string& username,
 
     if (child->type == XML_ELEMENT_NODE && child->name != NULL) {
 
-      if (xmlStrEqual (BAD_CAST "user", child->name)) {
-
+      if (xmlStrEqual (BAD_CAST "user", child->name))
         robust_xmlNodeSetContent (node, &child, "user", username);
-      }
-      if (xmlStrEqual (BAD_CAST "auth_user", child->name)) {
-
+      if (xmlStrEqual (BAD_CAST "auth_user", child->name))
         robust_xmlNodeSetContent (node, &child, "auth_user", username);
-      }
-      if (xmlStrEqual (BAD_CAST "password", child->name)) {
-
+      if (xmlStrEqual (BAD_CAST "password", child->name))
         robust_xmlNodeSetContent (node, &child, "password", password);
-      }
     }
   }
 
@@ -603,9 +594,8 @@ Opal::Account::disable ()
         (*iter)->set_status ("");
       }
 
-      if (type != Account::H323 && sip_endpoint) {
+      if (type != Account::H323 && sip_endpoint)
         sip_endpoint->Unsubscribe (SIPSubscribe::MessageSummary, get_full_uri (get_aor ()));
-      }
 
       opal_presentity->Close ();
     }
@@ -636,13 +626,10 @@ Opal::Account::is_enabled () const
 
   if (xml_str != NULL) {
 
-    if (xmlStrEqual (xml_str, BAD_CAST "true")) {
-
+    if (xmlStrEqual (xml_str, BAD_CAST "true"))
       result = true;
-    } else {
-
+    else
       result = false;
-    }
     xmlFree (xml_str);
   }
 
@@ -864,19 +851,18 @@ Opal::Account::on_edit_form_submitted (bool submitted,
 
       if (child->type == XML_ELEMENT_NODE && child->name != NULL) {
 
-
-	if (xmlStrEqual (BAD_CAST "name", child->name))
-	  robust_xmlNodeSetContent (node, &child, "name", new_name);
-	if (xmlStrEqual (BAD_CAST "host", child->name))
-	  robust_xmlNodeSetContent (node, &child, "host", new_host);
-	if (xmlStrEqual (BAD_CAST "outbound_proxy", child->name))
-	  robust_xmlNodeSetContent (node, &child, "outbound_proxy", new_outbound_proxy);
-	if (xmlStrEqual (BAD_CAST "user", child->name))
-	  robust_xmlNodeSetContent (node, &child, "user", new_user);
-	if (xmlStrEqual (BAD_CAST "auth_user", child->name))
-	  robust_xmlNodeSetContent (node, &child, "auth_user", new_authentication_user);
-	if (xmlStrEqual (BAD_CAST "password", child->name))
-	  robust_xmlNodeSetContent (node, &child, "password", new_password);
+        if (xmlStrEqual (BAD_CAST "name", child->name))
+          robust_xmlNodeSetContent (node, &child, "name", new_name);
+        if (xmlStrEqual (BAD_CAST "host", child->name))
+          robust_xmlNodeSetContent (node, &child, "host", new_host);
+        if (xmlStrEqual (BAD_CAST "outbound_proxy", child->name))
+          robust_xmlNodeSetContent (node, &child, "outbound_proxy", new_outbound_proxy);
+        if (xmlStrEqual (BAD_CAST "user", child->name))
+          robust_xmlNodeSetContent (node, &child, "user", new_user);
+        if (xmlStrEqual (BAD_CAST "auth_user", child->name))
+          robust_xmlNodeSetContent (node, &child, "auth_user", new_authentication_user);
+        if (xmlStrEqual (BAD_CAST "password", child->name))
+          robust_xmlNodeSetContent (node, &child, "password", new_password);
       }
     }
 
@@ -986,7 +972,7 @@ Opal::Account::load_presentity (boost::weak_ptr<Ekiga::PresenceCore> _presence_c
   // When the presentity emits trigger_saving, we relay it "upstream" so that the
   // Bank can save everything.
   presentities.add_connection (pres, pres->trigger_saving.connect (boost::ref (trigger_saving)));
-  presentities.add_connection (pres, pres->removed.connect (boost::bind (&Opal::Account::unfetch, this, pres->get_uri ())));
+  presentities.add_connection (pres, pres->removed.connect (boost::bind (&Opal::Account::unfetch, this, pres->get_uri ()), boost::signals2::at_front));
   presentities.add_connection (pres, pres->updated.connect (boost::bind (&Opal::Account::fetch, this, pres->get_uri ())));
   add_presentity (pres);
 

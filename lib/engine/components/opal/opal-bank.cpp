@@ -100,21 +100,22 @@ boost::shared_ptr<Opal::Account>
 Opal::Bank::load_account (boost::function0<std::list<std::string> > _existing_groups,
                           xmlNodePtr _node)
 {
-  boost::shared_ptr<Opal::Account> account = Opal::Account::create (*this,
-                                                                    presence_core,
-                                                                    notification_core,
-                                                                    personal_details,
-                                                                    audiooutput_core,
-                                                                    endpoint,
+  boost::shared_ptr<Opal::Account> account =
+    Opal::Account::create (*this,
+                           presence_core,
+                           notification_core,
+                           personal_details,
+                           audiooutput_core,
+                           endpoint,
 #ifdef HAVE_H323
-                                                                    h323_endpoint,
+                           h323_endpoint,
 #endif
-                                                                    sip_endpoint,
-                                                                    _existing_groups,
-                                                                    _node);
+                           sip_endpoint,
+                           _existing_groups,
+                           _node);
 
   accounts.add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-  accounts.add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1)));
+  accounts.add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1), boost::signals2::at_front));
 
   add_account (account);
   add_heap (account);
@@ -247,9 +248,9 @@ Opal::Bank::on_new_account_form_submitted (bool submitted,
   boost::shared_ptr<Ekiga::FormRequestSimple> request = boost::shared_ptr<Ekiga::FormRequestSimple> (new Ekiga::FormRequestSimple (boost::bind (&Opal::Bank::on_new_account_form_submitted, this, _1, _2, _3, acc_type)));
 
   std::string new_name = (acc_type == Opal::Account::SIP
-			  || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
+                          || acc_type == Opal::Account::H323) ? result.text ("name") : result.hidden ("name");
   std::string new_host = (acc_type == Opal::Account::SIP
-			  || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
+                          || acc_type == Opal::Account::H323) ? result.text ("host") : result.hidden ("host");
   std::string new_user = result.text ("user");
   std::string new_authentication_user = (acc_type == Opal::Account::SIP && ! result.text ("authentication_user").empty ()) ? result.text ("authentication_user") : new_user;
   std::string new_password = result.text ("password");
