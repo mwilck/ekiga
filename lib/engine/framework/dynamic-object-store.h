@@ -117,6 +117,9 @@ Ekiga::DynamicObjectStore<ObjectType>::add_object (boost::shared_ptr<ObjectType>
     object_added (obj);
 
     objects[obj]->add (obj->updated.connect (boost::bind (boost::ref (object_updated), _1)));
+    // this must be the last slot to execute
+    // the other slots connecting to removed signal must add at_front parameter
+    // in boost signals2 it is not possible to specify a slot to be executed last when the following slots are added without parameter
     objects[obj]->add (obj->removed.connect (boost::bind (&Ekiga::DynamicObjectStore<ObjectType>::remove_object, this, _1)));
   }
 }

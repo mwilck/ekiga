@@ -115,7 +115,7 @@ Opal::Bank::load_account (boost::function0<std::list<std::string> > _existing_gr
                            _node);
 
   accounts.add_connection (account, account->trigger_saving.connect (boost::bind (&Opal::Bank::save, this)));
-  accounts.add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1), boost::signals2::at_front));
+  accounts.add_connection (account, account->removed.connect (boost::bind (&Opal::Bank::on_account_removed, this, _1), boost::signals2::at_front));  // slot from DynamicObjectStore must be the last called
 
   add_account (account);
   add_heap (account);
