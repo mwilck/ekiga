@@ -70,7 +70,7 @@ namespace Opal
 				  const std::string uri_,
 				  const std::list<std::string> groups_);
 
-    static boost::shared_ptr<Presentity> create (const Account & _account,
+    static boost::shared_ptr<Presentity> create (Account & _account,
                                                  boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
                                                  boost::function0<std::list<std::string> > _existing_groups,
                                                  xmlNodePtr _node);
@@ -120,7 +120,7 @@ namespace Opal
     void remove ();
 
   private:
-    Presentity (const Account & account,
+    Presentity (Account & account,
                 boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
                 boost::function0<std::list<std::string> > existing_groups_,
                 xmlNodePtr node_);
@@ -135,7 +135,7 @@ namespace Opal
 					 Ekiga::Form& result,
                                          std::string& error);
 
-    const Account & account;
+    Account & account;
     boost::weak_ptr<Ekiga::PresenceCore> presence_core;
     boost::function0<std::list<std::string> > existing_groups;
     xmlNodePtr node;

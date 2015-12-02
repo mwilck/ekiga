@@ -97,7 +97,7 @@ Opal::Presentity::build_node (const std::string name,
 
 
 boost::shared_ptr<Opal::Presentity>
-Opal::Presentity::create (const Account & _account,
+Opal::Presentity::create (Account & _account,
                           boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
                           boost::function0<std::list<std::string> > _existing_groups,
                           xmlNodePtr _node)
@@ -113,7 +113,7 @@ Opal::Presentity::create (const Account & _account,
 }
 
 
-Opal::Presentity::Presentity (const Opal::Account & account_,
+Opal::Presentity::Presentity (Opal::Account & account_,
                               boost::weak_ptr<Ekiga::PresenceCore> presence_core_,
                               boost::function0<std::list<std::string> > existing_groups_,
                               xmlNodePtr node_):
@@ -333,8 +333,8 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
 
   if (uri != new_uri) {
     xmlSetProp (node, (const xmlChar*)"uri", (const xmlChar*)new_uri.c_str ());
-    ((Account&)account).unfetch (uri);
-    ((Account&)account).fetch (new_uri);
+    account.unfetch (uri);
+    account.fetch (new_uri);
     Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, &account, new_uri, "unknown", ""));
   }
 
@@ -379,6 +379,7 @@ Opal::Presentity::edit_presentity_form_submitted (bool submitted,
                    BAD_CAST robust_xmlEscape (node->doc, *iter).c_str ());
   }
 
+  updated (this->shared_from_this ());
   trigger_saving ();
 
   return true;

@@ -973,7 +973,6 @@ Opal::Account::load_presentity (boost::weak_ptr<Ekiga::PresenceCore> _presence_c
   // Bank can save everything.
   presentities.add_connection (pres, pres->trigger_saving.connect (boost::ref (trigger_saving)));
   presentities.add_connection (pres, pres->removed.connect (boost::bind (&Opal::Account::unfetch, this, pres->get_uri ()), boost::signals2::at_front));  // slot from DynamicObjectStore must be the last called
-  presentities.add_connection (pres, pres->updated.connect (boost::bind (&Opal::Account::fetch, this, pres->get_uri ())));
   add_presentity (pres);
 
   return pres;
