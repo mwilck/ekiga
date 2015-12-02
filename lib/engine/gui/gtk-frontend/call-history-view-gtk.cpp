@@ -93,7 +93,7 @@ G_DEFINE_TYPE (CallHistoryViewGtk, call_history_view_gtk, GTK_TYPE_SCROLLED_WIND
 /* react to a new call being inserted in history */
 static void
 on_contact_added (Ekiga::ContactPtr contact,
-		  GtkListStore *store)
+                  GtkListStore *store)
 {
   time_t t;
   struct tm *timeinfo = NULL;
@@ -142,17 +142,17 @@ on_contact_added (Ekiga::ContactPtr contact,
     info << hcontact->get_call_duration ();
 
   gtk_list_store_set (store, &iter,
-		      COLUMN_CONTACT, contact.get (),
-		      COLUMN_PIXBUF, id.c_str (),
-		      COLUMN_NAME, contact->get_name ().c_str (),
-		      COLUMN_INFO, info.str ().c_str (),
-		      -1);
+                      COLUMN_CONTACT, contact.get (),
+                      COLUMN_PIXBUF, id.c_str (),
+                      COLUMN_NAME, contact->get_name ().c_str (),
+                      COLUMN_INFO, info.str ().c_str (),
+                      -1);
 }
 
 
 static void
 on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
-		      gpointer data)
+                      gpointer data)
 {
   CallHistoryViewGtk* self = NULL;
   History::Contact *contact = NULL;
@@ -179,7 +179,7 @@ on_selection_changed (G_GNUC_UNUSED GtkTreeSelection* selection,
 
 static bool
 on_visit_contacts (Ekiga::ContactPtr contact,
-		   GtkListStore *store)
+                   GtkListStore *store)
 {
   on_contact_added (contact, store);
   return true;
@@ -224,8 +224,8 @@ on_book_cleared (CallHistoryViewGtk* data)
 /* react to user clicks */
 static gint
 on_clicked (G_GNUC_UNUSED GtkWidget *tree,
-	    GdkEventButton *event,
-	    gpointer data)
+            GdkEventButton *event,
+            gpointer data)
 {
   CallHistoryViewGtk *self = CALL_HISTORY_VIEW_GTK (data);
 
@@ -287,12 +287,12 @@ call_history_view_gtk_class_init (CallHistoryViewGtkClass* klass)
 
   signals[ACTIONS_CHANGED_SIGNAL] =
     g_signal_new ("actions-changed",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (CallHistoryViewGtkClass, selection_changed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
+                  G_OBJECT_CLASS_TYPE (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (CallHistoryViewGtkClass, selection_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 /* public api */
@@ -316,7 +316,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   self->priv = new _CallHistoryViewGtkPrivate (book);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (self),
-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+                                  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   /* build the store then the tree */
   store = gtk_list_store_new (COLUMN_NUMBER,
@@ -339,32 +339,32 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "icon-name", COLUMN_ERROR_PIXBUF);
+                                      "icon-name", COLUMN_ERROR_PIXBUF);
   g_object_set (renderer, "xalign", 0.0, "yalign", 0.5, "xpad", 6, "stock-size", 1, NULL);
 
   /* show name and text */
   renderer = gm_cell_renderer_bitext_new ();
   gtk_tree_view_column_pack_start (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "primary-text", COLUMN_NAME);
+                                      "primary-text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "secondary-text", COLUMN_INFO);
+                                      "secondary-text", COLUMN_INFO);
   gtk_tree_view_append_column (self->priv->tree, column);
 
   /* show icon */
   renderer = gtk_cell_renderer_pixbuf_new ();
   gtk_tree_view_column_pack_end (column, renderer, FALSE);
   gtk_tree_view_column_add_attribute (column, renderer,
-				      "icon-name", COLUMN_PIXBUF);
+                                      "icon-name", COLUMN_PIXBUF);
   g_object_set (renderer, "xalign", 1.0, "yalign", 0.5, "xpad", 6, "stock-size", 2, NULL);
 
   /* react to user clicks */
   selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (self->priv->tree));
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
   g_signal_connect (selection, "changed",
-		    G_CALLBACK (on_selection_changed), self);
+                    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree, "event-after",
-		    G_CALLBACK (on_clicked), self);
+                    G_CALLBACK (on_clicked), self);
   g_signal_connect (GTK_WIDGET (self), "map",
                     G_CALLBACK (on_map_cb), self);
 
@@ -383,7 +383,7 @@ call_history_view_gtk_new (boost::shared_ptr<History::Book> book,
 
 void
 call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
-				    History::Contact** contact)
+                                    History::Contact** contact)
 {
   g_return_if_fail (IS_CALL_HISTORY_VIEW_GTK (self) && contact != NULL);
 
@@ -393,11 +393,10 @@ call_history_view_gtk_get_selected (CallHistoryViewGtk* self,
 
   selection = gtk_tree_view_get_selection (self->priv->tree);
 
-  if (gtk_tree_selection_get_selected (selection, &model, &iter)) {
-
+  if (gtk_tree_selection_get_selected (selection, &model, &iter))
     gtk_tree_model_get (model, &iter,
-			COLUMN_CONTACT, contact,
-			-1);
-  } else
+                        COLUMN_CONTACT, contact,
+                        -1);
+  else
     *contact = NULL;
 }

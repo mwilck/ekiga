@@ -530,8 +530,8 @@ Opal::EndPoint::HandleSTUNResult ()
     stun_thread = 0;
 
     if (result == PSTUNClient::SymmetricNat
-	|| result == PSTUNClient::BlockedNat
-	|| result == PSTUNClient::PartiallyBlocked) {
+        || result == PSTUNClient::BlockedNat
+        || result == PSTUNClient::PartiallyBlocked) {
 
       error = true;
     }
@@ -549,7 +549,7 @@ Opal::EndPoint::HandleSTUNResult ()
   if (error) {
 
     ReportSTUNError (_("Ekiga did not manage to configure your network settings automatically. We suggest"
-		       " you disable STUN support and relay on a SIP provider that supports NAT environments.\n\n"));
+                       " you disable STUN support and relay on a SIP provider that supports NAT environments.\n\n"));
     isReady = true;
     ready ();
   }

@@ -61,9 +61,9 @@ namespace Opal {
     {
       PCLASSINFO(EndPoint, H323EndPoint);
 
-  public:
+    public:
       EndPoint (Opal::EndPoint & ep,
-		const Ekiga::ServiceCore& core);
+                const Ekiga::ServiceCore& core);
 
       ~EndPoint ();
 
@@ -96,7 +96,7 @@ namespace Opal {
 
       bool IsRegisteredWithGatekeeper (const PString & address);
 
-  private:
+    private:
       bool OnIncomingConnection (OpalConnection &connection,
                                  unsigned options,
                                  OpalConnection::StringOptions *str_options);

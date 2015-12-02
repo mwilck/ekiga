@@ -43,7 +43,6 @@
 #include "contact-core.h"
 #include "presence-core.h"
 
-#include "opal-account.h"
 #include "ekiga-settings.h"
 
 #include "sip-endpoint.h"
@@ -171,7 +170,7 @@ private:
     void on_account_removed (boost::shared_ptr<Account> account);
 
     void on_mwi_event (std::string aor,
-		       std::string info);
+                       std::string info);
 
     void update_sip_endpoint_aor_map ();
 

@@ -67,8 +67,8 @@ namespace Opal
     /* build a node describing a valid presentity, which the caller
      * will then use to create a valid instance using the ctor */
     static xmlNodePtr build_node (const std::string name_,
-				  const std::string uri_,
-				  const std::list<std::string> groups_);
+                                  const std::string uri_,
+                                  const std::list<std::string> groups_);
 
     static boost::shared_ptr<Presentity> create (Account & _account,
                                                  boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
@@ -101,7 +101,7 @@ namespace Opal
 
     // method to rename a group for this presentity
     void rename_group (const std::string old_name,
-		       const std::string new_name);
+                       const std::string new_name);
 
     /* Those allow the parent Opal::Heap to manage this presentity
      * effectively.
@@ -132,7 +132,7 @@ namespace Opal
      */
     void edit_presentity ();
     bool edit_presentity_form_submitted (bool submitted,
-					 Ekiga::Form& result,
+                                         Ekiga::Form& result,
                                          std::string& error);
 
     Account & account;

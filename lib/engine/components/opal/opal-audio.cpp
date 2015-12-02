@@ -40,7 +40,7 @@
 #include "opal-audio.h"
 
 PSoundChannel_EKIGA::PSoundChannel_EKIGA (boost::shared_ptr<Ekiga::AudioInputCore> _audioinput_core,
-					  boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core):
+                                          boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core):
   audioinput_core (_audioinput_core),
   audiooutput_core (_audiooutput_core)
 {
@@ -49,12 +49,12 @@ PSoundChannel_EKIGA::PSoundChannel_EKIGA (boost::shared_ptr<Ekiga::AudioInputCor
 
 
 PSoundChannel_EKIGA::PSoundChannel_EKIGA (const PString & /*_device*/,
-					  Directions dir,
-					  unsigned numChannels,
-					  unsigned sampleRate,
-					  unsigned bitsPerSample,
-					  boost::shared_ptr<Ekiga::AudioInputCore> _audioinput_core,
-					  boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core):
+                                          Directions dir,
+                                          unsigned numChannels,
+                                          unsigned sampleRate,
+                                          unsigned bitsPerSample,
+                                          boost::shared_ptr<Ekiga::AudioInputCore> _audioinput_core,
+                                          boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core):
   audioinput_core (_audioinput_core),
   audiooutput_core (_audiooutput_core)
 {

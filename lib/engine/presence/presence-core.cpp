@@ -80,7 +80,7 @@ Ekiga::PresenceCore::add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fe
   conns.add (fetcher->presence_received.connect (boost::bind (&Ekiga::PresenceCore::on_presence_received, this, _1, _2)));
   conns.add (fetcher->status_received.connect (boost::bind (&Ekiga::PresenceCore::on_status_received, this, _1, _2)));
   for (std::map<std::string, uri_info>::const_iterator iter
-	 = uri_infos.begin ();
+         = uri_infos.begin ();
        iter != uri_infos.end ();
        ++iter)
     fetcher->fetch (iter->first);
@@ -100,9 +100,9 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
   if (uri_infos[uri].count == 1) {
 
     for (std::list<boost::shared_ptr<PresenceFetcher> >::iterator iter
-	   = presence_fetchers.begin ();
-	 iter != presence_fetchers.end ();
-	 ++iter)
+           = presence_fetchers.begin ();
+         iter != presence_fetchers.end ();
+         ++iter)
       (*iter)->fetch (uri);
   }
 
@@ -119,9 +119,9 @@ void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
     uri_infos.erase (uri_infos.find (uri));
 
     for (std::list<boost::shared_ptr<PresenceFetcher> >::iterator iter
-	   = presence_fetchers.begin ();
-	 iter != presence_fetchers.end ();
-	 ++iter)
+           = presence_fetchers.begin ();
+         iter != presence_fetchers.end ();
+         ++iter)
       (*iter)->unfetch (uri);
   }
 }
@@ -140,7 +140,7 @@ bool Ekiga::PresenceCore::is_supported_uri (const std::string & uri)
 
 void
 Ekiga::PresenceCore::on_presence_received (const std::string uri,
-					   const std::string presence)
+                                           const std::string presence)
 {
   uri_infos[uri].presence = presence;
   presence_received (uri, presence);
@@ -148,7 +148,7 @@ Ekiga::PresenceCore::on_presence_received (const std::string uri,
 
 void
 Ekiga::PresenceCore::on_status_received (const std::string uri,
-					 const std::string status)
+                                         const std::string status)
 {
   uri_infos[uri].status = status;
   status_received (uri, status);
@@ -170,7 +170,7 @@ void
 Ekiga::PresenceCore::publish ()
 {
   for (std::list<boost::shared_ptr<PresencePublisher> >::iterator iter
-	 = presence_publishers.begin ();
+         = presence_publishers.begin ();
        iter != presence_publishers.end ();
        ++iter)
     (*iter)->publish (*details);

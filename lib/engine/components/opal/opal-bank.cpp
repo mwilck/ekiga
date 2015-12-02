@@ -185,7 +185,7 @@ Opal::Bank::new_account (Account::Type acc_type,
 
   case Opal::Account::DiamondCard:
     request->link (_("Get an Ekiga Call Out account"),
-		   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
+                   "https://www.diamondcard.us/exec/voip-login?act=sgn&spo=ekiga");
     request->hidden ("name", "Ekiga Call Out");
     request->hidden ("host", "sip.diamondcard.us");
     request->text ("user", _("_Account ID"), username, _("1234567890"),
@@ -474,45 +474,45 @@ Opal::Bank::migrate_from_gconf (const std::list<std::string> old)
       switch (ii) {
 
       case 0:
-	enabled = atoi (pch);
-	break;
+        enabled = atoi (pch);
+        break;
 
       case 3:
-	name = pch;
-	break;
+        name = pch;
+        break;
 
       case 4:
-	protocol_name = pch;
-	break;
+        protocol_name = pch;
+        break;
 
       case 5:
-	host = pch;
-	break;
+        host = pch;
+        break;
 
       case 7:
-	user = pch;
-	break;
+        user = pch;
+        break;
 
       case 8:
-	auth_user = pch;
-	break;
+        auth_user = pch;
+        break;
 
       case 9:
-	password = pch;
-	if (password == " ")
-	  password = "";
-	break;
+        password = pch;
+        if (password == " ")
+          password = "";
+        break;
 
       case 10:
-	timeout = atoi (pch);
-	break;
+        timeout = atoi (pch);
+        break;
 
       case 1:
       case 2:
       case 6:
       case 11:
       default:
-	break;
+        break;
       }
       pch = strtok (NULL, "|");
       ii++;

@@ -399,7 +399,7 @@ static void sound_event_selected_cb (GtkTreeSelection *selection,
 
 /* DESCRIPTION  :  This callback is called when the user clicks
  *                 on the play button in the sound events list.
- * BEHAVIOR     :  Plays the currently selected sound event using the 
+ * BEHAVIOR     :  Plays the currently selected sound event using the
  * 		   selected audio player and plugin through a GMSoundEvent.
  * PRE          :  The entry.
  */

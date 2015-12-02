@@ -36,7 +36,7 @@
 
 Ekiga::FriendOrFoe::Identification
 Ekiga::FriendOrFoe::decide (const std::string domain,
-			    const std::string token)
+                            const std::string token)
 {
   Identification answer = Unknown;
   Identification iter_answer;

@@ -74,7 +74,7 @@ namespace Ekiga
       {}
 
       virtual Identification decide (const std::string domain,
-				     const std::string token) = 0;
+                                     const std::string token) = 0;
 
     protected:
       virtual void pull_actions (Actor & actor,
@@ -83,7 +83,7 @@ namespace Ekiga
     };
 
     Identification decide (const std::string domain,
-			   const std::string token);
+                           const std::string token);
 
     void add_helper (boost::shared_ptr<Helper> helper);
 

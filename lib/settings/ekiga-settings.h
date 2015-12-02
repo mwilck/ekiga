@@ -122,7 +122,7 @@ public:
       std::string result;
 
       if (value)
-	result = value;
+        result = value;
 
       g_free (value);
       return result;
@@ -169,7 +169,7 @@ public:
       std::list<std::string> result;
 
       for (int i = 0 ; values && values[i] != NULL ; i++)
-	result.push_back (values[i]);
+        result.push_back (values[i]);
 
       return result;
     }
@@ -179,9 +179,9 @@ public:
       gchar **values = (gchar**) g_malloc (sizeof (gchar*) * (list.size() + 1));
       int i = 0;
       for (std::list<std::string>::const_iterator it = list.begin ();
-	   it != list.end ();
-	   it++)
-	values[i++] = g_strdup (it->c_str ());
+           it != list.end ();
+           it++)
+        values[i++] = g_strdup (it->c_str ());
       values[i++] = NULL;
 
       g_settings_set_strv (gsettings, key.c_str (), values);
@@ -193,9 +193,8 @@ public:
       GSList* list = NULL;
       gchar **values = g_settings_get_strv (gsettings, key.c_str ());
       if (values) {
-	for (int i = 0 ; values[i] ; i++) {
-	    list = g_slist_append (list, g_strdup (values[i]));
-	}
+        for (int i = 0 ; values[i] ; i++)
+          list = g_slist_append (list, g_strdup (values[i]));
       }
       g_strfreev (values);
 
@@ -206,7 +205,7 @@ public:
     {
       GArray* array = g_array_new (TRUE, TRUE, sizeof (gchar *));
       for (const GSList *l = list ; l ; l = g_slist_next (l))
-	array = g_array_append_val (array, l->data);
+        array = g_array_append_val (array, l->data);
       g_settings_set_strv (gsettings, key.c_str (), (const gchar **) array->data);
       g_array_free (array, TRUE);
     }

@@ -80,14 +80,14 @@ public:
     typedef enum { SIP, Ekiga, DiamondCard, H323 } Type;
 
     static xmlNodePtr build_node (Account::Type typus,
-				  std::string name,
-				  std::string host,
-				  std::string outbound_proxy,
-				  std::string user,
-				  std::string auth_user,
-				  std::string password,
-				  bool enabled,
-				  unsigned timeout);
+                                  std::string name,
+                                  std::string host,
+                                  std::string outbound_proxy,
+                                  std::string user,
+                                  std::string auth_user,
+                                  std::string password,
+                                  bool enabled,
+                                  unsigned timeout);
 
     /* The Opal::Account is implemented using the H.323 and SIP
      * EndPoints from OPAL.
@@ -200,7 +200,7 @@ public:
      * want its Register method to take a const account...
      */
     void handle_registration_event (RegistrationState state_,
-				    const std::string info,
+                                    const std::string info,
                                     const std::string & aor);
 
     /* This method is public to be called by an opal endpoint, which will push
@@ -215,17 +215,17 @@ protected:
 
 private:
     Account (Bank & bank,
-	     boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
-	     boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
-	     boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
-	     boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
+             boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
+             boost::shared_ptr<Ekiga::NotificationCore> _notification_core,
+             boost::shared_ptr<Ekiga::PersonalDetails> _personal_details,
+             boost::shared_ptr<Ekiga::AudioOutputCore> _audiooutput_core,
              EndPoint& _endpoint,
 #ifdef HAVE_H323
              H323::EndPoint* _h323_endpoint,
 #endif
              Sip::EndPoint* _sip_endpoint,
-	     boost::function0<std::list<std::string> > _existing_groups,
-	     xmlNodePtr node_);
+             boost::function0<std::list<std::string> > _existing_groups,
+             xmlNodePtr node_);
     boost::shared_ptr<Presentity> load_presentity (boost::weak_ptr<Ekiga::PresenceCore> _presence_core,
                                                    boost::function0<std::list<std::string> > _existing_groups,
                                                    xmlNodePtr _node);
@@ -239,11 +239,11 @@ private:
     void add_contact ();
 
     bool on_add_contact_form_submitted (bool submitted,
-					Ekiga::Form& result,
+                                        Ekiga::Form& result,
                                         std::string& error);
 
     bool on_edit_form_submitted (bool submitted,
-				 Ekiga::Form &result,
+                                 Ekiga::Form &result,
                                  std::string& error);
     void on_consult (const std::string url);
 
@@ -255,8 +255,6 @@ private:
     Type type;
     mutable RegistrationState state;
     bool dead;
-    bool failed;
-    std::string aid;
     std::string status;  // the state, as a string
     int message_waiting_number;
     std::string protocol_name;
@@ -271,8 +269,8 @@ private:
     xmlNodePtr node;
     xmlNodePtr roster_node;
     void presence_status_in_main (std::string uri,
-				  std::string presence,
-				  std::string status) const;
+                                  std::string presence,
+                                  std::string status) const;
 
     Bank & bank;
 

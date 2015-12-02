@@ -223,9 +223,9 @@ Opal::Call::toggle_stream_pause (StreamType type)
       stream->SetPaused (!paused);
 
       if (paused)
-	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_resumed), this->shared_from_this (), stream_name, type));
+        Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_resumed), this->shared_from_this (), stream_name, type));
       else
-	Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_paused), this->shared_from_this (), stream_name, type));
+        Ekiga::Runtime::run_in_main (boost::bind (boost::ref (stream_paused), this->shared_from_this (), stream_name, type));
     }
   }
 }
@@ -564,7 +564,7 @@ Opal::Call::OnCleared ()
 
 OpalConnection::AnswerCallResponse
 Opal::Call::OnAnswerCall (OpalConnection & connection,
-			  const PString & caller)
+                          const PString & caller)
 {
   remote_party_name = (const char *) caller;
 

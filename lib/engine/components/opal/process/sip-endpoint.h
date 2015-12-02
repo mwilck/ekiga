@@ -63,7 +63,7 @@ namespace Opal {
     public:
 
       EndPoint (Opal::EndPoint& ep,
-		const Ekiga::ServiceCore& core);
+                const Ekiga::ServiceCore& core);
 
       ~EndPoint ();
 

@@ -538,8 +538,8 @@ Opal::Sip::EndPoint::OnRegistrationStatus (const RegistrationStatus & status)
 
 void
 Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
-				    OpalManager::MessageWaitingType /*type*/,
-				    const PString & info)
+                                    OpalManager::MessageWaitingType /*type*/,
+                                    const PString & info)
 {
   std::string mwi = info;
   std::transform (mwi.begin(), mwi.end(), mwi.begin(), ::tolower);
@@ -553,8 +553,8 @@ Opal::Sip::EndPoint::OnMWIReceived (const PString & party,
 
 bool
 Opal::Sip::EndPoint::OnIncomingConnection (OpalConnection &connection,
-					   unsigned options,
-					   OpalConnection::StringOptions *stroptions)
+                                           unsigned options,
+                                           OpalConnection::StringOptions *stroptions)
 {
   PTRACE (3, "Opal::Sip::EndPoint\tIncoming connection");
 

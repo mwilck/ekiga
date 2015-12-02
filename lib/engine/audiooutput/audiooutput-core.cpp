@@ -53,8 +53,8 @@ using namespace Ekiga;
 
 static void
 sound_event_changed (G_GNUC_UNUSED GSettings* settings,
-		     const gchar* key,
-		     gpointer data)
+                     const gchar* key,
+                     gpointer data)
 {
   g_return_if_fail (data != NULL);
 
@@ -65,8 +65,8 @@ sound_event_changed (G_GNUC_UNUSED GSettings* settings,
 
 static void
 audio_device_changed (GSettings* settings,
-		      G_GNUC_UNUSED const gchar* key,
-		      gpointer data)
+                      G_GNUC_UNUSED const gchar* key,
+                      gpointer data)
 {
   g_return_if_fail (data != NULL);
 
@@ -319,9 +319,9 @@ AudioOutputCore::visit_managers (boost::function1<bool, AudioOutputManager&> vis
 
 void
 AudioOutputCore::map_event (const std::string& event_name,
-			    const std::string& file_name,
-			    AudioOutputPS ps,
-			    bool enabled)
+                            const std::string& file_name,
+                            AudioOutputPS ps,
+                            bool enabled)
 {
   audio_event_scheduler->set_file_name(event_name, file_name, ps, enabled);
 }
@@ -340,8 +340,8 @@ AudioOutputCore::play_event (const std::string& event_name)
 
 void
 AudioOutputCore::start_play_event (const std::string& event_name,
-				   unsigned interval,
-				   unsigned repetitions)
+                                   unsigned interval,
+                                   unsigned repetitions)
 {
   audio_event_scheduler->add_event_to_queue(event_name, false, interval, repetitions);
 }
@@ -393,7 +393,7 @@ AudioOutputCore::get_devices (std::vector <AudioOutputDevice>& devices)
 
 void
 AudioOutputCore::set_device(AudioOutputPS ps,
-			    const AudioOutputDevice& device)
+                            const AudioOutputDevice& device)
 {
   PTRACE(4, "AudioOutputCore\tSetting device[" << ps << "]: " << device);
   yield = true;
@@ -429,8 +429,8 @@ AudioOutputCore::set_device(AudioOutputPS ps,
 
 void
 AudioOutputCore::add_device (const std::string& sink,
-			     const std::string& device_name,
-			     HalManager* /*manager*/)
+                             const std::string& device_name,
+                             HalManager* /*manager*/)
 {
   PTRACE(4, "AudioOutputCore\tAdding device " << device_name);
   yield = true;
@@ -457,8 +457,8 @@ AudioOutputCore::add_device (const std::string& sink,
 
 void
 AudioOutputCore::remove_device (const std::string& sink,
-				const std::string& device_name,
-				HalManager* /*manager*/)
+                                const std::string& device_name,
+                                HalManager* /*manager*/)
 {
   PTRACE(4, "AudioOutputCore\tRemoving device " << device_name);
   yield = true;
@@ -488,8 +488,8 @@ AudioOutputCore::remove_device (const std::string& sink,
 
 void
 AudioOutputCore::start (unsigned channels,
-			unsigned samplerate,
-			unsigned bits_per_sample)
+                        unsigned samplerate,
+                        unsigned bits_per_sample)
 {
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
@@ -525,7 +525,7 @@ AudioOutputCore::stop()
 
 void
 AudioOutputCore::set_buffer_size (unsigned buffer_size,
-				  unsigned num_buffers)
+                                  unsigned num_buffers)
 {
   yield = true;
   PWaitAndSignal m_pri(core_mutex[primary]);
@@ -539,8 +539,8 @@ AudioOutputCore::set_buffer_size (unsigned buffer_size,
 
 void
 AudioOutputCore::set_frame_data (const char* data,
-				 unsigned size,
-				 unsigned& bytes_written)
+                                 unsigned size,
+                                 unsigned& bytes_written)
 {
   if (yield) {
 
@@ -574,7 +574,7 @@ AudioOutputCore::set_frame_data (const char* data,
 
 void
 AudioOutputCore::set_volume (AudioOutputPS ps,
-			     unsigned volume)
+                             unsigned volume)
 {
   PWaitAndSignal m_vol(volume_mutex);
 
@@ -584,11 +584,11 @@ AudioOutputCore::set_volume (AudioOutputPS ps,
 
 void
 AudioOutputCore::play_buffer(AudioOutputPS ps,
-			     const char* buffer,
-			     unsigned long len,
-			     unsigned channels,
-			     unsigned sample_rate,
-			     unsigned bps)
+                             const char* buffer,
+                             unsigned long len,
+                             unsigned channels,
+                             unsigned sample_rate,
+                             unsigned bps)
 {
   switch (ps) {
 
@@ -618,8 +618,8 @@ AudioOutputCore::play_buffer(AudioOutputPS ps,
 
         if (current_manager[secondary]) {
 
-	  internal_play(secondary, buffer, len, channels, sample_rate, bps);
-	  core_mutex[secondary].Signal();
+          internal_play(secondary, buffer, len, channels, sample_rate, bps);
+          core_mutex[secondary].Signal();
         } else {
           core_mutex[secondary].Signal();
           PTRACE(1, "AudioOutputCore\tNo secondary audiooutput device defined, trying primary");
@@ -667,7 +667,7 @@ AudioOutputCore::internal_set_primary_device(const AudioOutputDevice& device)
 
 void
 AudioOutputCore::internal_set_manager (AudioOutputPS ps,
-				       const AudioOutputDevice& device)
+                                       const AudioOutputDevice& device)
 {
   current_manager[ps] = NULL;
   for (std::set<AudioOutputManager*>::iterator iter = managers.begin ();
@@ -710,9 +710,9 @@ AudioOutputCore::internal_set_primary_fallback ()
 
 bool
 AudioOutputCore::internal_open (AudioOutputPS ps,
-				unsigned channels,
-				unsigned samplerate,
-				unsigned bits_per_sample)
+                                unsigned channels,
+                                unsigned samplerate,
+                                unsigned bits_per_sample)
 {
   PTRACE(4, "AudioOutputCore\tOpening device["<<ps<<"] with " << channels<< "-" << samplerate << "/" << bits_per_sample);
 
@@ -751,11 +751,11 @@ AudioOutputCore::internal_close (AudioOutputPS ps)
 
 void
 AudioOutputCore::internal_play(AudioOutputPS ps,
-			       const char* buffer,
-			       unsigned long len,
-			       unsigned channels,
-			       unsigned sample_rate,
-			       unsigned bps)
+                               const char* buffer,
+                               unsigned long len,
+                               unsigned channels,
+                               unsigned sample_rate,
+                               unsigned bps)
 {
   unsigned long pos = 0;
   unsigned bytes_written = 0;
@@ -780,7 +780,7 @@ AudioOutputCore::internal_play(AudioOutputPS ps,
 
 void
 AudioOutputCore::calculate_average_level (const short*buffer,
-					  unsigned size)
+                                          unsigned size)
 {
   int sum = 0;
   unsigned csize = 0;

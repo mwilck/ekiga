@@ -66,8 +66,8 @@ public:
 
 
   bool try_initialize_more (Ekiga::ServiceCore& core,
-			    int* /*argc*/,
-			    char** /*argv*/[])
+                            int* /*argc*/,
+                            char** /*argv*/[])
   {
     boost::shared_ptr<Ekiga::ContactCore> contact_core = core.get<Ekiga::ContactCore> ("contact-core");
     boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
@@ -81,9 +81,9 @@ public:
     boost::shared_ptr<Bank> account_store = core.get<Bank> ("opal-account-store");
 
     if (contact_core && presence_core && call_core
-	&& account_core && audioinput_core && videoinput_core
-	&& audiooutput_core && videooutput_core && personal_details
-	&& !account_store) {
+        && account_core && audioinput_core && videoinput_core
+        && audiooutput_core && videooutput_core && personal_details
+        && !account_store) {
 
       Opal::EndPoint& endpoint = GnomeMeeting::Process ()->GetEndPoint ();
       Opal::Sip::EndPoint& sip_endpoint = endpoint.GetSipEndPoint ();

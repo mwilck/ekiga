@@ -171,8 +171,8 @@ static void on_selection_changed (GtkTreeSelection* actions,
  * PRE          : The gpointer must point to the RosterViewGtk GObject.
  */
 static gint on_view_event_after (GtkWidget *tree_view,
-			         GdkEventButton *event,
-			         gpointer data);
+                                 GdkEventButton *event,
+                                 gpointer data);
 
 
 /* DESCRIPTION  : Called when the RosterViewGtk widget becomes visible.
@@ -189,14 +189,14 @@ static void on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
  * PRE         : The gpointer must point to a RosterViewGtk object.
  */
 static gboolean presentity_hide_show_offline (RosterViewGtk* self,
-					      GtkTreeModel* model,
-					      GtkTreeIter* iter);
+                                              GtkTreeModel* model,
+                                              GtkTreeIter* iter);
 static gboolean group_hide_show_offline (RosterViewGtk* self,
-					 GtkTreeModel* model,
-					 GtkTreeIter* iter);
+                                         GtkTreeModel* model,
+                                         GtkTreeIter* iter);
 static gboolean tree_model_filter_hide_show_offline (GtkTreeModel *model,
-						     GtkTreeIter *iter,
-						     gpointer data);
+                                                     GtkTreeIter *iter,
+                                                     gpointer data);
 
 
 /* DESCRIPTION  : Called for a given renderer in order to show or hide it.
@@ -206,10 +206,10 @@ static gboolean tree_model_filter_hide_show_offline (GtkTreeModel *model,
  *                once casted using GPOINTER_TO_INT.
  */
 static void show_cell_data_func (GtkTreeViewColumn *column,
-				 GtkCellRenderer *renderer,
-				 GtkTreeModel *model,
-				 GtkTreeIter *iter,
-				 gpointer data);
+                                 GtkCellRenderer *renderer,
+                                 GtkTreeModel *model,
+                                 GtkTreeIter *iter,
+                                 gpointer data);
 
 
 /* DESCRIPTION  : Called for a given renderer in order to modify properties.
@@ -266,7 +266,7 @@ static void on_account_updated (RosterViewGtk* self,
  * PRE          : /
  */
 static bool on_visit_clusters (RosterViewGtk* self,
-			       Ekiga::ClusterPtr cluster);
+                               Ekiga::ClusterPtr cluster);
 
 
 /* DESCRIPTION  : Called when a new cluster has been added
@@ -274,7 +274,7 @@ static bool on_visit_clusters (RosterViewGtk* self,
  * PRE          : /
  */
 static void on_cluster_added (RosterViewGtk* self,
-			      Ekiga::ClusterPtr cluster);
+                              Ekiga::ClusterPtr cluster);
 
 
 /* DESCRIPTION  : Called when visiting a new cluster
@@ -282,7 +282,7 @@ static void on_cluster_added (RosterViewGtk* self,
  * PRE          : /
  */
 static bool visit_heaps (RosterViewGtk* self,
-			 Ekiga::HeapPtr heap);
+                         Ekiga::HeapPtr heap);
 
 
 /* DESCRIPTION  : Called when the or heap_added signal has been emitted
@@ -290,7 +290,7 @@ static bool visit_heaps (RosterViewGtk* self,
  * PRE          : /
  */
 static void on_heap_added (RosterViewGtk* self,
-			   Ekiga::HeapPtr heap);
+                           Ekiga::HeapPtr heap);
 
 
 /* DESCRIPTION  : Called when the heap_updated signal has been emitted
@@ -298,7 +298,7 @@ static void on_heap_added (RosterViewGtk* self,
  * PRE          : /
  */
 static void on_heap_updated (RosterViewGtk* self,
-			     Ekiga::HeapPtr heap);
+                             Ekiga::HeapPtr heap);
 
 
 /* DESCRIPTION  : Called when the heap_removed signal has been emitted.
@@ -308,7 +308,7 @@ static void on_heap_updated (RosterViewGtk* self,
  * PRE          : /
  */
 static void on_heap_removed (RosterViewGtk* self,
-			     Ekiga::HeapPtr heap);
+                             Ekiga::HeapPtr heap);
 
 
 /* DESCRIPTION  : Called when visiting a new heap
@@ -326,8 +326,8 @@ static bool on_visit_presentities (RosterViewGtk* self,
  * PRE          : A valid Heap.
  */
 static void on_presentity_added (RosterViewGtk* self,
-				 GtkTreeIter heap_iter,
-				 Ekiga::PresentityPtr presentity);
+                                 GtkTreeIter heap_iter,
+                                 Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the presentity_updated signal has been emitted.
@@ -336,7 +336,7 @@ static void on_presentity_added (RosterViewGtk* self,
  */
 static void on_presentity_updated (RosterViewGtk* self,
                                    GtkTreeIter heap_iter,
-				   Ekiga::PresentityPtr presentity);
+                                   Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the presentity_removed signal has been emitted.
@@ -344,8 +344,8 @@ static void on_presentity_updated (RosterViewGtk* self,
  * PRE          : A valid Heap.
  */
 static void on_presentity_removed (RosterViewGtk* self,
-				   GtkTreeIter heap_iter,
-				   Ekiga::PresentityPtr presentity);
+                                   GtkTreeIter heap_iter,
+                                   Ekiga::PresentityPtr presentity);
 
 
 /* DESCRIPTION  : Called when the PresenceCore has a form request to handle.
@@ -353,7 +353,7 @@ static void on_presentity_removed (RosterViewGtk* self,
  * PRE          : The given pointer is the roster view widget.
  */
 static bool on_handle_questions (RosterViewGtk* self,
-				 Ekiga::FormRequestPtr request);
+                                 Ekiga::FormRequestPtr request);
 
 
 /*
@@ -476,8 +476,8 @@ static void roster_view_gtk_update_account (RosterViewGtk *self,
 /* Implementation of the helpers */
 static void
 on_clicked_fold (RosterViewGtk* self,
-		 GtkTreePath* path,
-		 const gchar* name)
+                 GtkTreePath* path,
+                 const gchar* name)
 {
   gboolean row_expanded = TRUE;
   GSList* existing_group = NULL;
@@ -485,13 +485,13 @@ on_clicked_fold (RosterViewGtk* self,
   row_expanded = gtk_tree_view_row_expanded (GTK_TREE_VIEW (self->priv->tree_view), path);
 
   existing_group = g_slist_find_custom (self->priv->folded_groups,
-					name,
-					(GCompareFunc) g_ascii_strcasecmp);
+                                        name,
+                                        (GCompareFunc) g_ascii_strcasecmp);
   if (!row_expanded) {
 
     if (existing_group == NULL) {
       self->priv->folded_groups = g_slist_append (self->priv->folded_groups,
-						  g_strdup (name));
+                                                  g_strdup (name));
     }
   }
   else {
@@ -604,7 +604,7 @@ on_show_offline_contacts_changed_cb (GSettings *settings,
 
 static void
 on_selection_changed (GtkTreeSelection* selection,
-		      gpointer data)
+                      gpointer data)
 {
   RosterViewGtk* self = NULL;
   GtkTreeModel *model = NULL;
@@ -663,8 +663,8 @@ on_selection_changed (GtkTreeSelection* selection,
 
 static gint
 on_view_event_after (GtkWidget *tree_view,
-		     GdkEventButton *event,
-		     gpointer data)
+                     GdkEventButton *event,
+                     gpointer data)
 {
   RosterViewGtk *self = NULL;
   GtkTreeModel *model = NULL;
@@ -755,8 +755,8 @@ on_map_cb (G_GNUC_UNUSED GtkWidget *widget,
 
 static gboolean
 presentity_hide_show_offline (RosterViewGtk* self,
-			      GtkTreeModel* model,
-			      GtkTreeIter* iter)
+                              GtkTreeModel* model,
+                              GtkTreeIter* iter)
 {
   gboolean result = FALSE;
 
@@ -764,8 +764,8 @@ presentity_hide_show_offline (RosterViewGtk* self,
     result = TRUE;
   else
     gtk_tree_model_get (model, iter,
-			COLUMN_OFFLINE, &result,
-			-1);
+                        COLUMN_OFFLINE, &result,
+                        -1);
 
   return result;
 }
@@ -797,8 +797,8 @@ group_hide_show_offline (RosterViewGtk* self,
 
 static gboolean
 tree_model_filter_hide_show_offline (GtkTreeModel *model,
-				     GtkTreeIter *iter,
-				     gpointer data)
+                                     GtkTreeIter *iter,
+                                     gpointer data)
 {
   gboolean result = FALSE;
   RosterViewGtk *self = NULL;
@@ -807,8 +807,8 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
   self = ROSTER_VIEW_GTK (data);
 
   gtk_tree_model_get (model, iter,
-		      COLUMN_TYPE, &column_type,
-		      -1);
+                      COLUMN_TYPE, &column_type,
+                      -1);
 
   switch (column_type) {
 
@@ -833,10 +833,10 @@ tree_model_filter_hide_show_offline (GtkTreeModel *model,
 
 static void
 show_cell_data_func (GtkTreeViewColumn * /*column*/,
-		     GtkCellRenderer *renderer,
-		     GtkTreeModel *model,
-		     GtkTreeIter *iter,
-		     gpointer data)
+                     GtkCellRenderer *renderer,
+                     GtkTreeModel *model,
+                     GtkTreeIter *iter,
+                     gpointer data)
 {
   gint column_type;
 
@@ -910,7 +910,7 @@ on_account_updated (RosterViewGtk* self,
 
 static bool
 on_visit_clusters (RosterViewGtk* self,
-		   Ekiga::ClusterPtr cluster)
+                   Ekiga::ClusterPtr cluster)
 {
   on_cluster_added (self, cluster);
 
@@ -920,7 +920,7 @@ on_visit_clusters (RosterViewGtk* self,
 
 static void
 on_cluster_added (RosterViewGtk* self,
-		  Ekiga::ClusterPtr cluster)
+                  Ekiga::ClusterPtr cluster)
 {
   boost::signals2::connection conn;
   cluster->visit_heaps (boost::bind (&visit_heaps, self, _1));
@@ -937,7 +937,7 @@ on_cluster_added (RosterViewGtk* self,
 
 static bool
 visit_heaps (RosterViewGtk* self,
-	     Ekiga::HeapPtr heap)
+             Ekiga::HeapPtr heap)
 {
   on_heap_added (self, heap);
 
@@ -947,7 +947,7 @@ visit_heaps (RosterViewGtk* self,
 
 static void
 on_heap_added (RosterViewGtk* self,
-	       Ekiga::HeapPtr heap)
+               Ekiga::HeapPtr heap)
 {
   GtkTreeIter heap_iter;
   boost::signals2::connection conn;
@@ -974,7 +974,7 @@ on_heap_added (RosterViewGtk* self,
 
 static void
 on_heap_updated (RosterViewGtk* self,
-		 Ekiga::HeapPtr heap)
+                 Ekiga::HeapPtr heap)
 {
   GtkTreeIter iter;
 
@@ -985,7 +985,7 @@ on_heap_updated (RosterViewGtk* self,
 
 static void
 on_heap_removed (RosterViewGtk* self,
-		 Ekiga::HeapPtr heap)
+                 Ekiga::HeapPtr heap)
 {
   GtkTreeIter iter;
 
@@ -1008,7 +1008,7 @@ on_visit_presentities (RosterViewGtk* self,
 static void
 on_presentity_added (RosterViewGtk* self,
                      GtkTreeIter heap_iter,
-		     Ekiga::PresentityPtr presentity)
+                     Ekiga::PresentityPtr presentity)
 {
   std::list<std::string> groups = presentity->get_groups ();
   GtkTreeIter group_iter;
@@ -1045,7 +1045,7 @@ on_presentity_added (RosterViewGtk* self,
 static void
 on_presentity_updated (RosterViewGtk* self,
                        GtkTreeIter heap_iter,
-		       Ekiga::PresentityPtr presentity)
+                       Ekiga::PresentityPtr presentity)
 {
   GtkTreeModel *model;
   GtkTreeIter group_iter;
@@ -1125,7 +1125,7 @@ on_presentity_updated (RosterViewGtk* self,
 static void
 on_presentity_removed (RosterViewGtk* self,
                        GtkTreeIter heap_iter,
-		       Ekiga::PresentityPtr presentity)
+                       Ekiga::PresentityPtr presentity)
 {
   GtkTreeModel *model = NULL;
   GtkTreeIter group_iter;
@@ -1152,7 +1152,7 @@ on_presentity_removed (RosterViewGtk* self,
 
 static bool
 on_handle_questions (RosterViewGtk* self,
-		     Ekiga::FormRequestPtr request)
+                     Ekiga::FormRequestPtr request)
 {
   GtkWidget *parent = gtk_widget_get_toplevel (GTK_WIDGET (self));
   FormDialog dialog (request, parent);
@@ -1449,9 +1449,9 @@ roster_view_gtk_update_heap (RosterViewGtk* self,
                                heap->get_name ().c_str ());
 
   gtk_tree_store_set (self->priv->store, &iter,
-		      COLUMN_TYPE, TYPE_HEAP,
-		      COLUMN_HEAP, heap.get (),
-		      COLUMN_NAME, heap_name, -1);
+                      COLUMN_TYPE, TYPE_HEAP,
+                      COLUMN_HEAP, heap.get (),
+                      COLUMN_NAME, heap_name, -1);
 
   g_free (heap_name);
 }
@@ -1582,7 +1582,7 @@ roster_view_gtk_init (RosterViewGtk* self)
   gtk_container_set_border_width (GTK_CONTAINER (scrolled_window), 0);
   gtk_frame_set_shadow_type (GTK_FRAME (self), GTK_SHADOW_NONE);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolled_window),
-				  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+                                  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
   self->priv->store = gtk_tree_store_new (COLUMN_NUMBER,
                                           G_TYPE_INT,         // type
@@ -1600,28 +1600,28 @@ roster_view_gtk_init (RosterViewGtk* self)
                                           GDK_TYPE_RGBA,      // cell foreground color
                                           G_TYPE_STRING,      // group name (invisible)
                                           G_TYPE_STRING,      // presence
-					  G_TYPE_BOOLEAN);    // offline
+                                          G_TYPE_BOOLEAN);    // offline
 
   gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (self->priv->store),
                                         COLUMN_NAME, GTK_SORT_ASCENDING);
   filtered = gtk_tree_model_filter_new (GTK_TREE_MODEL (self->priv->store),
-					NULL);
+                                        NULL);
   g_object_unref (self->priv->store);
   self->priv->tree_view =
     GTK_TREE_VIEW (gtk_tree_view_new_with_model (filtered));
   g_object_unref (filtered);
   gtk_tree_model_filter_set_visible_func (GTK_TREE_MODEL_FILTER (filtered),
-					  tree_model_filter_hide_show_offline,
-					  self, NULL);
+                                          tree_model_filter_hide_show_offline,
+                                          self, NULL);
 
   gtk_tree_view_set_headers_visible (self->priv->tree_view, FALSE);
   gtk_tree_view_set_grid_lines (self->priv->tree_view, GTK_TREE_VIEW_GRID_LINES_HORIZONTAL);
 
   gtk_container_add (GTK_CONTAINER (self), GTK_WIDGET (vbox));
   gtk_box_pack_start (GTK_BOX (vbox),
-		      GTK_WIDGET (scrolled_window), TRUE, TRUE, 0);
+                      GTK_WIDGET (scrolled_window), TRUE, TRUE, 0);
   gtk_container_add (GTK_CONTAINER (scrolled_window),
-		     GTK_WIDGET (self->priv->tree_view));
+                     GTK_WIDGET (self->priv->tree_view));
 
   /* Build the GtkTreeView */
   // We hide the normal GTK+ expanders and use our own
@@ -1657,7 +1657,7 @@ roster_view_gtk_init (RosterViewGtk* self)
   renderer = gtk_cell_renderer_text_new ();
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "text", COLUMN_NAME);
+                                      "text", COLUMN_NAME);
   gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
   g_object_set (renderer, "weight", PANGO_WEIGHT_BOLD, NULL);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
@@ -1667,8 +1667,8 @@ roster_view_gtk_init (RosterViewGtk* self)
   g_object_set (renderer, "xalign", 0.5, "xpad", 6, "stock-size", 1, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "icon-name",
-				      COLUMN_PRESENCE_ICON);
+                                      "icon-name",
+                                      COLUMN_PRESENCE_ICON);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
@@ -1685,8 +1685,8 @@ roster_view_gtk_init (RosterViewGtk* self)
   g_object_set (renderer, "xalign", 1.0, "xpad", 0, NULL);
   gtk_tree_view_column_pack_start (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "pixbuf",
-				      COLUMN_AVATAR_PIXBUF);
+                                      "pixbuf",
+                                      COLUMN_AVATAR_PIXBUF);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);
 
@@ -1694,11 +1694,11 @@ roster_view_gtk_init (RosterViewGtk* self)
   g_object_set (renderer, "xalign", 1.0, "xpad", 6, NULL);
   gtk_tree_view_column_pack_end (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "pixbuf",
-				      COLUMN_ACCOUNT_STATUS_ICON);
+                                      "pixbuf",
+                                      COLUMN_ACCOUNT_STATUS_ICON);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "visible",
-				      COLUMN_ACCOUNT_STATUS_ICON_VISIBLE);
+                                      "visible",
+                                      COLUMN_ACCOUNT_STATUS_ICON_VISIBLE);
 
   renderer = gtk_cell_renderer_spinner_new ();
   g_object_set (renderer, "xalign", 1.0,
@@ -1706,28 +1706,28 @@ roster_view_gtk_init (RosterViewGtk* self)
                 "xpad", 6, NULL);
   gtk_tree_view_column_pack_end (col, renderer, FALSE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "pulse",
-				      COLUMN_ACCOUNT_SPINNER_PULSE);
+                                      "pulse",
+                                      COLUMN_ACCOUNT_SPINNER_PULSE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "active",
-				      COLUMN_ACCOUNT_SPINNER_VISIBLE);
+                                      "active",
+                                      COLUMN_ACCOUNT_SPINNER_VISIBLE);
   gtk_tree_view_column_add_attribute (col, renderer,
-				      "visible",
-				      COLUMN_ACCOUNT_SPINNER_VISIBLE);
+                                      "visible",
+                                      COLUMN_ACCOUNT_SPINNER_VISIBLE);
 
   /* Callback when the selection has been changed */
   selection = gtk_tree_view_get_selection (self->priv->tree_view);
   gtk_tree_selection_set_mode (selection, GTK_SELECTION_SINGLE);
   g_signal_connect (selection, "changed",
-		    G_CALLBACK (on_selection_changed), self);
+                    G_CALLBACK (on_selection_changed), self);
   g_signal_connect (self->priv->tree_view, "event-after",
-		    G_CALLBACK (on_view_event_after), self);
+                    G_CALLBACK (on_view_event_after), self);
   g_signal_connect (GTK_WIDGET (self), "map",
                     G_CALLBACK (on_map_cb), self);
 
   /* Other signals */
   g_signal_connect (self->priv->settings->get_g_settings (), "changed::show-offline-contacts",
-		    G_CALLBACK (&on_show_offline_contacts_changed_cb), self);
+                    G_CALLBACK (&on_show_offline_contacts_changed_cb), self);
 }
 
 
@@ -1741,12 +1741,12 @@ roster_view_gtk_class_init (RosterViewGtkClass* klass)
 
   signals[ACTIONS_CHANGED_SIGNAL] =
     g_signal_new ("actions-changed",
-		  G_OBJECT_CLASS_TYPE (gobject_class),
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
-		  NULL, NULL,
-		  g_cclosure_marshal_VOID__OBJECT,
-		  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
+                  G_OBJECT_CLASS_TYPE (gobject_class),
+                  G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (RosterViewGtkClass, selection_changed),
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__OBJECT,
+                  G_TYPE_NONE, 1, G_TYPE_MENU_MODEL);
 }
 
 

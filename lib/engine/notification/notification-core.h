@@ -52,8 +52,8 @@ namespace Ekiga
     typedef enum { Info, Warning, Error } NotificationLevel;
 
     Notification (NotificationLevel level_,
-		  const std::string title_,
-		  const std::string body_,
+                  const std::string title_,
+                  const std::string body_,
                   const std::string action_name_ = "",
                   boost::function0<void> action_callback_ = NULL)
       : level(level_), title(title_), body(body_), action_name(action_name_), action_callback(action_callback_)

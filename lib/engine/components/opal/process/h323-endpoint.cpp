@@ -267,8 +267,8 @@ Opal::H323::EndPoint::IsRegisteredWithGatekeeper (const PString & address)
 
 bool
 Opal::H323::EndPoint::OnIncomingConnection (OpalConnection & connection,
-					    G_GNUC_UNUSED unsigned options,
-					    G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
+                                            G_GNUC_UNUSED unsigned options,
+                                            G_GNUC_UNUSED OpalConnection::StringOptions *stroptions)
 {
   PTRACE (3, "Opal::H323::EndPoint\tIncoming connection");
 

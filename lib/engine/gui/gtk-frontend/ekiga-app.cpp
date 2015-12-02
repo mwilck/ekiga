@@ -740,9 +740,9 @@ gm_application_show_help (GmApplication *app,
 
     /* try returned locale first, it may be fully qualified e.g. zh_CN */
     index_path = g_build_filename (WIN32_HELP_DIR, locale,
-				   WIN32_HELP_FILE, NULL);
+                                   WIN32_HELP_FILE, NULL);
     hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
-			  	DATA_DIR, SW_SHOWNORMAL);
+                                DATA_DIR, SW_SHOWNORMAL);
     g_free (index_path);
   }
 
@@ -750,9 +750,9 @@ gm_application_show_help (GmApplication *app,
     /* on error, try short locale */
     *loc_ = 0;
     index_path = g_build_filename (WIN32_HELP_DIR, locale,
-				   WIN32_HELP_FILE, NULL);
+                                   WIN32_HELP_FILE, NULL);
     hinst = (int) ShellExecute (NULL, "open", index_path, NULL,
-				DATA_DIR, SW_SHOWNORMAL);
+                                DATA_DIR, SW_SHOWNORMAL);
     g_free (index_path);
   }
 
@@ -763,7 +763,7 @@ gm_application_show_help (GmApplication *app,
     /* on error or missing locale, try default locale */
     index_path = g_build_filename (WIN32_HELP_DIR, "C", WIN32_HELP_FILE, NULL);
     (void)ShellExecute (NULL, "open", index_path, NULL,
-			DATA_DIR, SW_SHOWNORMAL);
+                        DATA_DIR, SW_SHOWNORMAL);
     g_free (index_path);
   }
 #else /* !WIN32 */

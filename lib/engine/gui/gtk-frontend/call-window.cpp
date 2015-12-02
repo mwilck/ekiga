@@ -864,7 +864,7 @@ on_stream_closed_cb (boost::shared_ptr<Ekiga::Call>  /* call */,
 
 static bool
 on_handle_questions (Ekiga::FormRequestPtr request,
-		     gpointer data)
+                     gpointer data)
 {
   FormDialog dialog (request, GTK_WIDGET (data));
 
