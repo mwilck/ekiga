@@ -43,8 +43,8 @@ public:
     RTCPStatistics () :
         transmitted_audio_bandwidth (0),
         received_audio_bandwidth (0),
-        jitter (0),
-        remote_jitter (0),
+        jitter (-1),
+        remote_jitter (-1),
         transmitted_video_bandwidth (0),
         received_video_bandwidth (0),
         received_fps (0),
@@ -57,8 +57,8 @@ public:
     unsigned transmitted_audio_bandwidth; // in kbits/s
     std::string received_audio_codec;
     unsigned received_audio_bandwidth; // in kbits/s
-    unsigned jitter; // in ms
-    unsigned remote_jitter; // in ms
+    int jitter; // in ms (-1 is N/A, as given by opal)
+    int remote_jitter; // in ms (-1 is N/A, as given by opal)
 
     /* Video */
     std::string transmitted_video_codec;

@@ -1131,22 +1131,35 @@ ekiga_call_window_update_stats (EkigaCallWindow *self,
   else
     tr_video_msg = g_strdup ("");
 
+  gchar *jitter, *remote_jitter;
+  if (stats.jitter == -1)
+    jitter = g_strdup (_("N/A"));
+  else
+    jitter = g_strdup_printf (_("%d ms"), stats.jitter);
+  if (stats.remote_jitter == -1)
+    remote_jitter = g_strdup (_("N/A"));
+  else
+    remote_jitter = g_strdup_printf (_("%d ms"), stats.remote_jitter);
+
   stats_msg =
-    g_strdup_printf (_("<b><u>Reception:</u></b> %s %s\nLost Packets: %d %%\nJitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"
-                       "<b><u>Transmission:</u></b> %s %s\nRemote Lost Packets: %d %%\nRemote Jitter: %d ms\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"),
-                       stats.received_audio_codec.c_str (), re_video_msg, stats.lost_packets, stats.jitter,
-                       stats.received_fps, stats.received_audio_bandwidth + stats.received_video_bandwidth,
-                       stats.transmitted_audio_codec.c_str (), tr_video_msg, stats.remote_lost_packets, stats.remote_jitter,
-                       stats.transmitted_fps, stats.transmitted_audio_bandwidth + stats.transmitted_video_bandwidth);
+    g_strdup_printf (_("<b><u>Reception:</u></b> %s %s\nLost Packets: %d %%\nJitter: %s\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"
+                       "<b><u>Transmission:</u></b> %s %s\nRemote Lost Packets: %d %%\nRemote Jitter: %s\nFramerate: %d fps\nBandwidth: %d kbits/s\n\n"),
+                     stats.received_audio_codec.c_str (), re_video_msg, stats.lost_packets, jitter,
+                     stats.received_fps, stats.received_audio_bandwidth + stats.received_video_bandwidth,
+                     stats.transmitted_audio_codec.c_str (), tr_video_msg, stats.remote_lost_packets, remote_jitter,
+                     stats.transmitted_fps, stats.transmitted_audio_bandwidth + stats.transmitted_video_bandwidth);
   gtk_widget_set_tooltip_markup (GTK_WIDGET (self->priv->event_box), stats_msg);
 
   if (!self->priv->bad_connection && (stats.jitter > 250 || stats.lost_packets > 2)) {
+
     gm_info_bar_push_message (GM_INFO_BAR (self->priv->info_bar),
                               GTK_MESSAGE_WARNING,
                               _("The call quality is rather bad. Please check your Internet connection or your audio driver."));
     self->priv->bad_connection = true;
   }
 
+  g_free (jitter);
+  g_free (remote_jitter);
   g_free (stats_msg);
   g_free (re_video_msg);
   g_free (tr_video_msg);
