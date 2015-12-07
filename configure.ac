@@ -149,8 +149,8 @@ AM_CONDITIONAL(HAVE_SIDEBAR, test "x${have_sidebar}" = "xyes")
 AC_ARG_ENABLE([gtk-debug],
               [AS_HELP_STRING([--enable-gtk-debug],[enable GTK+ debug flags (default is disabled)])],
               [if test "x$enableval" = "xyes"; then
-                GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES -DGTK_DISABLE_SINGLE_INCLUDES"
-                GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_SINGLE_INCLUDES -DG_DISABLE_DEPRECATED"
+                  GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES"
+                  GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_DEPRECATED"
               fi])
 AC_SUBST(GTK_CFLAGS)
 AC_SUBST(GTK_LIBS)
@@ -163,7 +163,7 @@ dnl   Mandatory GST Clutter & Clutter support
 dnl ##########################################
 PKG_CHECK_MODULES([CLUTTER], [clutter-1.0])
 PKG_CHECK_MODULES([CLUTTER_GTK], [clutter-gtk-1.0])
-PKG_CHECK_MODULES([CLUTTER_GST], [clutter-gst-2.0 gstreamer-app-1.0 gstreamer-plugins-base-1.0 gstreamer-plugins-base-1.0])
+PKG_CHECK_MODULES([CLUTTER_GST], [clutter-gst-2.0 gstreamer-app-1.0 gstreamer-plugins-base-1.0])
 
 AC_SUBST(CLUTTER_CFLAGS)
 AC_SUBST(CLUTTER_LIBS)
