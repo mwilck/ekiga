@@ -1262,10 +1262,10 @@ ekiga_call_window_toggle_fullscreen (EkigaCallWindow *self)
   if (self->priv->fullscreen) {
     gm_window_save (GM_WINDOW (self));
     gtk_widget_hide (self->priv->call_panel_toolbar);
+    gtk_window_set_keep_above (GTK_WINDOW (self), true);  // awesome WM needs gtk_window_set_keep_above before gtk_window_fullscreen for fullscreen to work
     gtk_window_maximize (GTK_WINDOW (self));
     gtk_window_fullscreen (GTK_WINDOW (self));
     gm_video_widget_set_fullscreen (GM_VIDEO_WIDGET (self->priv->video_widget), true);
-    gtk_window_set_keep_above (GTK_WINDOW (self), true);
   }
   else {
     gtk_widget_show (self->priv->call_panel_toolbar);
