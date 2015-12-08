@@ -507,13 +507,15 @@ Opal::Call::OnCleared ()
     case OpalConnection::EndedByConnectFail:
     case OpalConnection::EndedByTransportFail:
     case OpalConnection::EndedByHostOffline:
-    case OpalConnection::EndedByTemporaryFailure:
     case OpalConnection::EndedByUnreachable:
     case OpalConnection::EndedByNoEndPoint:
     case OpalConnection::EndedByOutOfService:
     case OpalConnection::EndedByNoDialTone:
     case OpalConnection::EndedByNoRingBackTone:
       reason = _("Abnormal call termination");
+      break;
+    case OpalConnection::EndedByTemporaryFailure:
+      reason = _("User is offline");
       break;
     case OpalConnection::EndedBySecurityDenial:
     case OpalConnection::EndedByGatekeeper:
