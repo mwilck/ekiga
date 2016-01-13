@@ -165,19 +165,17 @@ Opal::H323::CallManager::set_dtmf_mode (unsigned mode)
 unsigned
 Opal::H323::CallManager::get_dtmf_mode () const
 {
-  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsString)
+  switch (h323_endpoint.GetSendUserInputMode ()) {
+  case OpalConnection::SendUserInputAsString:
     return 0;
-
-  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+  case OpalConnection::SendUserInputAsTone:
     return 1;
-
-  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+  case OpalConnection::SendUserInputAsQ931:
+    return 3;
+  case OpalConnection::SendUserInputAsInlineRFC2833:
+  default:
     return 2;
-
-  if (h323_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsQ931)
-    return 2;
-
-  g_return_val_if_reached (1);
+  }
 }
 
 

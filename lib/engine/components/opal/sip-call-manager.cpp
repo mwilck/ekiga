@@ -171,15 +171,13 @@ Opal::Sip::CallManager::set_dtmf_mode (unsigned mode)
 unsigned
 Opal::Sip::CallManager::get_dtmf_mode () const
 {
-  // RFC2833
-  if (sip_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsInlineRFC2833)
+  switch (sip_endpoint.GetSendUserInputMode ()) {
+  case OpalConnection::SendUserInputAsInlineRFC2833:  // RFC2833
     return 0;
-
-  // SIP Info
-  if (sip_endpoint.GetSendUserInputMode () == OpalConnection::SendUserInputAsTone)
+  case OpalConnection::SendUserInputAsTone:  // SIP Info
+  default:
     return 1;
-
-  g_return_val_if_reached (1);
+  }
 }
 
 
