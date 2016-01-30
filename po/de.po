@@ -9,25 +9,24 @@
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
 # Jochen Skulj <jochen@jochenskulj.de>, 2008.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2009-2012, 2016.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2011, 2016.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2011-2012, 2016.
 # Christian Kirbach <Christian.Kirbach@googlemail.com>, 2011, 2012.
 # Hedda Peters <hpeters@redhat.com>, 2012.
-# Mario Blättermann <mario.blaettermann@gmail.com>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Ekiga master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=ekiga&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2016-01-01 04:28+0000\n"
-"PO-Revision-Date: 2016-01-01 17:14+0100\n"
+"POT-Creation-Date: 2016-01-21 16:29+0000\n"
+"PO-Revision-Date: 2016-01-30 17:23+0100\n"
 "Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../ekiga.appdata.xml.in.h:1
@@ -38,6 +37,12 @@ msgid ""
 "and all modern VoIP features for both SIP and H.323. Ekiga is the first Open "
 "Source application to support both H.323 and SIP, as well as audio and video."
 msgstr ""
+"Ekiga ist eine Anwendung für VoIP, IP-Telefonie und Videokonferenzen. Damit "
+"können Sie Sprach- und Videoanrufe mit fernen Benutzern mittels SIP oder "
+"H.323-kompatiblen Geräten und Software führen. Es unterstützt zahlreiche "
+"Audio- und Video-Codecs und alle modernen VoIP-Funktionsmerkmale für sowohl "
+"SIP als auch H.323. Ekiga ist die erste quelloffene Anwendung, die sowohl "
+"SIP als auch H.323 unterstützt für Audio und Video unterstützt."
 
 #. Application name
 #. FIXME ??? ekiga-settings.h
@@ -508,7 +513,6 @@ msgid "Spectator"
 msgstr "Zuschauer"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1287
-#| msgid "String"
 msgid "Steering"
 msgstr "Steuerung"
 
@@ -522,7 +526,7 @@ msgstr "Schaut Fernsehen"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1299
 msgid "Worship"
-msgstr ""
+msgstr "Gottesdienst"
 
 #: ../lib/engine/components/opal/opal-account.cpp:1350
 msgid "Renaming Groups"
@@ -1079,7 +1083,6 @@ msgid "Introduction to Accounts"
 msgstr "Einführung in Konten"
 
 #: ../lib/engine/gui/gtk-frontend/assistant-window.cpp:237
-#| msgid "Ekiga.net Account"
 msgid "Ekiga.im Account"
 msgstr "Ekiga.im-Konto"
 
@@ -1393,6 +1396,7 @@ msgstr "k.A."
 msgid "%d ms"
 msgstr "%d ms"
 
+# https://de.wikipedia.org/wiki/Jitter
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1145
 #, c-format
 msgid ""
@@ -1409,6 +1413,18 @@ msgid ""
 "Bandwidth: %d kbits/s\n"
 "\n"
 msgstr ""
+"<b><u>Eingehend:</u></b> %s %s\n"
+"Verlorene Pakete: %d %%\n"
+"Laufzeitvarianz: %s\n"
+"Framerate: %d f/s\n"
+"Bandbreite: %d kb/s\n"
+"\n"
+"<b><u>Ausgehend:</u></b> %s %s\n"
+"Ferne verlorene Pakete: %d %%\n"
+"Entfernte Laufzeitvarianz: %s\n"
+"Bildrate: %d f/s\n"
+"Bandbreite: %d kb/s\n"
+"\n"
 
 #: ../lib/engine/gui/gtk-frontend/call-window.cpp:1157
 msgid ""
@@ -2360,7 +2376,7 @@ msgstr "H.261"
 
 #: ../lib/engine/protocol/known-codecs.h:59
 msgid "Basic H.261"
-msgstr ""
+msgstr "Basic H.261"
 
 #: ../lib/engine/protocol/known-codecs.h:60
 msgid "H.263"
@@ -2382,7 +2398,7 @@ msgstr "H.264"
 
 #: ../lib/engine/protocol/known-codecs.h:62
 msgid "H.264 Single NAL mode"
-msgstr ""
+msgstr "H.264 Single-NAL-Modus"
 
 #: ../lib/engine/protocol/known-codecs.h:63
 msgid "H.264 Interleaved mode"
