@@ -109,6 +109,7 @@ Avahi::Heap::load ()
   /* let's make sure those are sanely initialized */
   poll = NULL;
   client = NULL;
+  resolver = NULL;
 
   avahi_set_allocator (avahi_glib_allocator ());
   poll = avahi_glib_poll_new (NULL, G_PRIORITY_DEFAULT);
