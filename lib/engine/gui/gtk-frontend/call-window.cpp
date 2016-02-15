@@ -966,8 +966,12 @@ ekiga_call_window_update_calling_state (EkigaCallWindow *self,
       gtk_widget_hide (self->priv->spinner);
       gtk_spinner_stop (GTK_SPINNER (self->priv->spinner));
 
-      /* Auto destroy */
-      g_timeout_add_seconds (2, on_delayed_destroy_cb, self);
+      /* Auto destroy if !enable-preview */
+      GSettings *settings;
+      settings = g_settings_new (VIDEO_DEVICES_SCHEMA);
+      if (!g_settings_get_boolean (settings, "enable-preview"))
+        g_timeout_add_seconds (2, on_delayed_destroy_cb, self);
+      g_clear_object (&settings);
       break;
 
     case Calling:
