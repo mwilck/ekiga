@@ -81,7 +81,7 @@ namespace Ekiga
      * The information is given as a pair of strings (uri, data).
      */
     boost::signals2::signal<void(std::string, std::string)> presence_received;
-    boost::signals2::signal<void(std::string, std::string)> status_received;
+    boost::signals2::signal<void(std::string, std::string)> note_received;
   };
 
   class PresencePublisher
@@ -208,7 +208,7 @@ namespace Ekiga
      * about an uri ; the information is a pair of strings (uri, information).
      */
     boost::signals2::signal<void(std::string, std::string)> presence_received;
-    boost::signals2::signal<void(std::string, std::string)> status_received;
+    boost::signals2::signal<void(std::string, std::string)> note_received;
 
     /** This chain allows the core to present forms to the user
      */
@@ -219,16 +219,16 @@ namespace Ekiga
     std::list<boost::shared_ptr<PresenceFetcher> > presence_fetchers;
     void on_presence_received (const std::string uri,
                                const std::string presence);
-    void on_status_received (const std::string uri,
-                             const std::string status);
+    void on_note_received (const std::string uri,
+                           const std::string note);
     struct uri_info
     {
-      uri_info (): count(0), presence("unknown"), status("")
+      uri_info (): count(0), presence("unknown"), note("")
       { }
 
       int count;
       std::string presence;
-      std::string status;
+      std::string note;
     };
 
     std::map<std::string, uri_info> uri_infos;

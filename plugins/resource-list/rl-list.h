@@ -60,13 +60,13 @@ namespace RL
 
     bool has_name (const std::string name) const;
 
-    /* we need to push presence&status down */
+    /* we need to push presence&note down */
 
     void push_presence (const std::string uri_,
 			const std::string presence);
 
-    void push_status (const std::string uri_,
-		      const std::string status);
+    void push_note (const std::string uri_,
+		      const std::string note);
 
     /* make the world know what we have */
     bool visit_presentities (boost::function1<bool, Ekiga::Presentity&> visitor) const;

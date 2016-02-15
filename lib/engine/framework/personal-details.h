@@ -54,16 +54,16 @@ namespace Ekiga
 
     virtual const std::string get_presence () const = 0;
 
-    virtual const std::string get_status () const = 0;
+    virtual const std::string get_note () const = 0;
 
     virtual void set_display_name (const std::string display_name) = 0;
 
     virtual void set_presence (const std::string presence) = 0;
 
-    virtual void set_status (const std::string status) = 0;
+    virtual void set_note (const std::string note) = 0;
 
     virtual void set_presence_info (const std::string presence,
-                                    const std::string status) = 0;
+                                    const std::string note) = 0;
 
     boost::signals2::signal<void(void)> updated;
   };

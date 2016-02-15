@@ -112,7 +112,7 @@ G_DEFINE_TYPE (RosterViewGtk, roster_view_gtk, GTK_TYPE_FRAME);
  *
  * For the groups, we show the name.
  *
- * For the presentities, we show the name, the status and the presence.
+ * For the presentities, we show the name, the presence and the note.
  *
  * This means we can share and put the name in a column.
  *
@@ -124,7 +124,7 @@ enum {
   COLUMN_ACCOUNT,
   COLUMN_PRESENTITY,
   COLUMN_NAME,
-  COLUMN_STATUS,
+  COLUMN_NOTE,
   COLUMN_PRESENCE_ICON,
   COLUMN_AVATAR_PIXBUF,
   COLUMN_ACCOUNT_STATUS_ICON,
@@ -1421,7 +1421,7 @@ roster_view_gtk_update_presentity (RosterViewGtk* self,
                       COLUMN_PRESENTITY, presentity.get (),
                       COLUMN_NAME, presentity->get_name ().c_str (),
                       COLUMN_AVATAR_PIXBUF, pixbuf,
-                      COLUMN_STATUS, presentity->get_status ().c_str (),
+                      COLUMN_NOTE, presentity->get_note ().c_str (),
                       COLUMN_PRESENCE_ICON, icon.c_str (),
                       COLUMN_FOREGROUND_COLOR, &color, -1);
 
@@ -1590,7 +1590,7 @@ roster_view_gtk_init (RosterViewGtk* self)
                                           G_TYPE_POINTER,     // account
                                           G_TYPE_POINTER,     // presentity
                                           G_TYPE_STRING,      // name
-                                          G_TYPE_STRING,      // status
+                                          G_TYPE_STRING,      // presence note
                                           G_TYPE_STRING,      // presence
                                           GDK_TYPE_PIXBUF,    // Avatar
                                           GDK_TYPE_PIXBUF,    // Account status icon
@@ -1676,7 +1676,7 @@ roster_view_gtk_init (RosterViewGtk* self)
   g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, "width-chars", 30, NULL);
   gtk_tree_view_column_pack_start (col, renderer, TRUE);
   gtk_tree_view_column_add_attribute (col, renderer, "primary-text", COLUMN_NAME);
-  gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_STATUS);
+  gtk_tree_view_column_add_attribute (col, renderer, "secondary-text", COLUMN_NOTE);
   gtk_tree_view_column_add_attribute (col, renderer, "foreground-rgba", COLUMN_FOREGROUND_COLOR);
   gtk_tree_view_column_set_cell_data_func (col, renderer,
                                            show_cell_data_func, GINT_TO_POINTER (TYPE_PRESENTITY), NULL);

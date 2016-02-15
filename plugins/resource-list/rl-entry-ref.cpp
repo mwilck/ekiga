@@ -49,7 +49,7 @@ RL::EntryRef::EntryRef (Ekiga::ServiceCore& core_,
 			xmlNodePtr node_):
   core(core_), path(path_), position(pos), doc(NULL), node(node_),
   link_doc(NULL), link_node(NULL), name_node(NULL),
-  presence("unknown"), status(_("Click to fetch"))
+  presence("unknown"), note(_("Click to fetch"))
 {
   groups.insert (group);
 
@@ -95,9 +95,9 @@ RL::EntryRef::set_presence (const std::string presence_)
 }
 
 void
-RL::EntryRef::set_status (const std::string status_)
+RL::EntryRef::set_note (const std::string note_)
 {
-  status = status_;
+  note = note_;
   updated ();
 }
 

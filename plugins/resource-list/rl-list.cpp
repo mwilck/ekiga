@@ -58,8 +58,8 @@ public: // no need to make anything private
   void push_presence (const std::string uri_,
 		      const std::string presence);
 
-  void push_status (const std::string uri_,
-		    const std::string status);
+  void push_note (const std::string uri_,
+                  const std::string note);
 
   std::string compute_path () const;
 
@@ -146,10 +146,10 @@ RL::List::push_presence (const std::string uri_,
 }
 
 void
-RL::List::push_status (const std::string uri_,
-		       const std::string status)
+RL::List::push_note (const std::string uri_,
+                     const std::string note)
 {
-  impl->push_status (uri_, status);
+  impl->push_note (uri_, note);
 }
 
 bool
@@ -372,20 +372,20 @@ RL::ListImpl::push_presence (const std::string uri_,
 }
 
 void
-RL::ListImpl::push_status (const std::string uri_,
-			   const std::string status)
+RL::ListImpl::push_note (const std::string uri_,
+                         const std::string note)
 {
   for (std::list<boost::shared_ptr<List> >::const_iterator iter = lists.begin ();
        iter != lists.end ();
        ++iter)
-    (*iter)->push_status (uri_, status);
+    (*iter)->push_note (uri_, note);
 
   for (std::list<std::pair<boost::shared_ptr<Entry>, std::list<boost::signals2::connection> > >::const_iterator iter = entries.begin ();
        iter != entries.end ();
        ++iter) {
 
     if (iter->first->get_uri () == uri_)
-      iter->first->set_status (status);
+      iter->first->set_note (note);
   }
 }
 

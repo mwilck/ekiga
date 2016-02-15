@@ -86,8 +86,8 @@ namespace RL {
     void push_presence (const std::string uri,
 			const std::string presence);
 
-    void push_status (const std::string uri,
-		      const std::string status);
+    void push_note (const std::string uri,
+		      const std::string note);
 
     boost::signals2::signal<void(void)> trigger_saving;
 

@@ -316,7 +316,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver * /*resolver*/,
   std::string name;
   std::string software;
   std::string presence;
-  std::string status;
+  std::string note;
   gchar *url = NULL;
   AvahiStringList *txt_tmp = NULL;
 
@@ -354,8 +354,10 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver * /*resolver*/,
 	  std::string value (cvalue);
 	  if (key == "presence")
 	    presence = value;
-	  else if (key == "status")
-	    status = value;
+	  else if (key == "status")  // interoperability with older versions
+	    note = value;
+	  else if (key == "note")
+	    note = value;
 	  else if (key == "software")
 	    software = value;
 	}
@@ -370,7 +372,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver * /*resolver*/,
 
       /* known contact has been updated */
       presence_received (helper.found_presentity ()->get_uri (), presence);
-      status_received (helper.found_presentity ()->get_uri (), status);
+      note_received (helper.found_presentity ()->get_uri (), note);
     }
     else {
 
@@ -385,7 +387,7 @@ Avahi::Heap::ResolverCallback (AvahiServiceResolver * /*resolver*/,
 	groups.push_back (_("Neighbours"));
 	url = g_strdup_printf ("%s:neighbour@%s:%d", broken[1], host_name, port);
 	boost::shared_ptr<Avahi::Presentity> presentity = Avahi::Presentity::create (presence_core, name, url, groups);
-	status_received (url, status);
+	note_received (url, note);
 	presence_received (url, presence);
 	add_presentity (presentity);
 	g_free (url);

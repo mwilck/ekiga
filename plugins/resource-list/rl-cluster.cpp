@@ -51,7 +51,7 @@ RL::Cluster::Cluster (Ekiga::ServiceCore& core_): core(core_), doc()
   boost::shared_ptr<Ekiga::PresenceCore> presence_core = core.get<Ekiga::PresenceCore> ("presence-core");
 
   presence_core->presence_received.connect (boost::bind (&RL::Cluster::on_presence_received, this, _1, _2));
-  presence_core->status_received.connect (boost::bind (&RL::Cluster::on_status_received, this, _1, _2));
+  presence_core->note_received.connect (boost::bind (&RL::Cluster::on_note_received, this, _1, _2));
   contacts_settings = boost::shared_ptr<Ekiga::Settings> (new Ekiga::Settings (CONTACTS_SCHEMA));
   std::string raw = contacts_settings->get_string (RL_KEY);
 
@@ -193,7 +193,7 @@ RL::Cluster::on_new_heap_form_submitted (bool submitted,
 
 void
 RL::Cluster::on_presence_received (std::string uri,
-				   std::string presence)
+                                   std::string presence)
 {
   for (iterator iter = begin ();
        iter != end ();
@@ -204,13 +204,13 @@ RL::Cluster::on_presence_received (std::string uri,
 }
 
 void
-RL::Cluster::on_status_received (std::string uri,
-				 std::string status)
+RL::Cluster::on_note_received (std::string uri,
+                               std::string note)
 {
   for (iterator iter = begin ();
        iter != end ();
        ++iter) {
 
-    (*iter)->push_status (uri, status);
+    (*iter)->push_note (uri, note);
   }
 }

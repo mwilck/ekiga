@@ -78,7 +78,7 @@ Ekiga::PresenceCore::add_presence_fetcher (boost::shared_ptr<PresenceFetcher> fe
 {
   presence_fetchers.push_back (fetcher);
   conns.add (fetcher->presence_received.connect (boost::bind (&Ekiga::PresenceCore::on_presence_received, this, _1, _2)));
-  conns.add (fetcher->status_received.connect (boost::bind (&Ekiga::PresenceCore::on_status_received, this, _1, _2)));
+  conns.add (fetcher->note_received.connect (boost::bind (&Ekiga::PresenceCore::on_note_received, this, _1, _2)));
   for (std::map<std::string, uri_info>::const_iterator iter
          = uri_infos.begin ();
        iter != uri_infos.end ();
@@ -107,7 +107,7 @@ Ekiga::PresenceCore::fetch_presence (const std::string uri)
   }
 
   presence_received (uri, uri_infos[uri].presence);
-  status_received (uri, uri_infos[uri].status);
+  note_received (uri, uri_infos[uri].note);
 }
 
 void Ekiga::PresenceCore::unfetch_presence (const std::string uri)
@@ -147,11 +147,11 @@ Ekiga::PresenceCore::on_presence_received (const std::string uri,
 }
 
 void
-Ekiga::PresenceCore::on_status_received (const std::string uri,
-                                         const std::string status)
+Ekiga::PresenceCore::on_note_received (const std::string uri,
+                                       const std::string note)
 {
-  uri_infos[uri].status = status;
-  status_received (uri, status);
+  uri_infos[uri].note = note;
+  note_received (uri, note);
 }
 
 void

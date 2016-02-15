@@ -64,7 +64,7 @@ namespace RL
 
     const std::string get_presence () const;
 
-    const std::string get_status () const;
+    const std::string get_note () const;
 
     const std::set<std::string> get_groups () const;
 
@@ -74,7 +74,7 @@ namespace RL
 
     void set_presence (const std::string _presence);
 
-    void set_status (const std::string _status);
+    void set_note (const std::string _note);
 
     bool populate_menu (Ekiga::MenuBuilder &);
 
@@ -108,7 +108,7 @@ namespace RL
 
     std::string uri;
     std::string presence;
-    std::string status;
+    std::string note;
 
     std::map<std::string, xmlNodePtr> group_nodes;
     std::set<std::string> groups;

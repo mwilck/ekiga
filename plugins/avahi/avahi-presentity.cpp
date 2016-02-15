@@ -57,7 +57,7 @@ Avahi::Presentity::Presentity (boost::shared_ptr<Ekiga::PresenceCore> presence_c
   conn = presence_core->presence_received.connect (boost::bind (&Avahi::Presentity::on_presence_received, this, _1, _2));
   connections.add (conn);
 
-  conn = presence_core->status_received.connect (boost::bind (&Avahi::Presentity::on_status_received, this, _1, _2));
+  conn = presence_core->note_received.connect (boost::bind (&Avahi::Presentity::on_note_received, this, _1, _2));
   connections.add (conn);
 
   presence_core->pull_actions (*this, _name, _uri);
@@ -81,9 +81,9 @@ Avahi::Presentity::get_presence () const
 }
 
 const std::string
-Avahi::Presentity::get_status () const
+Avahi::Presentity::get_note () const
 {
-  return status;
+  return note;
 }
 
 const std::list<std::string>
@@ -116,12 +116,12 @@ Avahi::Presentity::on_presence_received (std::string uri_,
 }
 
 void
-Avahi::Presentity::on_status_received (std::string uri_,
-                                       std::string status_)
+Avahi::Presentity::on_note_received (std::string uri_,
+                                     std::string note_)
 {
   if (uri == uri_) {
 
-    status = status_;
+    note = note_;
     updated (this->shared_from_this ());
   }
 }

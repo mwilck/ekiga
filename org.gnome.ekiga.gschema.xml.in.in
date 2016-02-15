@@ -96,23 +96,23 @@
     <child name="call-options" schema="org.gnome.@PACKAGE_NAME@.general.call-options"/>
   </schema>
   <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.@PACKAGE_NAME@.general.personal-data" path="/org/gnome/@PACKAGE_NAME@/general/personal-data/">
-    <key name="short-status" type="s">
+    <key name="presence" type="s">
       <default>'available'</default>
-      <_summary>Contact short status</_summary>
-      <_description>The short status information</_description>
+      <_summary>Contact presence status</_summary>
+      <_description>Contact presence status</_description>
     </key>
-    <key name="long-status" type="s">
+    <key name="presence-note" type="s">
       <default>'I\'m available using Ekiga'</default>
-      <_summary>Contact long status</_summary>
-      <_description>The long status information</_description>
+      <_summary>Contact presence note</_summary>
+      <_description>Contact presence note</_description>
     </key>
-    <key name="away-custom-status" type="as">
+    <key name="away-custom-notes" type="as">
       <default>[]</default>
     </key>
-    <key name="busy-custom-status" type="as">
+    <key name="busy-custom-notes" type="as">
       <default>[]</default>
     </key>
-    <key name="available-custom-status" type="as">
+    <key name="available-custom-notes" type="as">
       <default>[]</default>
     </key>
   </schema>

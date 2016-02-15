@@ -189,9 +189,9 @@ Opal::Presentity::get_presence () const
 
 
 const std::string
-Opal::Presentity::get_status () const
+Opal::Presentity::get_note () const
 {
-  return status;
+  return note;
 }
 
 
@@ -256,9 +256,9 @@ Opal::Presentity::set_presence (const std::string presence_)
 
 
 void
-Opal::Presentity::set_status (const std::string status_)
+Opal::Presentity::set_note (const std::string note_)
 {
-  status = status_;
+  note = note_;
   updated (this->shared_from_this ());
 }
 

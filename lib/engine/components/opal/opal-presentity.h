@@ -83,7 +83,7 @@ namespace Opal
 
     const std::string get_presence () const;
 
-    const std::string get_status () const;
+    const std::string get_note () const;
 
     const std::list<std::string> get_groups () const;
 
@@ -97,7 +97,7 @@ namespace Opal
 
     void set_presence (const std::string presence_);
 
-    void set_status (const std::string status_);
+    void set_note (const std::string note_);
 
     // method to rename a group for this presentity
     void rename_group (const std::string old_name,
@@ -141,7 +141,7 @@ namespace Opal
     xmlNodePtr node;
 
     std::string presence;
-    std::string status;
+    std::string note;
   };
 
   typedef boost::shared_ptr<Presentity> PresentityPtr;

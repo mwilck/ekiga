@@ -591,7 +591,7 @@ Opal::Account::disable ()
            iter != Ekiga::HeapImpl<Opal::Presentity>::end ();
            ++iter) {
         (*iter)->set_presence ("unknown");
-        (*iter)->set_status ("");
+        (*iter)->set_note ("");
       }
 
       if (type != Account::H323 && sip_endpoint)
@@ -953,11 +953,11 @@ Opal::Account::publish (const Ekiga::PersonalDetails& details)
   if (opal_presentity) {
     OpalPresenceInfo opi = OpalPresenceInfo (OpalPresenceInfo::Available);
     opi.m_activities = PString (details.get_presence ());
-    opi.m_note = details.get_status ();
+    opi.m_note = details.get_note ();
     opi.m_service = instance_id;
 
     opal_presentity->SetLocalPresence (opi);
-    PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << details.get_presence () << ", note " << details.get_status ());
+    PTRACE (4, "Ekiga\tSent its own presence (publish) for " << get_aor() << ": " << details.get_presence () << ", note " << details.get_note ());
   }
 }
 
@@ -1158,7 +1158,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
                                  const std::auto_ptr<OpalPresenceInfo> info)
 {
   std::string new_presence;
-  std::string new_status = "";
+  std::string new_note = "";
 
   SIPURL sip_uri = SIPURL (info->m_entity);
   sip_uri.Sanitise (SIPURL::ExternalURI);
@@ -1170,7 +1170,7 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
   if (!uri.compare (0, 5, "pres:"))
     uri.replace (0, 5, "sip:");  // replace "pres:" sith "sip:" FIXME
 
-  new_status = (const char*) info->m_note;
+  new_note = (const char*) info->m_note;
   switch (info->m_state) {
 
   case OpalPresenceInfo::Unchanged:
@@ -1207,96 +1207,96 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     // to handle that.
     else if (info->m_activities.Contains ("appointment")) {
       new_presence = "away";
-      new_status = _("Appointment");
+      new_note = _("Appointment");
     }
     else if (info->m_activities.Contains ("breakfast")) {
       new_presence = "away";
-      new_status = _("Breakfast");
+      new_note = _("Breakfast");
     }
     else if (info->m_activities.Contains ("dinner")) {
       new_presence = "away";
-      new_status = _("Dinner");
+      new_note = _("Dinner");
     }
     else if (info->m_activities.Contains ("vacation")
              || info->m_activities.Contains ("holiday")) {
       new_presence = "away";
-      new_status = _("Holiday");
+      new_note = _("Holiday");
     }
     else if (info->m_activities.Contains ("in-transit")) {
       new_presence = "away";
-      new_status = _("In transit");
+      new_note = _("In transit");
     }
     else if (info->m_activities.Contains ("looking-for-work")) {
       new_presence = "away";
-      new_status = _("Looking for work");
+      new_note = _("Looking for work");
     }
     else if (info->m_activities.Contains ("lunch")) {
       new_presence = "away";
-      new_status = _("Lunch");
+      new_note = _("Lunch");
     }
     else if (info->m_activities.Contains ("meal")) {
       new_presence = "away";
-      new_status = _("Meal");
+      new_note = _("Meal");
     }
     else if (info->m_activities.Contains ("meeting")) {
       new_presence = "away";
-      new_status = _("Meeting");
+      new_note = _("Meeting");
     }
     else if (info->m_activities.Contains ("on-the-phone")) {
       new_presence = "inacall";
-      new_status = _("On the phone");
+      new_note = _("On the phone");
     }
     else if (info->m_activities.Contains ("playing")) {
       new_presence = "away";
-      new_status = _("Playing");
+      new_note = _("Playing");
     }
     else if (info->m_activities.Contains ("shopping")) {
       new_presence = "away";
-      new_status = _("Shopping");
+      new_note = _("Shopping");
     }
     else if (info->m_activities.Contains ("sleeping")) {
       new_presence = "away";
-      new_status = _("Sleeping");
+      new_note = _("Sleeping");
     }
     else if (info->m_activities.Contains ("working")) {
       new_presence = "busy";
-      new_status = _("Working");
+      new_note = _("Working");
     }
     else if (info->m_activities.Contains ("other")) {
       new_presence = "away";
-      new_status = "";
+      new_note = "";
     }
     else if (info->m_activities.Contains ("performance")) {
       new_presence = "away";
-      new_status = _("Performance");
+      new_note = _("Performance");
     }
     else if (info->m_activities.Contains ("permanent-absence")) {
       new_presence = "away";
-      new_status = _("Permanent Absence");
+      new_note = _("Permanent Absence");
     }
     else if (info->m_activities.Contains ("presentation")) {
       new_presence = "away";
-      new_status = _("Presentation");
+      new_note = _("Presentation");
     }
     else if (info->m_activities.Contains ("spectator")) {
       new_presence = "away";
-      new_status = _("Spectator");
+      new_note = _("Spectator");
     }
     else if (info->m_activities.Contains ("steering")) {
       new_presence = "away";
-      new_status = _("Steering");
+      new_note = _("Steering");
     }
     else if (info->m_activities.Contains ("travel")) {
       new_presence = "away";
-      new_status = _("Business or personal trip");
+      new_note = _("Business or personal trip");
     }
     else if (info->m_activities.Contains ("tv")) {
       new_presence = "away";
-      new_status = _("Watching TV");
+      new_note = _("Watching TV");
     }
     else if (info->m_activities.Contains ("worship")) {
       new_presence = "away";
-      new_status = _("Worship");
+      new_note = _("Worship");
     }
     break;
   case OpalPresenceInfo::NoPresence:
@@ -1317,14 +1317,14 @@ Opal::Account::OnPresenceChange (OpalPresentity& /*presentity*/,
     break;
   }
 
-  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_status));
+  Ekiga::Runtime::run_in_main (boost::bind (&Opal::Account::presence_status_in_main, this, uri, new_presence, new_note));
 }
 
 
 void
 Opal::Account::presence_status_in_main (std::string uri,
                                         std::string uri_presence,
-                                        std::string uri_status) const
+                                        std::string uri_note) const
 {
   for (Ekiga::HeapImpl<Opal::Presentity>::const_iterator iter = Ekiga::HeapImpl<Opal::Presentity>::begin ();
        iter != Ekiga::HeapImpl<Opal::Presentity>::end ();
@@ -1333,11 +1333,11 @@ Opal::Account::presence_status_in_main (std::string uri,
     if ((*iter)->has_uri (uri)) {
 
       (*iter)->set_presence (uri_presence);
-      (*iter)->set_status (uri_status);
+      (*iter)->set_note (uri_note);
     }
   }
   presence_received (uri, uri_presence);
-  status_received (uri, uri_status);
+  note_received (uri, uri_note);
 }
 
 

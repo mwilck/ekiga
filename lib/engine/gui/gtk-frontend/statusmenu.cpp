@@ -100,9 +100,9 @@ const char* status_types_names[] =
 
 const char* status_types_keys[] =
 {
-  "available-custom-status",
-  "away-custom-status",
-  "busy-custom-status"
+  "available-custom-notes",
+  "away-custom-notes",
+  "busy-custom-notes"
 };
 
 
@@ -346,7 +346,7 @@ status_menu_custom_messages_changed (G_GNUC_UNUSED GSettings *settings,
 static void
 on_details_updated (StatusMenu *self)
 {
-  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_note ());
 }
 
 
@@ -436,7 +436,7 @@ status_menu_populate (StatusMenu *self,
                         -1);
   }
 
-  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_note ());
 }
 
 
@@ -515,7 +515,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   std::string status;
 
   // Current status
-  status = self->priv->personal_data_settings->get_string ("long-status");
+  status = self->priv->personal_data_settings->get_string ("presence-notes");
 
   // Build the dialog
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
@@ -667,8 +667,8 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
 
   const char *message = NULL;
 
-  presence = self->priv->personal_data_settings->get_string ("short-status");
-  status = self->priv->personal_data_settings->get_string ("long-status");
+  presence = self->priv->personal_data_settings->get_string ("presence");
+  status = self->priv->personal_data_settings->get_string ("presence-notes");
 
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
@@ -837,19 +837,19 @@ status_menu_new (Ekiga::ServiceCore & core)
                                         (GtkTreeViewRowSeparatorFunc) status_menu_row_is_separator,
                                         NULL, NULL);
   gtk_container_set_border_width (GTK_CONTAINER (self), 0);
-  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_status ());
+  status_menu_set_option (self, self->priv->personal_details->get_presence (), self->priv->personal_details->get_note ());
 
   g_signal_connect (self, "changed",
                     G_CALLBACK (status_menu_option_changed), self);
 
   g_signal_connect (self->priv->personal_data_settings->get_g_settings (),
-                    "changed::available-custom-status",
+                    "changed::available-custom-notes",
                     G_CALLBACK (status_menu_custom_messages_changed), self);
   g_signal_connect (self->priv->personal_data_settings->get_g_settings (),
-                    "changed::away-custom-status",
+                    "changed::away-custom-notes",
                     G_CALLBACK (status_menu_custom_messages_changed), self);
   g_signal_connect (self->priv->personal_data_settings->get_g_settings (),
-                    "changed::busy-custom-status",
+                    "changed::busy-custom-notes",
                     G_CALLBACK (status_menu_custom_messages_changed), self);
 
   self->priv->connection =

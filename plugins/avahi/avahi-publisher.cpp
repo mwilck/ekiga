@@ -110,8 +110,8 @@ Avahi::PresencePublisher::publish (G_GNUC_UNUSED const Ekiga::PersonalDetails& d
       gchar *typ = NULL;
 
       typ = g_strdup_printf ("_%s._%s",
-			     iter->voip_protocol.c_str (),
-			     iter->protocol.c_str ());
+                             iter->voip_protocol.c_str (),
+                             iter->protocol.c_str ());
 
       /* FIXME: no collision checking here */
       avahi_entry_group_update_service_txt_strlst (group, AVAHI_IF_UNSPEC,
@@ -282,8 +282,8 @@ Avahi::PresencePublisher::prepare_txt_record ()
 					 "presence=%s",
 					 details.get_presence ().c_str ());
   result = avahi_string_list_add_printf (result,
-					 "status=%s",
-					 details.get_status ().c_str ());
+					 "note=%s",
+					 details.get_note ().c_str ());
   result = avahi_string_list_add_printf (result,
 					 "software=%s %s",
 					 PACKAGE_NAME, PACKAGE_VERSION);

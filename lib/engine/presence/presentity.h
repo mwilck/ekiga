@@ -68,10 +68,10 @@ namespace Ekiga
     */
     virtual const std::string get_presence () const = 0;
 
-    /** Returns the status of the Presentity.
-     * @return The Presentity's status.
+    /** Returns the note (message) of the Presentity.
+     * @return The Presentity's note.
      */
-    virtual const std::string get_status () const = 0;
+    virtual const std::string get_note () const = 0;
 
     /** Returns the set of groups the Presentity belongs to.
      * @return The Presentity's list of groups.

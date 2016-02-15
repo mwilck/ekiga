@@ -85,13 +85,13 @@ namespace RL {
 		   bool writable);
 
     bool on_new_heap_form_submitted (bool submitted,
-				     Ekiga::Form& result,
+                                     Ekiga::Form& result,
                                      std::string &error);
 
     void on_presence_received (std::string uri,
-			       std::string presence);
-    void on_status_received (std::string uri,
-			     std::string presence);
+                               std::string presence);
+    void on_note_received (std::string uri,
+                           std::string presence);
 
     boost::shared_ptr<Ekiga::Settings> contacts_settings;
   };

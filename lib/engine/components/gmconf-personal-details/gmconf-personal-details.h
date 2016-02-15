@@ -65,23 +65,23 @@ namespace Gmconf
 
     const std::string get_presence () const;
 
-    const std::string get_status () const;
+    const std::string get_note () const;
 
     void set_display_name (const std::string display_name);
 
     void set_presence (const std::string presence);
 
-    void set_status (const std::string status);
+    void set_note (const std::string note);
 
-    void set_presence_info (const std::string presence, 
-                            const std::string status);
+    void set_presence_info (const std::string presence,
+                            const std::string note);
 
   private:
     void setup (std::string what = "");
 
     std::string display_name;
     std::string presence;
-    std::string status;
+    std::string note;
     Ekiga::Settings *personal_details;
   };
 };

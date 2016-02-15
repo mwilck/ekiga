@@ -64,7 +64,7 @@ public:
 
     const std::string get_presence () const;
 
-    const std::string get_status () const;
+    const std::string get_note () const;
 
     const std::list<std::string> get_groups () const;
 
@@ -79,13 +79,13 @@ public:
     std::string uri;
     std::string presence;
     std::list<std::string> groups;
-    std::string status;
+    std::string note;
 
     void on_presence_received (std::string uri_,
-			       std::string presence_);
+                               std::string presence_);
 
-    void on_status_received (std::string uri_,
-			     std::string status_);
+    void on_note_received (std::string uri_,
+                           std::string note_);
 
 private:
     Presentity (boost::shared_ptr<Ekiga::PresenceCore> presence_core,

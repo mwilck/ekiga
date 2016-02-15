@@ -391,8 +391,8 @@ RL::Heap::push_presence (const std::string uri_,
 }
 
 void
-RL::Heap::push_status (const std::string uri_,
-		       const std::string status)
+RL::Heap::push_note (const std::string uri_,
+		       const std::string note)
 {
   for (std::map<PresentityPtr,std::list<boost::signals2::connection> >::const_iterator
 	 iter = presentities.begin ();
@@ -400,7 +400,7 @@ RL::Heap::push_status (const std::string uri_,
        ++iter) {
 
     if (iter->first->get_uri () == uri_)
-      iter->first->set_status (status);
+      iter->first->set_note (note);
   }
 }
 

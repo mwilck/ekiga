@@ -59,7 +59,7 @@ RL::Entry::Entry (Ekiga::ServiceCore& core_,
 		  boost::shared_ptr<xmlDoc> doc_,
 		  xmlNodePtr node_):
   core(core_), position(pos), doc(doc_), node(node_), name_node(NULL),
-  presence("unknown"), status("")
+  presence("unknown"), note("")
 {
   groups.insert (group);
 
@@ -116,9 +116,9 @@ RL::Entry::set_presence (const std::string presence_)
 }
 
 void
-RL::Entry::set_status (const std::string status_)
+RL::Entry::set_note (const std::string note_)
 {
-  status = status_;
+  note = note_;
   updated ();
 }
 
@@ -172,7 +172,7 @@ RL::Entry::refresh ()
   node = NULL;
   name_node = NULL;
   presence = "unknown";
-  status = ("");
+  note = ("");
   updated ();
 
   boost::shared_ptr<XCAP::Core> xcap = core.get<XCAP::Core> ("xcap-core");
@@ -185,7 +185,7 @@ RL::Entry::on_xcap_answer (bool error,
 {
   if (error) {
 
-    set_status (value);
+    set_note (value);
 
   } else {
 
@@ -198,10 +198,10 @@ RL::Entry::on_xcap_answer (bool error,
         || node->name == NULL
         || !xmlStrEqual (BAD_CAST "entry", node->name)) {
 
-      set_status (_("Invalid server data"));
+      set_note (_("Invalid server data"));
     } else {
 
-      set_status ("");
+      set_note ("");
       parse ();
       updated ();
     }

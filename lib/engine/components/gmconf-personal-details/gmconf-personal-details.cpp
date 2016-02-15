@@ -55,17 +55,17 @@ void
 Gmconf::PersonalDetails::setup (std::string setting)
 {
   std::string value;
-  if (setting.empty () || setting == "short-status")  {
-    value = personal_details->get_string ("short-status");
+  if (setting.empty () || setting == "presence")  {
+    value = personal_details->get_string ("presence");
     if (value != presence) {
       presence = value;
       updated ();
     }
   }
-  if (setting.empty () || setting == "long-status")  {
-    value = personal_details->get_string ("long-status");
-    if (value != status) {
-      status = value;
+  if (setting.empty () || setting == "presence-note")  {
+    value = personal_details->get_string ("presence-note");
+    if (value != note) {
+      note = value;
       updated ();
     }
   }
@@ -84,9 +84,9 @@ Gmconf::PersonalDetails::get_presence () const
 }
 
 const std::string
-Gmconf::PersonalDetails::get_status () const
+Gmconf::PersonalDetails::get_note () const
 {
-  return status;
+  return note;
 }
 
 void
@@ -98,24 +98,24 @@ Gmconf::PersonalDetails::set_display_name (G_GNUC_UNUSED const std::string displ
 void
 Gmconf::PersonalDetails::set_presence (const std::string presence_)
 {
-  personal_details->set_string ("short-status", presence_);
+  personal_details->set_string ("presence", presence_);
 }
 
 void
-Gmconf::PersonalDetails::set_status (const std::string status_)
+Gmconf::PersonalDetails::set_note (const std::string note_)
 {
-  personal_details->set_string ("long-status", status_);
+  personal_details->set_string ("presence-note", note_);
 }
 
 void
 Gmconf::PersonalDetails::set_presence_info (const std::string _presence,
-                                            const std::string _status)
+                                            const std::string _note)
 {
   presence = _presence;
-  status = _status;
+  note = _note;
 
   set_presence (_presence);
-  set_status (_status);
+  set_note (_note);
 
   updated ();
 }
