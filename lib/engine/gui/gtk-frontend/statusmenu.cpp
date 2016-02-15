@@ -515,7 +515,7 @@ status_menu_clear_status_message_dialog_run (StatusMenu *self)
   std::string status;
 
   // Current status
-  status = self->priv->personal_data_settings->get_string ("presence-notes");
+  status = self->priv->personal_data_settings->get_string ("presence-note");
 
   // Build the dialog
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
@@ -668,7 +668,7 @@ status_menu_new_status_message_dialog_run (StatusMenu *self,
   const char *message = NULL;
 
   presence = self->priv->personal_data_settings->get_string ("presence");
-  status = self->priv->personal_data_settings->get_string ("presence-notes");
+  status = self->priv->personal_data_settings->get_string ("presence-note");
 
   dialog = gtk_dialog_new_with_buttons (_("Custom Message"),
                                         self->priv->parent,
