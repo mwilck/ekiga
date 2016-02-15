@@ -1,7 +1,7 @@
 .\" Process this file with
 .\" groff -man -Tascii ekiga.1
 .\"
-.TH Ekiga 1 "January 2015" Linux "Version 5.00"
+.TH Ekiga 1 "February 2016" Linux "Version 5.00"
 .SH NAME
 Ekiga \- SIP and H.323 Voice over IP and Videoconferencing for UN*X and Windows
 .SH SYNOPSIS
@@ -16,14 +16,11 @@ Ekiga \- SIP and H.323 Voice over IP and Videoconferencing for UN*X and Windows
 .\" .B [--sm-disable]
 .SH DESCRIPTION
 .B Ekiga
-is a SIP and H.323 VoIP, IP Telephony and Video Conferencing application which complies to the SIP and H.323 protocols.  It can connect to a variety of other SIP and H323 applications including specific hardware.  Ekiga can work with or without a webcam, and is able to create pure audio communications or traditional audio+video communications.  It offers to configure almost every option from within the GUI. Command-line options include 
-.B -d
-to turn on debugging during calls.
-.B -c
-to call another URL.
+is a SIP and H.323 VoIP, IP Telephony and Video Conferencing application which complies to the SIP and H.323 protocols.  It can connect to a variety of other SIP and H323 applications including specific hardware.  Ekiga can work with or without a webcam, and is able to create pure audio communications or traditional audio+video communications.  It offers to configure almost every option from within the GUI.
 .SH OPTIONS
 .IP "-d level"
-turn on debugging (on the console), level should be between 1 and 9.
+turn on debugging (on the console), level should be between 1 and 9;
+usually it is 4.
 .IP "-c URL"
 Calls the given URL.  Ekiga can be running or not when invoking that option.  SIP, H.323 and CALLTO URLs are supported.
 .SH DOCUMENTATION
@@ -39,6 +36,6 @@ Damien Sandras <dsandras at seconix dot com>
 The webpage for Ekiga is at
 http://www.ekiga.org.
 .SH COPYRIGHT
-Copyright \(co 2000-2015 Damien Sandras
+Copyright \(co 2000-2016 Damien Sandras
 .br
 This is free software licensed under the GPLv2; see the LICENSE file in the source for copying conditions.  There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
