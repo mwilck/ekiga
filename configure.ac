@@ -161,16 +161,13 @@ AC_SUBST(GLIB_LIBS)
 dnl ##########################################
 dnl   Mandatory GST Clutter & Clutter support
 dnl ##########################################
-PKG_CHECK_MODULES([CLUTTER], [clutter-1.0])
 PKG_CHECK_MODULES([CLUTTER_GTK], [clutter-gtk-1.0])
-PKG_CHECK_MODULES([CLUTTER_GST], [clutter-gst-2.0 gstreamer-app-1.0 gstreamer-plugins-base-1.0])
+PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-1.0])
 
-AC_SUBST(CLUTTER_CFLAGS)
-AC_SUBST(CLUTTER_LIBS)
 AC_SUBST(CLUTTER_GTK_CFLAGS)
 AC_SUBST(CLUTTER_GTK_LIBS)
-AC_SUBST(CLUTTER_GST_CFLAGS)
-AC_SUBST(CLUTTER_GST_LIBS)
+AC_SUBST(GSTREAMER_CFLAGS)
+AC_SUBST(GSTREAMER_LIBS)
 
 
 dnl ###############################

@@ -479,7 +479,7 @@ endif
 # Sources of the Clutter video output component
 ##
 
-AM_CPPFLAGS += $(CLUTTER_CFLAGS) $(CLUTTER_GTK_CFLAGS) $(CLUTTER_GST_CFLAGS) \
+AM_CPPFLAGS += $(CLUTTER_GTK_CFLAGS) $(GSTREAMER_CFLAGS) \
 	-I$(top_srcdir)/lib/engine/components/clutter-gst-videooutput
 
 libekiga_la_SOURCES += \
@@ -488,7 +488,7 @@ libekiga_la_SOURCES += \
 	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.cpp      \
 	engine/components/clutter-gst-videooutput/videooutput-main-clutter-gst.h
 
-libekiga_la_LDFLAGS += $(CLUTTER_LIBS) $(CLUTTER_GTK_LIBS) $(CLUTTER_GST_LIBS)
+libekiga_la_LDFLAGS += $(CLUTTER_GTK_LIBS) $(GSTREAMER_LIBS)
 
 ##
 #  Sources of the foe list component
