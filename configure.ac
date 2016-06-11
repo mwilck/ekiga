@@ -158,7 +158,7 @@ dnl ##########################################
 dnl   Mandatory GST Clutter & Clutter support
 dnl ##########################################
 PKG_CHECK_MODULES([CLUTTER_GTK], [clutter-gtk-1.0])
-PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-1.0])
+PKG_CHECK_MODULES([GSTREAMER_PLUGINS_BASE], [gstreamer-plugins-base-1.0])
 
 dnl ###############################
 dnl   Mandatory BOOST support
