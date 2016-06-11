@@ -152,10 +152,6 @@ AC_ARG_ENABLE([gtk-debug],
                   GTK_CFLAGS="$GTK_CFLAGS -DGDK_PIXBUF_DISABLE_DEPRECATED -DGDK_DISABLE_DEPRECATED -DGTK_DISABLE_DEPRECATED -DGDK_PIXBUF_DISABLE_SINGLE_INCLUDES"
                   GLIB_CFLAGS="$GLIB_CFLAGS -DG_DISABLE_DEPRECATED"
               fi])
-AC_SUBST(GTK_CFLAGS)
-AC_SUBST(GTK_LIBS)
-AC_SUBST(GLIB_CFLAGS)
-AC_SUBST(GLIB_LIBS)
 
 
 dnl ##########################################
@@ -163,12 +159,6 @@ dnl   Mandatory GST Clutter & Clutter support
 dnl ##########################################
 PKG_CHECK_MODULES([CLUTTER_GTK], [clutter-gtk-1.0])
 PKG_CHECK_MODULES([GSTREAMER], [gstreamer-plugins-base-1.0])
-
-AC_SUBST(CLUTTER_GTK_CFLAGS)
-AC_SUBST(CLUTTER_GTK_LIBS)
-AC_SUBST(GSTREAMER_CFLAGS)
-AC_SUBST(GSTREAMER_LIBS)
-
 
 dnl ###############################
 dnl   Mandatory BOOST support
@@ -189,8 +179,6 @@ dnl ###############################
 dnl   Mandatory libXML support
 dnl ###############################
 PKG_CHECK_MODULES([XML], [libxml-2.0])
-AC_SUBST(XML_CFLAGS)
-AC_SUBST(XML_LIBS)
 
 
 dnl ###############################
@@ -212,8 +200,6 @@ fi],enable_gudev=yes)
 
   if test "x$enable_gudev" = "xyes"; then
     PKG_CHECK_MODULES([GUDEV], [gudev-1.0], [found_gudev=yes])
-    AC_SUBST(GUDEV_CFLAGS)
-    AC_SUBST(GUDEV_LIBS)
     GUDEV="enabled"
     AC_DEFINE(HAVE_GUDEV,1,[GUDev support])
   fi
@@ -235,8 +221,6 @@ fi],enable_eds=yes)
 
   if test "x$enable_eds" = "xyes"; then
     PKG_CHECK_MODULES([EDS], [libebook-1.2], [found_eds=yes])
-    AC_SUBST(EDS_CFLAGS)
-    AC_SUBST(EDS_LIBS)
     EDS="enabled"
     AC_DEFINE(HAVE_EDS,1,[EDS support])
   fi
@@ -305,8 +289,6 @@ if test "x$enable_ldap" = "xyes"; then
   	LDAP_LIBS="${LDAP_LIBS} -lresolv"
   fi
   found_ldap="yes"
-  AC_SUBST(LDAP_CFLAGS)
-  AC_SUBST(LDAP_LIBS)
   LDAP="enabled"
   AC_DEFINE(HAVE_LDAP,1,[LDAP support])
 fi
@@ -334,8 +316,6 @@ fi],enable_dbus_service=yes)
 
   if test "x$enable_dbus" = "xyes"; then
     PKG_CHECK_MODULES([DBUS], [dbus-1 >= 0.36 dbus-glib-1 >= 0.36], [found_dbus=yes])
-    AC_SUBST(DBUS_CFLAGS)
-    AC_SUBST(DBUS_LIBS)
     DBUS="enabled"
     AC_DEFINE(HAVE_DBUS,1,[DBUS support])
 
@@ -361,8 +341,6 @@ fi],enable_avahi=yes)
 
   if test "x$enable_avahi" = "xyes"; then
     PKG_CHECK_MODULES([AVAHI], [avahi-client >= 0.6 avahi-glib >= 0.6], [found_avahi=yes])
-    AC_SUBST(AVAHI_CFLAGS)
-    AC_SUBST(AVAHI_LIBS)
     AVAHI="enabled"
     AC_DEFINE(HAVE_AVAHI,1,[Avahi support])
   fi
@@ -389,8 +367,6 @@ if test "x$enable_gstreamer" = "xyes"; then
     AC_MSG_ERROR([Could not find GStreamer libraries])
   fi
   GSTREAMER_LIBS="$GSTREAMER_LIBS -lgstapp-0.10"
-  AC_SUBST(GSTREAMER_CFLAGS)
-  AC_SUBST(GSTREAMER_LIBS)
   GSTREAMER="enabled"
   AC_DEFINE(HAVE_GSTREAMER,1,[GStreamer support])
 fi
@@ -435,8 +411,6 @@ if test "x$enable_kde" = "xyes"; then
 
   KDE_LIBS="$KDE_LIBS -lkdeui"
 
-  AC_SUBST(KDE_CFLAGS)
-  AC_SUBST(KDE_LIBS)
   KDE="enabled"
   AC_DEFINE(HAVE_KDE,1,[KDE support])
 fi
@@ -471,8 +445,6 @@ if test "x$enable_kab" = "xyes"; then
   if test "x$found_kab" = "xno"; then
     AC_MSG_ERROR([We need this header!])
   fi
-  AC_SUBST(KAB_CFLAGS)
-  AC_SUBST(KAB_LIBS)
   KAB="enabled"
   AC_DEFINE(HAVE_KAB,1,[KAddressBook support])
 fi
@@ -493,8 +465,6 @@ if test "x$enable_xcap" = "xyes"; then
    PKG_CHECK_MODULES([SOUP], [libsoup-2.4])
    found_xcap=yes
    XCAP="enabled"
-   AC_SUBST(SOUP_CFLAGS)
-   AC_SUBST(SOUP_LIBS)
   AC_DEFINE(HAVE_XCAP,1,[XCAP support])
 fi
 
@@ -514,8 +484,6 @@ if test "x$enable_loudmouth" = "xyes"; then
    PKG_CHECK_MODULES([LOUDMOUTH], [loudmouth-1.0])
    found_loudmouth=yes
    LOUDMOUTH="enabled"
-   AC_SUBST(LOUDMOUTH_CFLAGS)
-   AC_SUBST(LOUDMOUTH_LIBS)
   AC_DEFINE(HAVE_LOUDMOUTH,1,[Loudmouth support])
 fi
 
@@ -575,13 +543,6 @@ if test "x$OPAL_AEC" != "xyes"; then
   AC_MSG_ERROR([You need opal aec support to compile ekiga])
 fi
 
-# Make sure ptlib and opal don't force no-exceptions,
-# as we need them for boost's signals2
-PTLIB_CFLAGS="$PTLIB_CFLAGS -fexceptions"
-AC_SUBST(PTLIB_CFLAGS)
-OPAL_CFLAGS="$OPAL_CFLAGS -fexceptions"
-AC_SUBST(OPAL_CFLAGS)
-
 SUFFIX=
 AC_ARG_ENABLE([opal-debug],
               [AS_HELP_STRING([--enable-opal-debug],[link to debug versions of opal and ptlib (opal_d and ptlib_d) (default is disabled)])],
@@ -600,11 +561,6 @@ if test "x$SUFFIX" != x; then
     OPAL_LIBS=`$PKG_CONFIG opal --define-variable=suffix=$SUFFIX --libs`
     PTLIB_LIBS=`$PKG_CONFIG ptlib --define-variable=suffix=$SUFFIX --libs`
 fi
-
-AC_SUBST(PTLIB_CFLAGS)
-AC_SUBST(PTLIB_LIBS)
-AC_SUBST(OPAL_CFLAGS)
-AC_SUBST(OPAL_LIBS)
 
 # check for H.323 support
 AC_ARG_ENABLE(h323, AS_HELP_STRING([--enable-h323],[enable H.323 support (default same as opal)]),
