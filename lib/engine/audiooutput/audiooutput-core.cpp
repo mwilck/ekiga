@@ -189,7 +189,7 @@ void AudioOutputCore::set_device(AudioOutputPS ps, const AudioOutputDevice & dev
 
       break;
     case secondary:
-        if (device == current_device[primary])
+        if (device == current_device[primary] || device.name == "")
         {
           current_manager[secondary] = NULL;
           current_device[secondary].type = "";

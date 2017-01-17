@@ -134,9 +134,7 @@ void AudioOutputCoreConfBridge::on_property_changed (std::string key, GmConfEntr
          (device.source == "") ||
          (device.name   == "") ) {
       PTRACE(1, "AudioOutputCore\tTried to set malformed device");
-      device.type   = AUDIO_OUTPUT_FALLBACK_DEVICE_TYPE;
-      device.source = AUDIO_OUTPUT_FALLBACK_DEVICE_SOURCE;
-      device.name   = AUDIO_OUTPUT_FALLBACK_DEVICE_NAME;
+      device.name   = "";
     }
     audiooutput_core.set_device (secondary, device);
   }
